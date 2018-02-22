@@ -1,0 +1,13 @@
+- platform: rfxtrx
+  automatic_add: False
+  devices:
+    0b11000100f4e3fe01000050:
+      name: Woonkamerlamp (hoek)
+    0b11000800f4e3fe03010f60:
+      name: Woonkamerlamp (midden)
+    0b1100010089f9ea01010f60:
+      name: Woonkamerlamp (rechtsvoor)
+    0b1100020089f9ea02010f60:
+      name: TV
+    0b1100040089f9ea03010f60:
+      name: Woonkamerlamp (linksvoor)

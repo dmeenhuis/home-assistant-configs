@@ -1,0 +1,3 @@
+- platform: dsmr
+  port: /mnt/p1-usb
+  dsmr_version: 4

@@ -1,0 +1,13 @@
+secrets.yaml
+*.db
+*.log
+*.xml
+*.db-journal
+*.sqlite
+*.conf
+.editorconfig
+*.data
+deps
+www
+.HA_VERSION
+.uuid

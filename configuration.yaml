@@ -1,0 +1,45 @@
+homeassistant:
+  name: "D&A"
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: 12
+  unit_system: metric
+  temperature_unit: C
+  time_zone: Europe/Amsterdam
+
+discovery:
+sun:
+updater:
+frontend:
+conversation:
+logbook:
+zeroconf:
+history:
+config:
+
+group: !include_dir_named groups
+media_player: !include_dir_merge_list mediaplayers
+sensor: !include_dir_merge_list sensors
+switch: !include_dir_merge_list switches
+
+http:
+  server_port: 8123
+  ssl_certificate: !env_var HTTP_SSL_CERTIFICATE
+  ssl_key: !env_var HTTP_SSL_KEY
+  base_url: !env_var HTTP_BASE_URL
+
+mqtt:
+  broker: dockerhost
+  client_id: homeassistant
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
+rfxtrx:
+  device: /mnt/rfxcom
+
+tradfri:
+  host: !env_var TRADFRI_GATEWAY
+
+influxdb:
+  host: dockerhost
+  database: home-assistant
