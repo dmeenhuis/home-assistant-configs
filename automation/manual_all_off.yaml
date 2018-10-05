@@ -1,0 +1,14 @@
+alias: Turn off everything when front door switch is pressed
+initial_state: "off"
+trigger:
+  platform: state
+  entity_id: switch.voordeurschakelaar
+  from: "off"
+  to: "on"
+action:
+  - service: light.turn_off
+    entity_id: group.living_room
+  - service: light.turn_off
+    entity_id: group.kitchen
+  - service: switch.turn_off
+    entity_id: switch.tv
