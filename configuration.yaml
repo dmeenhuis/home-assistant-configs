@@ -17,10 +17,12 @@ zeroconf:
 history:
 config:
 
-group: !include_dir_named groups
-media_player: !include_dir_merge_list mediaplayers
-sensor: !include_dir_merge_list sensors
-switch: !include_dir_merge_list switches
+group: !include_dir_named groups/
+media_player: !include_dir_merge_list mediaplayers/
+sensor: !include_dir_merge_list sensors/
+switch: !include_dir_merge_list switches/
+
+automation: !include_dir_list automation/
 
 http:
   server_port: 8123
@@ -47,5 +49,3 @@ influxdb:
   host: influxdb
   port: 8086
   database: home-assistant
-
-automation: !include_dir_list automation/
