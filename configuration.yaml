@@ -27,19 +27,80 @@ http:
   ssl_certificate: !env_var HTTP_SSL_CERTIFICATE
   ssl_key: !env_var HTTP_SSL_KEY
   base_url: !env_var HTTP_BASE_URL
+  trusted_networks:
+    - 127.0.0.1
+    - 192.168.1.0/24
 
 mqtt:
-  broker: dockerhost
+  broker: mqtt
   client_id: homeassistant
   username: !secret mqtt_username
   password: !secret mqtt_password
 
 rfxtrx:
-  device: /mnt/rfxcom
+  device: /dev/ttyUSB0
 
 tradfri:
   host: !env_var TRADFRI_GATEWAY
 
 influxdb:
-  host: dockerhost
+  host: influxdb
+  port: 8086
   database: home-assistant
+
+automation:
+  - alias: Turn on the lights after the sun sets
+    initial_state: "off"
+    trigger:
+      platform: sun
+      event: sunset
+      offset: "-00:15:00"
+    action:
+      service: light.turn_on
+      entity_id: group.living_room
+  - alias: Front door light on between sunset and sunrise
+    initial_state: "off"
+    trigger:
+      platform: sun
+      event: sunset
+    condition:
+      condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+          after_offset: "0:30:00"
+        - condition: sun
+          after: sunrise
+          after_offset: "0:10:00"
+    action:
+      service: light.turn_on
+      entity_id: light.buitenlamp_voordeur
+  - alias: On weekdays turn off all lights after midnight
+    initial_state: "off"
+    trigger:
+      platform: time
+      at: "00:30:00"
+    condition:
+      condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+    action:
+      service: light.turn_off
+      entity_id: group.all_lights
+  - alias: Turn off everything when front door switch is pressed
+    initial_state: "off"
+    trigger:
+      platform: state
+      entity_id: switch.voordeurschakelaar
+      from: "off"
+      to: "on"
+    action:
+      - service: light.turn_off
+        entity_id: group.living_room
+      - service: light.turn_off
+        entity_id: group.kitchen
+      - service: switch.turn_off
+        entity_id: switch.tv

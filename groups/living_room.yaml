@@ -1,0 +1,8 @@
+name: Woonkamer
+view: yes
+icon: mdi:home
+entities:
+  - light.hoekwoonkamerlamp
+  - switch.woonkamerlamp_linksvoor
+  - switch.woonkamerlamp_midden
+  - switch.rechtsvoor
