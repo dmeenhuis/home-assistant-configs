@@ -1,10 +1,16 @@
-alias: Turn off everything when front door switch is pressed
+alias: Bedtijd (ma, di, wo, do, zo)
 initial_state: "off"
 trigger:
-  platform: state
-  entity_id: switch.voordeurschakelaar
-  from: "off"
-  to: "on"
+  platform: time
+  at: "23:30:00"
+condition:
+  condition: time
+  weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sun
 action:
   - service: switch.turn_off
     entity_id: switch.woonkamerlamp_linksvoor
