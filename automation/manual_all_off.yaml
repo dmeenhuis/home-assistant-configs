@@ -1,4 +1,4 @@
-alias: Turn off everything when front door switch is pressed
+alias: Alles uit na indrukken knop bij voordeur
 initial_state: "off"
 trigger:
   platform: state

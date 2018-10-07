@@ -1,4 +1,4 @@
-alias: Turn on the lights after the sun sets
+alias: Verlichting aan na zonsondergang
 initial_state: "off"
 trigger:
   platform: sun

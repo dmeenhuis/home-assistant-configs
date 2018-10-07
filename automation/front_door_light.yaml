@@ -1,4 +1,4 @@
-alias: Front door light on between sunset and sunrise
+alias: Voordeurlamp aan tussen zonsondergang en -opkomst
 initial_state: "off"
 trigger:
   platform: sun
