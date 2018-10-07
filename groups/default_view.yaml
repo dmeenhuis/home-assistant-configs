@@ -1,0 +1,19 @@
+name: Home
+view: yes
+icon: mdi:home
+entities:
+  - group.meter_readings
+  - group.all_automations
+  - group.all_switches
+  - group.all_lights
+  - media_player.das_chromecast
+  - media_player.denon_avrx1300w
+  - device_tracker.iphone
+  - device_tracker.nexus_5x
+  - sun.sun
+  - sensor.afstandsbediening_keuken
+  - sensor.bewegingssensor_overloop
+  - sensor.gas_consumption
+  - sensor.power_consumption
+  - sensor.power_production
+  - sensor.power_tariff
