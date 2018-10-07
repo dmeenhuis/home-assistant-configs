@@ -6,6 +6,7 @@ homeassistant:
   unit_system: metric
   temperature_unit: C
   time_zone: Europe/Amsterdam
+  customize: !include customize.yaml
 
 discovery:
 sun:
@@ -16,8 +17,6 @@ logbook:
 zeroconf:
 history:
 config:
-
-customize: !include customize.yaml
 
 device_tracker: !include_dir_list device_tracker/
 
