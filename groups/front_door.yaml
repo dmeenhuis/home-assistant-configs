@@ -1,4 +1,4 @@
 name: Voordeurverlichting
-view: yes
+view: no
 entities:
   - light.buitenlamp_voordeur

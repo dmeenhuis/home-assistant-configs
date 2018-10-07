@@ -1,3 +1,14 @@
+group.all_lights:
+  hidden: false
+  friendly_name: Verlichting
+group.all_switches:
+  hidden: false
+  friendly_name: Schakelaars
+group.all_automations:
+  hidden: false
+  friendly_name: Automations
+sensor.power_consumption:
+  hidden: false
 sensor.voltage_sags_phase_l1:
   hidden: true
 sensor.voltage_sags_phase_l2:
