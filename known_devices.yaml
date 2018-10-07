@@ -1,0 +1,15 @@
+iphone:
+  hide_if_away: false
+  icon:
+  mac: BT_B8:53:AC:7E:46:9C
+  name: Dennis
+  picture: /local/dennis.jpg
+  track: true
+
+nexus_5x:
+  hide_if_away: false
+  icon:
+  mac: BT_78:F8:82:14:B9:4A
+  name: Antsje
+  picture: /local/antsje.jpg
+  track: true

@@ -49,6 +49,8 @@ tradfri:
   host: !env_var TRADFRI_GATEWAY
 
 influxdb:
-  host: influxdb
+  host: !secret influxdb_host
   port: 8086
   database: home-assistant
+  username: !secret influxdb_username
+  password: !secret influxdb_password
