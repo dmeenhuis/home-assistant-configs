@@ -1,0 +1,12 @@
+alias: TV aan op vrijdagmiddag
+initial_state: "off"
+trigger:
+  platform: time
+  at: "14:00:00"
+condition:
+  condition: time
+  weekday:
+    - fri
+action:
+  - service: switch.turn_on
+    entity_id: switch.tv
