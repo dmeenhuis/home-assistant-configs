@@ -17,6 +17,8 @@ zeroconf:
 history:
 config:
 
+customize: !include customize.yaml
+
 device_tracker: !include_dir_list device_tracker/
 
 group: !include_dir_named groups/
