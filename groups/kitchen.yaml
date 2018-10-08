@@ -1,5 +1,4 @@
 name: Keuken
-view: yes
 entities:
   - light.keukenspot_1
   - light.keukenspot_2

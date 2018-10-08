@@ -2,10 +2,13 @@ name: Home
 view: yes
 icon: mdi:home
 entities:
+  - group.living_room
+  - group.kitchen
+  - group.outside
+  - group.overloop
+  - group.bedroom_d_a
   - group.meter_readings
   - group.all_automations
-  - group.all_switches
-  - group.all_lights
   - group.alarm_clock
   - media_player.das_chromecast
   - media_player.denon_avrx1300w
