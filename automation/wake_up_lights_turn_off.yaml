@@ -10,5 +10,5 @@ condition:
     entity_id: input_boolean.wakeup_enabled
     state: 'on'
 action:
-  - service: light.turn_off
-    entity_id: light.slaapkamerlamp_da
+  service: light.turn_off
+  entity_id: light.slaapkamerlamp_da
