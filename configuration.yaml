@@ -25,6 +25,9 @@ media_player: !include_dir_merge_list mediaplayers/
 sensor: !include_dir_merge_list sensors/
 switch: !include_dir_merge_list switches/
 
+input_boolean: !include_dir_named input_boolean/
+input_datetime: !include_dir_named input_datetime/
+
 automation: !include automations.yaml
 automation old: !include_dir_list automation/
 
