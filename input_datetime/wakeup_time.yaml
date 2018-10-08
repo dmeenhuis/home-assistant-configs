@@ -1,0 +1,4 @@
+name: "Start lights at"
+has_time: true
+has_date: false
+initial: "05:40"

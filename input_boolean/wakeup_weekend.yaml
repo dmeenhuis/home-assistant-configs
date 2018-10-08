@@ -1,0 +1,3 @@
+name: "Enable wake-up on weekends"
+initial: off
+icon: mdi:calendar-blank
