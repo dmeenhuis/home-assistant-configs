@@ -1,5 +1,4 @@
 alias: Verlichting aan na zonsondergang
-initial_state: "off"
 trigger:
   platform: sun
   event: sunset

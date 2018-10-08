@@ -1,5 +1,4 @@
 alias: Voordeurlamp aan tussen zonsondergang en -opkomst
-initial_state: "off"
 trigger:
   platform: sun
   event: sunset

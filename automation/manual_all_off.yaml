@@ -1,5 +1,4 @@
 alias: Alles uit na indrukken knop bij voordeur
-initial_state: "off"
 trigger:
   platform: state
   entity_id: switch.voordeurschakelaar

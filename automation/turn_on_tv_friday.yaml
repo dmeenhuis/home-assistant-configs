@@ -1,5 +1,4 @@
 alias: TV aan op vrijdagmiddag
-initial_state: "off"
 trigger:
   platform: time
   at: "14:00:00"

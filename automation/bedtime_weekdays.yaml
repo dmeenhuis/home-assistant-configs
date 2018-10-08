@@ -1,5 +1,4 @@
 alias: Bedtijd (ma, di, wo, do, zo)
-initial_state: "off"
 trigger:
   platform: time
   at: "23:30:00"
