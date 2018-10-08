@@ -20,7 +20,8 @@ condition:
 action:
   - service: light.turn_on
     entity_id: light.slaapkamerlamp_da
-    brightness: 1
+    data:
+      brightness: 1
   - service: light.turn_on
     entity_id: light.slaapkamerlamp_da
     data:
