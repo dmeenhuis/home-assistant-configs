@@ -4,7 +4,7 @@ trigger:
   value_template: "{{ states('sensor.time') == (((states.input_datetime.wakeup_time.attributes.timestamp | int) + (states.input_number.wakeup_turn_off_after | int) * 60) | timestamp_custom('%H:%M', False)) }}"
 condition:
   - condition: state
-    entity_id: slaapkamerlamp_da
+    entity_id: light.slaapkamerlamp_da
     state: 'on'
   - condition: state
     entity_id: input_boolean.wakeup_enabled
