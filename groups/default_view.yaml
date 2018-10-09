@@ -8,7 +8,6 @@ entities:
   - group.overloop
   - group.bedroom_d_a
   - group.meter_readings
-  - group.all_automations
   - group.alarm_clock
   - media_player.das_chromecast
   - media_player.denon_avrx1300w
