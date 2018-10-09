@@ -6,19 +6,25 @@ condition:
   - condition: state
     entity_id: input_boolean.wakeup_enabled
     state: 'on'
-  - condition: or
+  - condition: and
     conditions:
-      - condition: and
-
-      - condition: state
-        entity_id: input_boolean.wakeup_weekend
-        state: 'on'
-      - condition: time
-        weekday:
-          - tue
-          - wed
-          - thu
-          - fri
+      - condition: or
+        conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: input_boolean.wakeup_weekend
+                state: 'on'
+              - condition: time
+                weekday:
+                  - sat
+                  - sun
+          - condition: time
+            weekday:
+              - tue
+              - wed
+              - thu
+              - fri
 action:
   - service: light.turn_on
     entity_id: light.slaapkamerlamp_da
