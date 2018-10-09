@@ -18,6 +18,13 @@ zeroconf:
 history:
 config:
 
+climate:
+  platform: nefit
+  name: Verwarming
+  serial: !secret nefit_serial
+  accesskey: !secret nefit_access_key
+  password: !secret nefit_password
+
 device_tracker: !include_dir_list device_tracker/
 
 group: !include_dir_named groups/
