@@ -55,7 +55,7 @@ mqtt:
   password: !secret mqtt_password
 
 rfxtrx:
-  device: /dev/ttyUSB0
+  device: /dev/ttyUSB1
 
 tradfri:
   host: !env_var TRADFRI_GATEWAY

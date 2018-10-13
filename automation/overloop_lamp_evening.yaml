@@ -1,0 +1,17 @@
+alias: Overlooplamp 's avonds
+trigger:
+  platform: state
+  entity_id: light.overlooplamp
+  to: 'on'
+condition:
+  - condition: sun
+    before: sunset
+    before_offset: "-01:00:00"
+  - condition: sun
+    before: sunrise
+    before_offset: "-01:00:00"
+action:
+  - service: light.turn_on
+    entity_id: light.overlooplamp
+    data:
+      brightness: 20

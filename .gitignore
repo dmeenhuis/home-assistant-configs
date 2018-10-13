@@ -14,3 +14,4 @@ www
 .HA_VERSION
 .uuid
 .storage/
+__pycache__
