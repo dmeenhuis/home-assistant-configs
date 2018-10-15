@@ -2,7 +2,7 @@
   monitored_conditions:
     - symbol
     - condition
-    - condition_code
+    - conditioncode
     - humidity
     - temperature
     - windspeed
