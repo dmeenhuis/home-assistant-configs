@@ -3,13 +3,16 @@ trigger:
   platform: time
   at: "23:00:00"
 condition:
-  condition: time
-  weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - sun
+  - condition: time
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - sun
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
 action:
   - service: scene.turn_on
     entity_id: scene.alle_lampen_op_begane_grond_uit

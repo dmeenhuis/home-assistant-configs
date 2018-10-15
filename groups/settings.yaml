@@ -1,0 +1,3 @@
+name: Instellingen
+entities:
+  - input_boolean.guest_mode

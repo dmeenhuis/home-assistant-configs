@@ -1,7 +1,6 @@
 - name: Alle lampen uit
   entities:
     switch.woonkamerlamp_rechtsvoor: off
-    switch.tv: off
     light.middenwoonkamerlamp: off
     light.keukenspots: off
     light.hoekwoonkamerlamp_3: off
