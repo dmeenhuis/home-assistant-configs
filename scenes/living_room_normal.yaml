@@ -1,4 +1,4 @@
-- name: Livingroom dim
+- name: Livingroom normal
   entities:
     light.light1:
       state: on
