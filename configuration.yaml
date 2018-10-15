@@ -18,11 +18,11 @@ zeroconf:
 history:
 config:
 
-logger:
-  default: info
-  logs:
-    pydeconz: debug
-    homeassistant.components.deconz: debug
+# logger:
+#   default: info
+#   logs:
+#     pydeconz: debug
+#     homeassistant.components.deconz: debug
 
 climate:
   platform: nefit
