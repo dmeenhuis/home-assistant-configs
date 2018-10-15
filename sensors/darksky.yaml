@@ -1,0 +1,35 @@
+- platform: darksky
+  api_key: !secret darksky_api_key
+  units: si
+  language: nl
+  forecast:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+  monitored_conditions:
+    - summary
+    - minutely_summary
+    - hourly_summary
+    - daily_summary
+    - precip_type
+    - precip_intensity
+    - precip_intensity_max
+    - precip_probability
+    - precip_accumulation
+    - temperature
+    - apparent_temperature
+    - wind_speed
+    - wind_cabineting
+    - cloud_cover
+    - visibility
+    - icon
+    - humidity
+    - pressure
+    - temperature_high
+    - temperature_low
+    - apparent_temperature_high
+    - apparent_temperature_low
+    - ozone
+    - uv_index
