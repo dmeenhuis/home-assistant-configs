@@ -1,0 +1,10 @@
+- name: Livingroom dim
+  entities:
+    light.light1:
+      state: on
+      transition: 2
+      brightness_pct: 10
+    light.hoekwoonkamerlamp_3:
+      state: on
+      transition: 2
+      brightness_pct: 10

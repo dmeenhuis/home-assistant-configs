@@ -4,9 +4,9 @@
     light.middenwoonkamerlamp:
       state: on
       transition: 1800
-      brightness_pct: 80
+      brightness_pct: 60
     light.keukenspots: on
     light.hoekwoonkamerlamp_3:
       state: on
       transition: 1800
-      brightness_pct: 80
+      brightness_pct: 60
