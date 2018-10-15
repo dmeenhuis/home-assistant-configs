@@ -1,0 +1,12 @@
+alias: 'Rain is over'
+trigger:
+  - platform: state
+    entity_id: sensor.precip_intensity
+    to: 'None'
+condition:
+  - condition: sun
+    after: 'sunset'
+    offset: '-01:00:00'
+action:
+  service: scene.turn_off
+  entity_id: scene.regenachtige_dag

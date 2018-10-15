@@ -1,0 +1,8 @@
+- name: Regenachtige dag
+  entities:
+    light.middenwoonkamerlamp:
+      state: on
+      brightness_pct: 60
+    light.hoekwoonkamerlamp_3:
+      state: on
+      brightness_pct: 60
