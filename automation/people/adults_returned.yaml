@@ -1,0 +1,16 @@
+alias: 'Adults returned'
+initial_state: 'on'
+trigger:
+  - platform: state
+    entity_id: input_boolean.person1_home
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.person2_home
+    to: 'on'
+condition:
+  - condition: state
+    entity_id: input_boolean.adults_away
+    state: 'on'
+action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.adults_away

@@ -1,0 +1,6 @@
+- name: Zonsondergang
+  entities:
+    switch.woonkamerlamp_rechtsvoor: on
+    light.middenwoonkamerlamp: on
+    light.keukenspots: on
+    light.hoekwoonkamerlamp_3: on

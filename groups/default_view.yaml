@@ -6,6 +6,7 @@ entities:
   - group.kitchen
   - group.outside
   - group.overloop
+  - group.garage
   - group.bedroom_d_a
   - group.meter_readings
   - group.alarm_clock

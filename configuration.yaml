@@ -18,6 +18,12 @@ zeroconf:
 history:
 config:
 
+logger:
+  default: info
+  logs:
+    pydeconz: debug
+    homeassistant.components.deconz: debug
+
 climate:
   platform: nefit
   name: Verwarming
@@ -31,6 +37,8 @@ group: !include_dir_named groups/
 media_player: !include_dir_merge_list mediaplayers/
 sensor: !include_dir_merge_list sensors/
 switch: !include_dir_merge_list switches/
+light: !include_dir_merge_list light/
+scene: !include_dir_list scenes/
 
 input_boolean: !include_dir_named input_boolean/
 input_datetime: !include_dir_named input_datetime/

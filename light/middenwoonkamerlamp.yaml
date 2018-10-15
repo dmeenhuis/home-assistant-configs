@@ -1,0 +1,6 @@
+- platform: group
+  name: Middenwoonkamerlamp
+  entities:
+    - light.middenwoonkamerlamp_1
+    - light.middenwoonkamerlamp_2
+    - light.middenwoonkamerlamp_3

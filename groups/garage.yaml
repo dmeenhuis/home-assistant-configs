@@ -1,0 +1,4 @@
+name: Garage
+entities:
+  - light.garagelamp
+  - binary_sensor.vpir_beweging_garage

@@ -4,23 +4,5 @@ trigger:
   event: sunset
   offset: "-00:15:00"
 action:
-  - service: switch.turn_on
-    entity_id: switch.woonkamerlamp_linksvoor
-  - service: switch.turn_on
-    entity_id: switch.woonkamerlamp_rechtsvoor
-  - service: switch.turn_on
-    entity_id: switch.woonkamerlamp_midden
-  - service: light.turn_on
-    entity_id: light.hoekwoonkamerlamp
-  - service: light.turn_on
-    entity_id: light.keukenspot_1
-  - service: light.turn_on
-    entity_id: light.keukenspot_2
-  - service: light.turn_on
-    entity_id: light.keukenspot_3
-  - service: light.turn_on
-    entity_id: light.keukenspot_4
-  - service: light.turn_on
-    entity_id: light.keukenspot_5
-  - service: light.turn_on
-    entity_id: light.keukenspot_6
+  - service: scene.turn_on
+    entity_id: scene.zonsondergang

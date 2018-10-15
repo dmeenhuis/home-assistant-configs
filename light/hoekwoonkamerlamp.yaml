@@ -1,0 +1,5 @@
+- platform: group
+  name: Hoekwoonkamerlamp
+  entities:
+    - light.hoekwoonkamerlamp_2
+    - light.hoekwoonkamerlamp_2_2

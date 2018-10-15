@@ -1,0 +1,19 @@
+alias: 'All away lights off during day'
+initial_state: 'on'
+trigger:
+  - platform: state
+    entity_id: input_boolean.adults_away
+    to: 'on'
+    from: 'off'
+condition:
+  condition: and
+  conditions:
+    - condition: state
+      entity_id: input_boolean.lighting_automations
+      state: 'on'
+    - condition: sun
+      after: sunrise
+      before: sunset
+action:
+  - service: scene.turn_on
+    entity_id: scene.all_lights_off
