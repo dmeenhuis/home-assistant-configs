@@ -1,0 +1,10 @@
+- platform: buienradar
+  monitored_conditions:
+    - symbol
+    - condition
+    - condition_code
+    - humidity
+    - temperature
+    - windspeed
+    - pressure
+    - precipitation
