@@ -47,6 +47,8 @@ input_number: !include_dir_named input_number/
 automation: !include automations.yaml
 automation old: !include_dir_list automation/
 
+weather: !include_dir_merge_list weather/
+
 http:
   server_port: 8123
   ssl_certificate: !env_var HTTP_SSL_CERTIFICATE
