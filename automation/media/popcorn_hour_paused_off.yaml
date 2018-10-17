@@ -1,4 +1,4 @@
-alias: "Popcorn Hour playing"
+alias: "Popcorn Hour paused or turned off"
 trigger:
   - platform: mqtt
     topic: popcorn-hour/playback/status
