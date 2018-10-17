@@ -59,7 +59,7 @@ http:
     - 192.168.1.0/24
 
 mqtt:
-  broker: mqtt
+  broker: localhost
   client_id: homeassistant
   username: !secret mqtt_username
   password: !secret mqtt_password
