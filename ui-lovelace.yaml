@@ -1,63 +1,69 @@
-title: "D&A Home"
-# Include external resources
-resources:
-  - url: /local/my-custom-card.js
-    type: js
-  - url: /local/my-webfont.css
-    type: css
-
-# Optional background for all views. Check https://developer.mozilla.org/en-US/docs/Web/CSS/background for more examples.
-background: center / cover no-repeat url("/background.png") fixed
-# Exclude entities from "Unused entities" view
-excluded_entities:
-  - weblink.router
+title: D&A
 views:
-    # View tab title.
-  - title: Example
-    # Optional unique id for direct access /lovelace/${id}
-    id: example
-    # Optional background (overwrites the global background).
-    background: radial-gradient(crimson, skyblue)
-    # Each view can have a different theme applied. Theme should be defined in the frontend.
-    theme: dark-mode
-    # The cards to show on this view.
+  - name: Home
+    tab_icon: mdi:home
     cards:
-        # The filter card will filter entities for their state
-      - type: entity-filter
-        entities:
-          - device_tracker.paulus
-          - device_tracker.anne_there
-        state_filter:
-          - 'home'
-        card:
-          type: glance
-          title: People that are home
-
-        # The picture entity card will represent an entity with a picture
-      - type: picture-entity
-        image: https://www.home-assistant.io/images/default-social.png
-        entity: light.bed_light
-
-    # Specify a tab icon if you want the view tab to be an icon.
-  - icon: mdi:home-assistant
-    # Title of the view. Will be used as the tooltip for tab icon
-    title: Second view
-    cards:
-        # Entities card will take a list of entities and show their state.
       - type: entities
-        # Title of the entities card
-        title: Example
-        # The entities here will be shown in the same order as specified.
-        # Each entry is an entity ID or a map with extra options.
+        title: Woonkamer
         entities:
-          - light.kitchen
-          - switch.ac
-          - entity: light.living_room
-            # Override the name to use
-            name: LR Lights
-
-        # The markdown card will render markdown text.
-      - type: markdown
-        title: Lovelace
-        content: >
-          Welcome to your **Lovelace UI**.
+          - light.hoekwoonkamerlamp_3
+          - light.middenwoonkamerlamp
+          - switch.woonkamerlamp_rechtsvoor
+          - switch.tv
+      - type: entities
+        title: Keuken
+        entities:
+          - light.keukenspots
+      - type: entities
+        title: Buiten
+        entities:
+          - light.buitenlamp_voordeur
+          - switch.voordeurschakelaar
+      - type: entities
+        title: Overloop
+        entities:
+          - light.overlooplamp_2
+          - binary_sensor.motion_sensor_overloop
+      - type: entities
+        title: Garage
+        entities:
+          - light.garagelamp
+          - binary_sensor.vpir_beweging_garage
+      - type: entities
+        title: Slaapkamer D&A
+        entities:
+          - light.slaapkamerlamp_da
+      - type: entities
+        title: Meterstanden
+        entities:
+          - sensor.power_consumption
+          - sensor.power_production
+          - sensor.hourly_gas_consumption
+          - sensor.power_consumption_low
+          - sensor.power_consumption_normal
+          - sensor.power_production_low
+          - sensor.power_production_normal
+          - sensor.gas_consumption
+      - type: entities
+        title: Wake-up lights
+        entities:
+          - input_datetime.wakeup_time
+          - input_number.wakeup_turn_off_after
+          - input_boolean.wakeup_enabled
+          - input_boolean.wakeup_weekend
+      - type: entities
+        title: Instellingen
+        entities:
+          - input_boolean.guest_mode
+      - type: media-control
+        entity: media_player.das_chromecast
+      - type: media-control
+        entity: media_player.denon_avrx1300w
+  - name: All Entities
+    tab_icon: mdi:settings
+    cards:
+      - type: entity-filter
+        filter:
+          - {}
+        card_config:
+          title: All Entities
