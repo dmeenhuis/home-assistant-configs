@@ -1,14 +1,10 @@
-alias: "Media player on"
+alias: "Media player playing"
 trigger:
-  - platform: state
-    entity_id: media_player.denon_avrx1300w
-    to: 'on'
-    from: 'off'
-  - platform: state
-    entity_id: media_player.das_chromecast
-    to: 'on'
-    from: 'off'
+  - platform: mqtt
+    topic: popcorn-hour/playback/status
 condition:
+  - condition: template
+    value_template: '{{ trigger.payload_json.val == "play" }}'
   - condition: state
     entity_id: sun.sun
     state: 'below_horizon'

@@ -1,13 +1,12 @@
-alias: "Media player off"
+alias: "Media player paused or turned off"
 trigger:
   - platform: state
-    entity_id: media_player.denon_avrx1300w
-    to: 'off'
-    from: 'on'
+    entity_id: media_player.das_chromecast
+    to: 'paused'
+    from: 'playing'
   - platform: state
     entity_id: media_player.das_chromecast
     to: 'off'
-    from: 'on'
 condition:
   - condition: state
     entity_id: sun.sun
