@@ -1,4 +1,4 @@
-alias: "Media player paused or turned off"
+alias: "Chromecast paused or turned off"
 trigger:
   - platform: state
     entity_id: media_player.das_chromecast

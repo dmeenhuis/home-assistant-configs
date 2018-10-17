@@ -1,4 +1,4 @@
-alias: "Media player playing"
+alias: "Chromecast playing"
 trigger:
   - platform: state
     entity_id: media_player.das_chromecast

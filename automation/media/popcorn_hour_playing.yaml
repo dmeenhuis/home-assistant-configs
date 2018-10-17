@@ -1,10 +1,10 @@
-alias: "Media player playing"
+alias: "Popcorn Hour playing"
 trigger:
   - platform: mqtt
     topic: popcorn-hour/playback/status
 condition:
   - condition: template
-    value_template: '{{ value_json.val == "play" }}'
+    value_template: '{{ trigger.payload_json.val == "play" }}'
   - condition: state
     entity_id: sun.sun
     state: 'below_horizon'
