@@ -9,8 +9,8 @@ condition:
       after: sunset
       after_offset: "0:30:00"
     - condition: sun
-      after: sunrise
-      after_offset: "0:10:00"
+      before: sunrise
+      before_offset: "-0:30:00"
 action:
   service: light.turn_on
   entity_id: light.buitenlamp_voordeur
