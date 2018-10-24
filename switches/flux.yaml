@@ -1,6 +1,5 @@
-switch:
-  - platform: flux
-    lights:
-      - light.woonkamerlamp_linksvoor
-      - light.garagelamp
-      - light.overloop
+- platform: flux
+  lights:
+    - light.woonkamerlamp_linksvoor
+    - light.garagelamp
+    - light.overloop
