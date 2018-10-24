@@ -12,5 +12,5 @@
       brightness_pct: 60
     light.woonkamerlamp_linksvoor:
       state: on
-      transition: 1800:
+      transition: 1800
       brightness_pct: 60
