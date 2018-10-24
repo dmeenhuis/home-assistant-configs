@@ -7,6 +7,10 @@ homeassistant:
   temperature_unit: C
   time_zone: Europe/Amsterdam
   customize: !include customize.yaml
+  auth_providers:
+    - type: homeassistant
+    - type: legacy_api_password
+    - type: trusted_networks
 
 discovery:
 sun:
@@ -53,6 +57,7 @@ http:
   server_port: 8123
   ssl_certificate: !env_var HTTP_SSL_CERTIFICATE
   ssl_key: !env_var HTTP_SSL_KEY
+  api_password: !secret homeassistant_api_password  
   base_url: !env_var HTTP_BASE_URL
   trusted_networks:
     - 127.0.0.1
