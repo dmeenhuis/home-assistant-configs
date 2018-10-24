@@ -20,10 +20,7 @@
     - precip_accumulation
     - temperature
     - apparent_temperature
-    - wind_speed
-    - wind_bearing
     - cloud_cover
-    - dew_point
     - visibility
     - icon
     - humidity
@@ -32,6 +29,5 @@
     - temperature_low
     - apparent_temperature_high
     - apparent_temperature_low
-    - ozone
     - uv_index
     - moon_phase
