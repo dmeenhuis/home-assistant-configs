@@ -1,3 +1,5 @@
+light.yeelight_rgb_7c49eb187786:
+  friendly_name: Linkerwoonkamerlamp
 group.all_lights:
   hidden: false
   friendly_name: Verlichting
