@@ -1,7 +1,7 @@
 alias: 'Rain is over'
 trigger:
   - platform: state
-    entity_id: sensor.dark_sky_precip_intensity
+    entity_id: sensor.dark_sky_precip
     to: 'None'
 condition:
   - condition: sun
