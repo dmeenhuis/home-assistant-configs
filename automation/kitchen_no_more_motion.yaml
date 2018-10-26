@@ -4,7 +4,7 @@ trigger:
   entity_id: binary_sensor.presence_11
   to: 'off'
   for:
-    minutes: 10
+    minutes: 5
 action:
   service: light.turn_off
   entity_id: light.keukenspots
