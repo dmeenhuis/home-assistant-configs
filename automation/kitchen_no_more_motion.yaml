@@ -1,0 +1,10 @@
+alias: Turn off kitchen lights x minutes after last movement
+trigger:
+  platform: state
+  entity_id: binary_sensor.presence_11
+  to: 'off'
+  for:
+    minutes: 10
+action:
+  service: light.turn_off
+  entity_id: light.keukenspots
