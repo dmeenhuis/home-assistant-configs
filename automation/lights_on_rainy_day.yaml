@@ -1,7 +1,7 @@
 alias: 'Turn on some lights on rainy days'
 trigger:
   - platform: state
-    entity_id: sensor.dark_sky_precip_intensity
+    entity_id: sensor.dark_sky_precip
     to: 'rain'
 condition:
   - condition: state
