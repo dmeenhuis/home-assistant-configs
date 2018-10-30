@@ -1,6 +1,5 @@
 - name: "'s avonds weg"
   entities:
-    switch.woonkamerlamp_rechtsvoor: on
     switch.tv: off
     light.middenwoonkamerlamp: off
     light.keukenspots: off
@@ -9,3 +8,4 @@
     light.overlooplamp_2: off
     light.slaapkamerlamp_da: off
     light.woonkamerlamp_linksvoor: on
+    light.woonkamerlamp_rechtsvoor: on

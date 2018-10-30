@@ -11,4 +11,8 @@
     light.woonkamerlamp_linksvoor:
       state: on
       transition: 2
-      brightness_pct: 60
+      brightness_pct: 80
+    light.woonkamerlamp_rechtsvoor:
+      state: on
+      transition: 2
+      brightness_pct: 80

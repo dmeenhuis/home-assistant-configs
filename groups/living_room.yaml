@@ -3,5 +3,5 @@ entities:
   - light.hoekwoonkamerlamp_3
   - light.middenwoonkamerlamp
   - light.woonkamerlamp_linksvoor
-  - switch.rechtsvoor
+  - light.woonkamerlamp_rechtsvoor
   - switch.tv

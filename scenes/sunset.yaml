@@ -1,6 +1,5 @@
 - name: Zonsondergang
   entities:
-    switch.woonkamerlamp_rechtsvoor: on
     light.middenwoonkamerlamp:
       state: on
       transition: 1800
@@ -13,4 +12,8 @@
     light.woonkamerlamp_linksvoor:
       state: on
       transition: 1800
-      brightness_pct: 60
+      brightness_pct: 80
+    light.woonkamerlamp_rechtsvoor:
+      state: on
+      transition: 1800
+      brightness_pct: 80
