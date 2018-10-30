@@ -9,6 +9,8 @@ group.all_automations:
   friendly_name: Automations
 binary_sensor.presence_11:
   friendly_name: Bewegingssensor keuken
+binary_sensor.presence_12:
+  friendly_name: Bewegingssensor toilet
 sensor.power_consumption:
   hidden: false
 sensor.voltage_sags_phase_l1:
