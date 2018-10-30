@@ -2,3 +2,5 @@
   devices:
     192.168.1.86:
       name: Woonkamerlamp linksvoor
+    192.168.1.133:
+      name: Woonkamerlamp rechtsvoor
