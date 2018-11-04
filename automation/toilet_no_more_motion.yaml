@@ -1,0 +1,10 @@
+alias: Turn off toilet light x minutes after last movement
+trigger:
+  platform: state
+  entity_id: binary_sensor.presence_12
+  to: 'off'
+  for:
+    minutes: 2
+action:
+  service: light.turn_off
+  entity_id: light.toilet
