@@ -1,8 +1,8 @@
-alias: Verlichting aan na zonsondergang
-trigger:
-  platform: sun
-  event: sunset
-  offset: "-00:15:00"
-action:
-  - service: scene.turn_on
-    entity_id: scene.zonsondergang
+- alias: Verlichting aan na zonsondergang
+  trigger:
+    platform: sun
+    event: sunset
+    offset: "-00:15:00"
+  action:
+    - service: scene.turn_on
+      entity_id: scene.zonsondergang

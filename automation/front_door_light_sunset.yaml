@@ -1,8 +1,8 @@
-alias: Voordeurlamp aan na zonsondergang
-trigger:
-  platform: sun
-  event: sunset
-  offset: "0:30:00"
-action:
-  service: light.turn_on
-  entity_id: light.buitenlamp_voordeur
+- alias: Voordeurlamp aan na zonsondergang
+  trigger:
+    platform: sun
+    event: sunset
+    offset: "0:30:00"
+  action:
+    service: light.turn_on
+    entity_id: light.buitenlamp_voordeur

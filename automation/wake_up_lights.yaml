@@ -1,37 +1,37 @@
-alias: "Wake me up with bedroom light transition for weekdays"
-trigger:
-  platform: template
-  value_template: "{{ states('sensor.time') == (states.input_datetime.wakeup_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
-condition:
-  - condition: state
-    entity_id: input_boolean.wakeup_enabled
-    state: 'on'
-  - condition: and
-    conditions:
-      - condition: or
-        conditions:
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: input_boolean.wakeup_weekend
-                state: 'on'
-              - condition: time
-                weekday:
-                  - sat
-                  - sun
-          - condition: time
-            weekday:
-              - tue
-              - wed
-              - thu
-              - fri
-action:
-  #- service: light.turn_on
-  #  entity_id: light.slaapkamerlamp_da
-  #  data:
-  #    brightness: 1
-  - service: light.turn_on
-    entity_id: light.slaapkamerlamp_da
-    data:
-      transition: 600
-      brightness: 255
+- alias: "Wake me up with bedroom light transition for weekdays"
+  trigger:
+    platform: template
+    value_template: "{{ states('sensor.time') == (states.input_datetime.wakeup_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+  condition:
+    - condition: state
+      entity_id: input_boolean.wakeup_enabled
+      state: 'on'
+    - condition: and
+      conditions:
+        - condition: or
+          conditions:
+            - condition: and
+              conditions:
+                - condition: state
+                  entity_id: input_boolean.wakeup_weekend
+                  state: 'on'
+                - condition: time
+                  weekday:
+                    - sat
+                    - sun
+            - condition: time
+              weekday:
+                - tue
+                - wed
+                - thu
+                - fri
+  action:
+    #- service: light.turn_on
+    #  entity_id: light.slaapkamerlamp_da
+    #  data:
+    #    brightness: 1
+    - service: light.turn_on
+      entity_id: light.slaapkamerlamp_da
+      data:
+        transition: 600
+        brightness: 255

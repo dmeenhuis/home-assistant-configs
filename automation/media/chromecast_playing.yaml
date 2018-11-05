@@ -1,18 +1,18 @@
-alias: "Chromecast playing"
-trigger:
-  - platform: state
-    entity_id: media_player.das_chromecast
-    to: 'playing'
-condition:
-  - condition: state
-    entity_id: sun.sun
-    state: 'below_horizon'
-  - condition: state
-    entity_id: input_boolean.lighting_automations
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.adults_away
-    state: 'off'
-action:
-    service: scene.turn_on
-    entity_id: scene.livingroom_dim
+- alias: "Chromecast playing"
+  trigger:
+    - platform: state
+      entity_id: media_player.das_chromecast
+      to: 'playing'
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: 'below_horizon'
+    - condition: state
+      entity_id: input_boolean.lighting_automations
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.adults_away
+      state: 'off'
+  action:
+      service: scene.turn_on
+      entity_id: scene.livingroom_dim

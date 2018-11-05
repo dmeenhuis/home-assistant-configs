@@ -1,19 +1,19 @@
-alias: "Popcorn Hour playing"
-trigger:
-  - platform: mqtt
-    topic: popcorn-hour/playback/status
-condition:
-  - condition: template
-    value_template: '{{ trigger.payload_json.val == "play" }}'
-  - condition: state
-    entity_id: sun.sun
-    state: 'below_horizon'
-  - condition: state
-    entity_id: input_boolean.lighting_automations
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.adults_away
-    state: 'off'
-action:
-    service: scene.turn_on
-    entity_id: scene.livingroom_dim
+- alias: "Popcorn Hour playing"
+  trigger:
+    - platform: mqtt
+      topic: popcorn-hour/playback/status
+  condition:
+    - condition: template
+      value_template: '{{ trigger.payload_json.val == "play" }}'
+    - condition: state
+      entity_id: sun.sun
+      state: 'below_horizon'
+    - condition: state
+      entity_id: input_boolean.lighting_automations
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.adults_away
+      state: 'off'
+  action:
+      service: scene.turn_on
+      entity_id: scene.livingroom_dim
