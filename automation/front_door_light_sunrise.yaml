@@ -1,8 +1,0 @@
-- alias: Voordeurlamp uit na zonsopkomst
-  trigger:
-    platform: sun
-    event: sunrise
-    offset: "+0:30:00"
-  action:
-    service: light.turn_off
-    entity_id: light.buitenlamp_voordeur

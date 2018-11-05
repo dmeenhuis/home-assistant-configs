@@ -35,3 +35,17 @@
       data:
         transition: 600
         brightness: 255
+- alias: "Turn off wake-up lights after set duration"
+  trigger:
+    platform: template
+    value_template: "{{ states('sensor.time') == (((states.input_datetime.wakeup_time.attributes.timestamp | int) + (states('input_number.wakeup_turn_off_after') | int) * 60) | timestamp_custom('%H:%M', False)) }}"
+  condition:
+    - condition: state
+      entity_id: light.slaapkamerlamp_da
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.wakeup_enabled
+      state: 'on'
+  action:
+    service: light.turn_off
+    entity_id: light.slaapkamerlamp_da
