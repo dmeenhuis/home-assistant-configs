@@ -49,7 +49,7 @@ input_datetime: !include_dir_named input_datetime/
 input_number: !include_dir_named input_number/
 
 automation: !include automations.yaml
-automation old: !include_dir_list automation/
+automation old: !include_dir_merge_list automation/
 
 weather: !include_dir_merge_list weather/
 
