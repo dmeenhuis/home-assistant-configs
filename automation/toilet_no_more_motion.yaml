@@ -7,4 +7,4 @@ trigger:
     minutes: 2
 action:
   service: light.turn_off
-  entity_id: light.toilet
+  entity_id: light.toiletlamp
