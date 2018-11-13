@@ -1,0 +1,6 @@
+name: Configuration
+view: yes
+icon: mdi:settings
+entities:
+  - group.alarm_clock
+  - group.settings

@@ -10,8 +10,6 @@ entities:
   - group.toilet
   - group.bedroom_d_a
   - group.meter_readings
-  - group.alarm_clock
-  - group.settings
   - media_player.das_chromecast
   - media_player.denon_avrx1300w
   - device_tracker.iphone
