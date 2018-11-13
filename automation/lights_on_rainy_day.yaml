@@ -1,8 +1,8 @@
 - alias: 'Turn on some lights on rainy days'
   trigger:
     - platform: state
-      entity_id: sensor.dark_sky_precip
-      to: 'rain'
+      entity_id: sensor.br_condition
+      to: 'rainy'
   condition:
     - condition: state
       entity_id: input_boolean.adults_away
@@ -17,8 +17,8 @@
 - alias: 'Rain is over'
   trigger:
     - platform: state
-      entity_id: sensor.dark_sky_precip
-      to: 'None'
+      entity_id: sensor.br_condition
+      from: 'rainy'
   condition:
     - condition: sun
       before: sunset
