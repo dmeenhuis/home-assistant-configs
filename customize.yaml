@@ -14,7 +14,7 @@ binary_sensor.presence_12:
 binary_sensor.presence_13:
   friendly_name: Bewegingssensor Jesper
 binary_sensor.presence_3:
-  friendly_name: Bewegingssensor badkamer
+  friendly_name: Bewegingssensor keuken
 binary_sensor.presence_8:
   friendly_name: Bewegingssensor Jurjen
 sensor.power_consumption:
