@@ -28,12 +28,12 @@ config:
 #     pydeconz: debug
 #     homeassistant.components.deconz: debug
 
-climate:
-  platform: nefit
-  name: Verwarming
-  serial: !secret nefit_serial
-  accesskey: !secret nefit_access_key
-  password: !secret nefit_password
+# climate:
+#   platform: nefit
+#   name: Verwarming
+#   serial: !secret nefit_serial
+#   accesskey: !secret nefit_access_key
+#   password: !secret nefit_password
 
 device_tracker: !include_dir_list device_tracker/
 
