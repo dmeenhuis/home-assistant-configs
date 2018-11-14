@@ -11,6 +11,12 @@ binary_sensor.presence_11:
   friendly_name: Bewegingssensor keuken
 binary_sensor.presence_12:
   friendly_name: Bewegingssensor toilet
+binary_sensor.presence_13:
+  friendly_name: Bewegingssensor Jesper
+binary_sensor.presence_3:
+  friendly_name: Bewegingssensor badkamer
+binary_sensor.presence_8:
+  friendly_name: Bewegingssensor Jurjen
 sensor.power_consumption:
   hidden: false
 sensor.voltage_sags_phase_l1:
