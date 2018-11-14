@@ -8,7 +8,7 @@ group.all_automations:
   hidden: false
   friendly_name: Automations
 binary_sensor.presence_11:
-  friendly_name: Bewegingssensor keuken
+  friendly_name: Bewegingssensor badkamer
 binary_sensor.presence_12:
   friendly_name: Bewegingssensor toilet
 binary_sensor.presence_13:
