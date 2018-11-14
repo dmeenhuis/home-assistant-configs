@@ -1,0 +1,4 @@
+name: Slaapkamer Jurjen
+entities:
+  - light.slaapkamer_jurjen
+  - binary_sensor.presence_8

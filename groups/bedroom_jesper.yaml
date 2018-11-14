@@ -1,0 +1,4 @@
+name: Slaapkamer Jesper
+entities:
+  - light.slaapkamer_jesper
+  - binary_sensor.presence_13

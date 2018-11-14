@@ -8,7 +8,10 @@ entities:
   - group.overloop
   - group.garage
   - group.toilet
+  - group.bathroom
   - group.bedroom_d_a
+  - group.bedroom_jurjen
+  - group.bedroom_jesper
   - group.meter_readings
   - media_player.das_chromecast
   - media_player.denon_avrx1300w

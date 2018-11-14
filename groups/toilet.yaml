@@ -1,3 +1,4 @@
 name: Toilet
 entities:
   - light.toiletlamp
+  - binary_sensor.presence_12

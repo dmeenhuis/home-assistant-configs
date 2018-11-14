@@ -1,0 +1,4 @@
+name: Badkamer
+entities:
+  - light.badkamerlamp
+  - binary_sensor.presence_3
