@@ -12,7 +12,7 @@
     entity_id: binary_sensor.presence_3
     to: 'off'
     for:
-      minutes: 1
+      minutes: 5
   action:
     service: light.turn_off
     entity_id: light.keukenspots
