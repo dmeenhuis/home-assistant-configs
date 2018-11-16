@@ -16,4 +16,4 @@
       before: sunrise
   action:
     - service: scene.turn_on
-      entity_id: scene.away_evening
+      entity_id: scene.s_avonds_weg

@@ -12,4 +12,4 @@
       before: sunset
   action:
     - service: scene.turn_on
-      entity_id: scene.all_lights_off
+      entity_id: scene.alle_lampen_uit
