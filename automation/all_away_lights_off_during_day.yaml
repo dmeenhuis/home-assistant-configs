@@ -8,6 +8,9 @@
     - condition: state
       entity_id: input_boolean.lighting_automations
       state: 'on'
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
     - condition: sun
       before: sunset
   action:
