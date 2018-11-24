@@ -1,0 +1,18 @@
+- alias: Turn on lights when there is motion in Jespers bedroom
+  trigger:
+    platform: state
+    entity_id: binary_sensor.presence_13
+    to: 'on'
+  action:
+    service: light.turn_on
+    entity_id: light.slaapkamer_jesper
+- alias: Turn off lights x minutes after last movement in Jespers bedroom
+  trigger:
+    platform: state
+    entity_id: binary_sensor.presence_13
+    to: 'off'
+    for:
+      minutes: 5
+  action:
+    service: light.turn_off
+    entity_id: light.slaapkamer_jesper
