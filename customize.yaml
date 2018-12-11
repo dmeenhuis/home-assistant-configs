@@ -19,6 +19,8 @@ binary_sensor.presence_8:
   friendly_name: Bewegingssensor Jurjen
 binary_sensor.motion_sensor_overloop:
   friendly_name: Bewegingssensor overloop
+binary_sensor.tradfri_motion_sensor_garage:
+  friendly_name: Bewegingssensor garage
 sensor.power_consumption:
   hidden: false
 sensor.voltage_sags_phase_l1:
