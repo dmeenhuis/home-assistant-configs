@@ -1,4 +1,4 @@
 name: Overloop
 entities:
   - light.overloop
-  - binary_sensor.bewegingssensor_overloop
+  - binary_sensor.motion_sensor_overloop
