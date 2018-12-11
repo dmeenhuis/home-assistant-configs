@@ -1,11 +1,11 @@
 - name: Zonsondergang
   entities:
-    light.middenwoonkamerlamp:
+    light.middenwoonkamerlamp_4:
       state: on
       transition: 1800
       brightness_pct: 60
     light.keukenspots: on
-    light.hoekwoonkamerlamp_3:
+    light.hoekwoonkamerlamp_4:
       state: on
       transition: 1800
       brightness_pct: 60

@@ -1,9 +1,9 @@
 - name: Alle lampen op begane grond uit
   entities:
     switch.tv: off
-    light.middenwoonkamerlamp: off
+    light.middenwoonkamerlamp_4: off
     light.keukenspots: off
-    light.hoekwoonkamerlamp_3: off
+    light.hoekwoonkamerlamp_4: off
     light.garagelamp: off
     light.woonkamerlamp_linksvoor: off
     light.woonkamerlamp_rechtsvoor: off

@@ -2,11 +2,11 @@
   entities:
     light.middenwoonkamerlamp: off
     light.keukenspots: off
-    light.hoekwoonkamerlamp_3: off
+    light.hoekwoonkamerlamp_4: off
     light.garagelamp: off
-    light.overlooplamp_2: off
+    light.overlooplamp: off
     light.slaapkamerlamp_da: off
-    light.buitenlamp_voordeur: off
+    light.voordeurlamp: off
     light.woonkamerlamp_linksvoor: off
     light.woonkamerlamp_rechtsvoor: off
     light.slaapkamer_jesper: off
