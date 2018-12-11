@@ -1,7 +1,7 @@
 - alias: Turn on garage lights when there is motion
   trigger:
     platform: state
-    entity_id: binary_sensor.tradfri_motion_sensor_garage
+    entity_id: binary_sensor.bewegingssensor_garage
     to: 'on'
   action:
     service: light.turn_on
@@ -9,7 +9,7 @@
 - alias: Turn off garage lights x minutes after last movement
   trigger:
     platform: state
-    entity_id: binary_sensor.tradfri_motion_sensor_garage
+    entity_id: binary_sensor.bewegingssensor_garage
     to: 'off'
     for:
       minutes: 5

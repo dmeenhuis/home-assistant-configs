@@ -1,7 +1,7 @@
 - alias: Turn on overloop lights when there is motion
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_overloop
+    entity_id: binary_sensor.bewegingssensor_overloop
     to: 'on'
   action:
     service: light.turn_on
@@ -9,7 +9,7 @@
 - alias: Turn off overloop lights x minutes after last movement
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_overloop
+    entity_id: binary_sensor.bewegingssensor_overloop
     to: 'off'
     for:
       minutes: 5
