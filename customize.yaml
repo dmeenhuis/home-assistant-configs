@@ -17,6 +17,8 @@ binary_sensor.presence_3:
   friendly_name: Bewegingssensor keuken
 binary_sensor.presence_8:
   friendly_name: Bewegingssensor Jurjen
+binary_sensor.motion_sensor_overloop:
+  friendly_name: Bewegingssensor overloop
 sensor.power_consumption:
   hidden: false
 sensor.voltage_sags_phase_l1:
