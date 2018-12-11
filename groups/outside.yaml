@@ -1,4 +1,3 @@
 name: Buiten
 entities:
-  - light.buitenlamp_voordeur
-  - switch.voordeurschakelaar
+  - light.voordeurlamp

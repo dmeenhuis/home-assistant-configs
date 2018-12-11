@@ -1,7 +1,7 @@
 name: Woonkamer
 entities:
-  - light.hoekwoonkamerlamp_3
-  - light.middenwoonkamerlamp
+  - light.hoekwoonkamerlamp_4
+  - light.middenwoonkamerlamp_4
   - light.woonkamerlamp_linksvoor
   - light.woonkamerlamp_rechtsvoor
   - switch.tv
