@@ -15,7 +15,7 @@ entities:
   - group.meter_readings
   - media_player.das_chromecast
   - media_player.denon_avrx1300w
-  - media_player.kodi
+  - media_player.kodi_media_player
   - device_tracker.iphone
   - device_tracker.nexus_5x
   - sun.sun
