@@ -1,0 +1,4 @@
+- platform: kodi
+  host: 192.168.1.95
+  name: Kodi Media Player
+  username: kodi
