@@ -5,3 +5,4 @@ entities:
   - light.woonkamerlamp_linksvoor
   - light.woonkamerlamp_rechtsvoor
   - switch.tv
+  - switch.schakelaar_kerstboom
