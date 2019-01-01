@@ -3,6 +3,7 @@ view: yes
 icon: mdi:home
 entities:
   - group.living_room
+  - group.media
   - group.kitchen
   - group.outside
   - group.overloop
@@ -12,10 +13,8 @@ entities:
   - group.bedroom_d_a
   - group.bedroom_jurjen
   - group.bedroom_jesper
+  - group.sensors
   - group.meter_readings
-  - media_player.das_chromecast
-  - media_player.denon_avrx1300w
-  - media_player.kodi_media_player
   - device_tracker.iphone
   - device_tracker.nexus_5x
   - sun.sun

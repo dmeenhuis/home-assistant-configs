@@ -1,4 +1,3 @@
 name: Garage
 entities:
   - light.garagelamp
-  - binary_sensor.bewegingssensor_garage

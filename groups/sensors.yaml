@@ -1,0 +1,9 @@
+name: Sensors
+entities:
+  - binary_sensor.presence_3                # Keuken
+  - binary_sensor.presence_13               # Slaapkamer Jesper
+  - binary_sensor.presence_8                # Slaapkamer Jurjen
+  - binary_sensor.presence_11               # Badkamer
+  - binary_sensor.bewegingssensor_garage    # Garage
+
+

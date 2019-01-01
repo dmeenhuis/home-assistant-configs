@@ -1,4 +1,3 @@
 name: Keuken
 entities:
   - light.keukenspots
-  - binary_sensor.presence_3

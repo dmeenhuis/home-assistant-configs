@@ -1,9 +1,8 @@
 - name: Alle lampen uit
   entities:
-    light.middenwoonkamerlamp: off
-    light.keukenspots: off
-    light.hoekwoonkamerlamp_4: off
-    light.garagelamp: off
+    group.woonkamer: off
+    group.garage: off
+    
     light.overlooplamp: off
     light.slaapkamerlamp_da: off
     light.voordeurlamp: off
