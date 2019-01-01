@@ -1,7 +1,7 @@
-- alias: "Chromecast playing"
+- alias: "Kodi playing"
   trigger:
     - platform: state
-      entity_id: media_player.das_chromecast
+      entity_id: media_player.kodi_media_player
       to: 'playing'
   condition:
     - condition: state
@@ -16,18 +16,18 @@
   action:
       service: scene.turn_on
       entity_id: scene.livingroom_dim
-- alias: "Chromecast paused or turned off"
+- alias: "Kodi paused or turned off"
   trigger:
     - platform: state
-      entity_id: media_player.das_chromecast
+      entity_id: media_player.kodi_media_player
       to: 'paused'
       from: 'playing'
     - platform: state
-      entity_id: media_player.das_chromecast
+      entity_id: media_player.kodi_media_player
       to: 'off'
       from: 'playing'
     - platform: state
-      entity_id: media_player.das_chromecast
+      entity_id: media_player.kodi_media_player
       to: 'off'
       from: 'paused'
   condition:
