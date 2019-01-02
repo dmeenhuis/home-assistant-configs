@@ -6,6 +6,12 @@
   action:
     service: light.turn_on
     entity_id: light.overloop
+    data_template:
+      brightness_pct: >
+        {% if now().hour >= 22 and now().hour <= 23 %}25
+        {% elif now().hour < 6 %}1
+        {% else %}100
+        {% endif %}
 - alias: Turn off overloop lights x minutes after last movement
   trigger:
     platform: state
