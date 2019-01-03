@@ -1,0 +1,17 @@
+- alias: Update last motion
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bewegingssensor_garage, binary_sensor.bewegingssensor_overloop, binary_sensor.presence_11, binary_sensor.presence_12, binary_sensor.presence_3
+      to: 'on'
+  action:
+    - service: variable.set_variable
+      data:
+        variable: last_motion
+        attributes_template: >
+           {
+              "history_1": "{{ variable.state }}",
+              "history_2": "{{ variable.attributes.history_1 }}",
+              "history_3": "{{ variable.attributes.history_2 }}"
+            }
+      data_template:
+        value: "{{ trigger.to_state.attributes.friendly_name }}"
