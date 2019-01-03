@@ -3,12 +3,16 @@
     platform: state
     entity_id: binary_sensor.bewegingssensor_overloop
     to: 'on'
+  condition:
+    - condition: state
+      entity_id: sensor.period_of_day
+      value_template: "{{ states.sensor.period_of_day.state != 'day' }}"
   action:
     service: light.turn_on
     entity_id: light.overloop
     data_template:
       brightness_pct: >
-        {% if now().hour >= 22 and now().hour <= 23 %}25
+        {% if now().hour >= 22 and now().hour <= 23 %}10
         {% elif now().hour < 6 %}1
         {% else %}100
         {% endif %}
