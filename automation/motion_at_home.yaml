@@ -1,0 +1,14 @@
+- platform: template
+  sensors:
+    motion_at_home:
+      value_template: >-
+        {%- if is_state("binary_sensor.bewegingssensor_garage", "on")
+        or is_state("binary_sensor.bewegingssensor_overloop", "on")
+        or is_state("binary_sensor.presence_11", "on")
+        or is_state("binary_sensor.presence_12", "on")
+        or is_state("binary_sensor.presence_3", "on")
+        -%}
+        True
+        {%- else -%}
+        False
+        {%- endif %}
