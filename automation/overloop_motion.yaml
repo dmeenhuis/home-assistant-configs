@@ -4,8 +4,7 @@
     entity_id: binary_sensor.bewegingssensor_overloop
     to: 'on'
   condition:
-    - condition: state
-      entity_id: sensor.period_of_day
+    - condition: template
       value_template: "{{ states.sensor.period_of_day.state != 'day' }}"
   action:
     service: light.turn_on
