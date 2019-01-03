@@ -2,5 +2,5 @@
   sensors:
     late_night:
       value_template: >-
-        {{ strptime("22:00", "%H%M") < now().strftime("%H:%M")
+        {{ strptime("23:00", "%H%M") < now().strftime("%H:%M")
             or now().strftime("%H:%M") < strptime("05:30", "%H%M") }}
