@@ -2,5 +2,10 @@
   sensors:
     late_night:
       value_template: >-
-        {{ strptime("23:00", "%H%M") < now().strftime("%H:%M")
-            or now().strftime("%H:%M") < strptime("05:30", "%H%M") }}
+        {%- if now().isoweekday() >= 0 and now().isoweekday() < 5 -%}
+          {{ strptime("23:00", "%H%M") < now().strftime("%H:%M")
+              or now().strftime("%H:%M") < strptime("05:30", "%H%M") }}
+        {%- else -%}
+          {{ strptime("01:00", "%H%M") < now().strftime("%H:%M")
+              or now().strftime("%H:%M") < strptime("07:00", "%H%M") }}
+        {%- endif %}
