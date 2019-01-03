@@ -1,0 +1,27 @@
+- platform: bayesian
+  prior: 0.25
+  name: 'Bayesian sleeping'
+  probability_threshold: 0.85
+  observations:
+    - entity_id: input_boolean.person1_home
+      prob_given_true: 0.99
+      prob_given_false: 0.5
+      platform: state
+      to_state: 'on'
+    - entity_id: 'input_boolean.house_idle'
+      prob_given_true: 0.6
+      platform: 'state'
+      to_state: 'on'
+    - entity_id: binary_sensor.late_night
+      prob_given_true: 0.8
+      platform: 'state'
+      to_state: 'on'
+    - entity_id: media_player.denon_avrx1300w
+      prob_given_true: 0.1
+      platform: state
+      to_state: 'on'
+    - entity_id: 'variable.last_motion'
+      prob_given_true: 0.9
+      prob_given_false: 0.3
+      platform: state
+      to_state: 'Bewegingssensor badkamer'
