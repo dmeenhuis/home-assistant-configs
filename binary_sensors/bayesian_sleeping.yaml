@@ -17,7 +17,7 @@
       platform: 'state'
       to_state: 'on'
     - entity_id: media_player.denon_avrx1300w
-      prob_given_false: 0.3
+      prob_given_true: 0.6
       platform: state
       to_state: 'off'
     - entity_id: 'variable.last_motion'
