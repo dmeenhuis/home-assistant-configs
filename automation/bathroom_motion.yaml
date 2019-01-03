@@ -16,10 +16,6 @@
         {% if now().hour >= 22 and now().hour <= 6 %}[255, 153, 0]
         {% else %}[ 255, 183, 123]
         {% endif %}
-      color_temp: >
-        {% if now().hour >= 22 and now().hour <= 6 %}588
-        {% else %}312
-        {% endif %}
 - alias: Turn off bathroom light x minutes after last movement
   trigger:
     platform: state
