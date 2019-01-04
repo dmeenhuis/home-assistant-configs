@@ -12,7 +12,7 @@
           ) or (
             (now().isoweekday() >= 5 and now().isoweekday() <= 6)
             and (
-              now().strftime("%H:%M") > strptime("01:00", "%H%M")
+              now().strftime("%H:%M") > strptime("00:00", "%H%M")
               and now().strftime("%H:%M") < strptime("07:00", "%H%M")
             )
           )
