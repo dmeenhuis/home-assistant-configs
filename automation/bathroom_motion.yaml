@@ -8,13 +8,13 @@
     entity_id: light.badkamerlamp
     data_template:
       brightness_pct: >
-        {% if now().hour >= 22 and now().hour <= 23 %}25
-        {% elif now().hour < 6 %}1
+        {% if states.binary_sensor.late_night.state == 'on' %}2
+        {% elif states.sensor.period_of_day.state != 'day' %}50
         {% else %}100
         {% endif %}
-      rgb_color: >
-        {% if now().hour >= 22 and now().hour <= 6 %}[255, 153, 0]
-        {% else %}[ 255, 183, 123]
+      rgb_color: >-
+        {% if states.binary_sensor.late_night.state == 'on' %}['255','153','0']
+        {% else %}['255','183','123']
         {% endif %}
 - alias: Turn off bathroom light x minutes after last movement
   trigger:

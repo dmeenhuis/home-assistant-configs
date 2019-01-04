@@ -11,8 +11,8 @@
     entity_id: light.overloop
     data_template:
       brightness_pct: >
-        {% if now().hour >= 22 and now().hour <= 23 %}10
-        {% elif now().hour < 6 %}1
+        {% if states.binary_sensor.late_night.state == 'on' %}5
+        {% elif states.sensor.period_of_day.state != 'day' %}30
         {% else %}100
         {% endif %}
 - alias: Turn off overloop lights x minutes after last movement
