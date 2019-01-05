@@ -21,6 +21,12 @@ binary_sensor.motion_sensor_overloop:
   friendly_name: Bewegingssensor overloop
 binary_sensor.tradfri_motion_sensor_garage:
   friendly_name: Bewegingssensor garage
+binary_sensor.motion_at_home:
+  device_class: motion
+binary_sensor.late_night:
+  icon: mdi-brightness-3
+binary_sensor.bayesian_sleeping:
+  icon: mdi-brightness-3
 sensor.power_consumption:
   hidden: false
 sensor.voltage_sags_phase_l1:
