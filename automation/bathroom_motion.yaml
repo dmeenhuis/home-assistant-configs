@@ -12,10 +12,7 @@
         {% elif states.sensor.period_of_day.state != 'day' %}50
         {% else %}100
         {% endif %}
-      color_name: >-
-        {% if states.binary_sensor.late_night.state == 'on' %} orangered
-        {% else %} white
-        {% endif %}
+      rgb_color: ['{{255|int}}', '{{126|int if states.binary_sensor.late_night.state == "on" else 183|int}}', '{{0|int if states.binary_sensor.late_night.state == "on" else 123|int}}']
 - alias: Turn off bathroom light x minutes after last movement
   trigger:
     platform: state
