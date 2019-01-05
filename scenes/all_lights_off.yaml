@@ -1,14 +1,11 @@
 - name: Alle lampen uit
   entities:
-    group.woonkamer: off
+    group.living_room: off
     group.garage: off
-    
-    light.overlooplamp: off
-    light.slaapkamerlamp_da: off
+    group.overloop: off
+    group.bedroom_d_a: off
+    group.bedroom_jesper: off
+    group.bedroom_jurjen: off
     light.voordeurlamp: off
-    light.woonkamerlamp_linksvoor: off
-    light.woonkamerlamp_rechtsvoor: off
-    light.slaapkamer_jesper: off
-    light.slaapkamer_jurjen: off
     light.toiletlamp: off
     light.badkamerlamp: off

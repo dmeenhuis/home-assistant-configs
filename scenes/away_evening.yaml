@@ -2,14 +2,14 @@
   entities:
     switch.tv: off
     light.middenwoonkamerlamp_4: off
-    light.keukenspots: off
     light.hoekwoonkamerlamp_4: off
-    light.garagelamp: off
-    light.overlooplamp: off
-    light.slaapkamerlamp_da: off
+    group.kitchen: off
+    group.garage: off
+    group.overloop: off
+    group.bedroom_d_a: off
+    group.bedroom_jesper: off
+    group.bedroom_jurjen: off
+    group.bathroom: off
+    group.toilet: off
     light.woonkamerlamp_linksvoor: on
     light.woonkamerlamp_rechtsvoor: on
-    light.slaapkamer_jesper: off
-    light.slaapkamer_jurjen: off
-    light.badkamerlamp: off
-    light.toiletlamp: off
