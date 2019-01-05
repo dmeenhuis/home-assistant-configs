@@ -1,6 +1,7 @@
 - platform: template
   sensors:
     late_night:
+      entity_id: sensor.time
       value_template: >
         {{
           (
