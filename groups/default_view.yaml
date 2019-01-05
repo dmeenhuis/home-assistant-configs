@@ -20,6 +20,7 @@ entities:
   - sun.sun
   - sensor.afstandsbediening_keuken
   - sensor.bewegingssensor_overloop
+  - sensor.br_condition
   - sensor.gas_consumption
   - sensor.power_consumption
   - sensor.power_production
