@@ -17,4 +17,3 @@
       state: on
       transition: 1800
       brightness_pct: 80
-    switch.schakelaar_kerstboom: on

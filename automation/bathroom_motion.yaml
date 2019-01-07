@@ -9,7 +9,7 @@
     data_template:
       brightness_pct: >
         {% if states.binary_sensor.late_night.state == 'on' %}2
-        {% elif states.sensor.period_of_day.state != 'day' %}50
+        {% elif states.sensor.period_of_day.state != 'day' %}100
         {% else %}100
         {% endif %}
       rgb_color: ['{{255|int}}', '{{126|int if states.binary_sensor.late_night.state == "on" else 183|int}}', '{{0|int if states.binary_sensor.late_night.state == "on" else 123|int}}']
@@ -19,7 +19,7 @@
     entity_id: binary_sensor.presence_11
     to: 'off'
     for:
-      minutes: 5
+      minutes: 3
   action:
     service: light.turn_off
     entity_id: light.badkamerlamp

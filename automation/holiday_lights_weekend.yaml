@@ -1,4 +1,5 @@
 - alias: Holiday lights on during weekends
+  initial_state: off
   trigger:
     platform: time
     at: "08:00:00"
