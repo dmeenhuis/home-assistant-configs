@@ -9,13 +9,12 @@
     data_template:
       brightness_pct: >
         {% if states.binary_sensor.late_night.state == 'on' %}2
-        {% elif states.sensor.period_of_day.state != 'day' %}100
         {% else %}100
         {% endif %}
       # rgb_color: ['{{255|int}}', '{{126|int if states.binary_sensor.late_night.state == "on" else 183|int}}', '{{0|int if states.binary_sensor.late_night.state == "on" else 123|int}}']
       color_temp: >
         {% if states.binary_sensor.late_night.state == 'on' %}560
-        {% else %}246
+        {% else %}275
         {% endif %}
 - alias: Turn off bathroom light x minutes after last movement
   trigger:
