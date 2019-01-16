@@ -1,3 +1,4 @@
 - name: Alle lampen op begane grond uit
   entities:
     group.living_room: off
+    switch.tv: off
