@@ -21,7 +21,7 @@
     entity_id: binary_sensor.bewegingssensor_overloop
     to: 'off'
     for:
-      minutes: 5
+      minutes: 2
   action:
     service: light.turn_off
     entity_id: light.overloop
