@@ -1,0 +1,4 @@
+name: Antsje
+id: amt
+device_trackers:
+  - device_tracker.nexus_5x
