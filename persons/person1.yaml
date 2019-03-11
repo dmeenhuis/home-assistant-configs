@@ -1,4 +1,4 @@
-name: Dennis
-id: dme
-device_trackers:
-  - device_tracker.iphone
+- name: Dennis
+  id: dme
+  device_trackers:
+    - device_tracker.iphone

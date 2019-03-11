@@ -49,7 +49,7 @@ variable:
 
 device_tracker: !include_dir_list device_tracker/
 
-person: !include_dir_named persons/
+person: !include_dir_merge_list persons/
 
 group: !include_dir_named groups/
 media_player: !include_dir_merge_list mediaplayers/
