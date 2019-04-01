@@ -7,20 +7,10 @@ group.all_switches:
 group.all_automations:
   hidden: false
   friendly_name: Automations
-binary_sensor.presence_11:
-  friendly_name: Bewegingssensor badkamer
-binary_sensor.presence_12:
-  friendly_name: Bewegingssensor toilet
 binary_sensor.presence_13:
   friendly_name: Bewegingssensor Jesper
-binary_sensor.presence_3:
-  friendly_name: Bewegingssensor keuken
 binary_sensor.presence_8:
   friendly_name: Bewegingssensor Jurjen
-binary_sensor.motion_sensor_overloop:
-  friendly_name: Bewegingssensor overloop
-binary_sensor.tradfri_motion_sensor_garage:
-  friendly_name: Bewegingssensor garage
 binary_sensor.motion_at_home:
   device_class: motion
 binary_sensor.late_night:

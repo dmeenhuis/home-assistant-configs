@@ -110,8 +110,8 @@ recorder:
 rfxtrx:
   device: /dev/ttyUSB2
 
-tradfri:
-  host: !env_var TRADFRI_GATEWAY
+# tradfri:
+#   host: !env_var TRADFRI_GATEWAY
 
 influxdb:
   host: !secret influxdb_host
