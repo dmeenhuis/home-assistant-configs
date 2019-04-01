@@ -10,7 +10,6 @@ secrets.yaml
 .editorconfig
 *.data
 deps
-www
 .HA_VERSION
 .uuid
 .storage/

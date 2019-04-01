@@ -24,6 +24,15 @@ logbook:
 zeroconf:
 history:
 config:
+webhook:
+
+zigbee2mqtt_networkmap:
+
+panel_iframe:
+  networkmap:
+    title: 'Zigbee Map'
+    url: '/local/zigbee2mqtt_networkmap/map.html'
+    icon: 'mdi:graphql'
 
 # logger:
 #   default: info
