@@ -1,0 +1,8 @@
+name: Zigbee2mqtt Log Level
+options:
+  - debug
+  - info
+  - warn
+  - error
+initial: info
+icon: mdi:format-list-bulleted

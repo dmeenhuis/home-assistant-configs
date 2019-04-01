@@ -68,8 +68,11 @@ light: !include_dir_merge_list light/
 scene: !include_dir_list scenes/
 
 input_boolean: !include_dir_named input_boolean/
+input_select: !include_dir_named input_select/
 input_datetime: !include_dir_named input_datetime/
 input_number: !include_dir_named input_number/
+
+timer: !include_dir_named timer/
 
 automation: !include automations.yaml
 automation old: !include_dir_merge_list automation/
