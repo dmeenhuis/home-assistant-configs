@@ -3,10 +3,10 @@
     group.living_room: off
     group.garage: off
     group.overloop: off
+    group.kitchen: off
     group.bedroom_d_a: off
     group.bedroom_jesper: off
     group.bedroom_jurjen: off
-    light.voordeurlamp: off
     light.toiletlamp: off
     light.badkamerlamp: off
     switch.tv: off

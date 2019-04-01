@@ -1,8 +1,8 @@
 - name: "'s avonds weg"
   entities:
     switch.tv: off
-    light.middenwoonkamerlamp_4: off
-    light.hoekwoonkamerlamp_4: off
+    light.middenwoonkamerlamp: off
+    light.hoekwoonkamerlamp: off
     group.kitchen: off
     group.garage: off
     group.overloop: off
