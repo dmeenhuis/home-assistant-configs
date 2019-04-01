@@ -40,12 +40,12 @@ panel_iframe:
 #     pydeconz: debug
 #     homeassistant.components.deconz: debug
 
-# climate:
-#   platform: nefit
-#   name: Verwarming
-#   serial: !secret nefit_serial
-#   accesskey: !secret nefit_access_key
-#   password: !secret nefit_password
+climate:
+  platform: nefit
+  name: Verwarming
+  serial: !secret nefit_serial
+  accesskey: !secret nefit_access_key
+  password: !secret nefit_password
 
 variable:
   last_motion:

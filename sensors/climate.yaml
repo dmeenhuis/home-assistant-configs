@@ -1,0 +1,10 @@
+- platform: template
+  sensors:
+    outdoor_temperature:
+      friendly_name: Buitentemperatuur
+      unit_of_measurement: "°C"
+      value_template: "{{ state_attr('climate.heating', 'outdoor_temperature') }}"
+    gas_year_total:
+      friendly_name: Jaarverbruik gas
+      unit_of_measurement: m3
+      value_template: "{{ state_attr('climate.heating', 'year_total') }}"
