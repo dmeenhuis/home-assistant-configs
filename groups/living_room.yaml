@@ -1,6 +1,6 @@
 name: Woonkamer
 entities:
-  - light.hoekwoonkamerlamp_4
-  - light.middenwoonkamerlamp_4
+  - light.hoekwoonkamerlamp
+  - light.middenwoonkamerlamp
   - light.woonkamerlamp_linksvoor
   - light.woonkamerlamp_rechtsvoor
