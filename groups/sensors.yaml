@@ -3,7 +3,7 @@ entities:
   - binary_sensor.bewegingssensor_keuken                # Keuken
   #- binary_sensor.presence_13               # Slaapkamer Jesper
   #- binary_sensor.presence_8                # Slaapkamer Jurjen
-  - binary_sensor.presence_11               # Badkamer
+  - binary_sensor.bewegingssensor_badkamer               # Badkamer
   - binary_sensor.bewegingssensor_garage
   - binary_sensor.bewegingssensor_toilet               # Toilet
   - binary_sensor.bewegingssensor_overloop
