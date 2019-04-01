@@ -5,7 +5,7 @@
     offset: "+0:30:00"
   action:
     service: light.turn_off
-    entity_id: light.voordeurlamp
+    entity_id: light.voordeurlamp_buiten
 - alias: Voordeurlamp aan na zonsondergang
   trigger:
     platform: sun
@@ -13,4 +13,4 @@
     offset: "0:30:00"
   action:
     service: light.turn_on
-    entity_id: light.voordeurlamp
+    entity_id: light.voordeurlamp_buiten
