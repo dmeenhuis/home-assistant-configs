@@ -9,7 +9,6 @@ homeassistant:
   customize: !include customize.yaml
   auth_providers:
     - type: homeassistant
-    - type: legacy_api_password
     - type: trusted_networks
       trusted_networks:
         - 127.0.0.1
@@ -83,6 +82,13 @@ mqtt:
   client_id: homeassistant
   username: !secret mqtt_username
   password: !secret mqtt_password
+  discovery: true
+  birth_message:
+    topic: 'hass/status'
+    payload: 'online'
+  will_message:
+    topic: 'hass/status'
+    payload: 'offline'
 
 recorder:
   purge_interval: 1
