@@ -3,17 +3,18 @@
     platform: state
     entity_id: binary_sensor.bewegingssensor_overloop
     to: 'on'
-  condition:
-    - condition: template
-      value_template: "{{ states.sensor.period_of_day.state != 'day' }}"
   action:
     service: light.turn_on
-    entity_id: light.overloop
+    entity_id: light.overlooplamp
     data_template:
       brightness_pct: >
-        {% if states.binary_sensor.late_night.state == 'on' %}5
-        {% elif states.sensor.period_of_day.state != 'day' %}30
+        {% if states.binary_sensor.late_night.state == 'on' %}2
         {% else %}100
+        {% endif %}
+      # rgb_color: ['{{255|int}}', '{{126|int if states.binary_sensor.late_night.state == "on" else 183|int}}', '{{0|int if states.binary_sensor.late_night.state == "on" else 123|int}}']
+      color_temp: >
+        {% if states.binary_sensor.late_night.state == 'on' %}560
+        {% else %}275
         {% endif %}
 - alias: Turn off overloop lights x minutes after last movement
   trigger:
@@ -24,4 +25,4 @@
       minutes: 2
   action:
     service: light.turn_off
-    entity_id: light.overloop
+    entity_id: light.overlooplamp
