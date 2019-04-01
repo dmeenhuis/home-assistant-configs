@@ -1,7 +1,7 @@
 - alias: Turn on kitchen lights when there is motion
   trigger:
     platform: state
-    entity_id: binary_sensor.presence_3
+    entity_id: binary_sensor.bewegingssensor_keuken
     to: 'on'
   action:
     service: light.turn_on
@@ -9,7 +9,7 @@
 - alias: Turn off kitchen lights x minutes after last movement
   trigger:
     platform: state
-    entity_id: binary_sensor.presence_3
+    entity_id: binary_sensor.bewegingssensor_keuken
     to: 'off'
     for:
       minutes: 5
