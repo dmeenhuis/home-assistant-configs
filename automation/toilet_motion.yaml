@@ -1,7 +1,7 @@
 - alias: Turn on toilet light when there is motion
   trigger:
     platform: state
-    entity_id: binary_sensor.presence_12
+    entity_id: binary_sensor.bewegingssensor_toilet
     to: 'on'
   action:
     service: light.turn_on
@@ -9,7 +9,7 @@
 - alias: Turn off toilet light x minutes after last movement
   trigger:
     platform: state
-    entity_id: binary_sensor.presence_12
+    entity_id: binary_sensor.bewegingssensor_toilet
     to: 'off'
     for:
       minutes: 2
