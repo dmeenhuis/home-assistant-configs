@@ -1,3 +1,8 @@
 name: Keuken
 entities:
+  - light.keukenspots_1
   - light.keukenspots_2
+  - light.keukenspots_3
+  - light.keukenspots_4
+  - light.keukenspots_5
+  - light.keukenspots_6
