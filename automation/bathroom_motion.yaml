@@ -1,7 +1,7 @@
 - alias: Turn on bathroom light when there is motion
   trigger:
     platform: state
-    entity_id: binary_sensor.presence_11
+    entity_id: binary_sensor.bewegingssensor_badkamer
     to: 'on'
   action:
     service: light.turn_on
@@ -19,7 +19,7 @@
 - alias: Turn off bathroom light x minutes after last movement
   trigger:
     platform: state
-    entity_id: binary_sensor.presence_11
+    entity_id: binary_sensor.bewegingssensor_badkamer
     to: 'off'
     for:
       minutes: 3
