@@ -1,5 +1,5 @@
 name: zigbee2mqtt
-icon: mdi-rss-box
+icon: mdi:rss-box
 view: yes
 entities:
   - input_boolean.zigbee_permit_join
