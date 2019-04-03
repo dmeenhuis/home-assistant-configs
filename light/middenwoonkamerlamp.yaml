@@ -1,6 +1,6 @@
-- platform: group
+- platform: mqtt
   name: Middenwoonkamerlamp
-  entities:
-    - light.middenwoonkamerlamp_1
-    - light.middenwoonkamerlamp_2
-    - light.middenwoonkamerlamp_3
+  schema: json
+  command_topic: "zigbee2mqtt/group_middenwoonkamerlamp/set"
+  state_topic: "zigbee2mqtt/group_middenwoonkamerlamp"
+  brightness: true
