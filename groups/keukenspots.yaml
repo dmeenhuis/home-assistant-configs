@@ -1,6 +1,0 @@
-name: Keukenspots
-platform: mqtt
-schema: json
-command_topic: "zigbee2mqtt/group_keukenspots/set"
-state_topic: "zigbee2mqtt/group_keukenspots"
-brightness: true
