@@ -5,7 +5,13 @@
     to: 'on'
   action:
     service: light.turn_on
-    entity_id: light.keukenspots
+    entity_id:
+      - light.keukenspot_1
+      - light.keukenspot_2
+      - light.keukenspot_3
+      - light.keukenspot_4
+      - light.keukenspot_5
+      - light.keukenspot_6
 - alias: Turn off kitchen lights x minutes after last movement
   trigger:
     platform: state
@@ -15,4 +21,10 @@
       minutes: 5
   action:
     service: light.turn_off
-    entity_id: light.keukenspots
+    entity_id:
+      - light.keukenspot_1
+      - light.keukenspot_2
+      - light.keukenspot_3
+      - light.keukenspot_4
+      - light.keukenspot_5
+      - light.keukenspot_6
