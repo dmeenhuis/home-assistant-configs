@@ -18,6 +18,7 @@ entities:
   - device_tracker.iphone
   - device_tracker.nexus_5x
   - sun.sun
+  - climate.verwarming
   - sensor.afstandsbediening_keuken
   - sensor.bewegingssensor_overloop
   - sensor.br_condition
