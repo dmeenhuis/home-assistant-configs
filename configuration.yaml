@@ -27,6 +27,7 @@ zeroconf:
 history:
 config:
 webhook:
+system_health:
 
 zigbee2mqtt_networkmap:
 
