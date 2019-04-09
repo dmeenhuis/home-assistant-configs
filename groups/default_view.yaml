@@ -25,3 +25,4 @@ entities:
   - sensor.power_consumption
   - sensor.power_production
   - sensor.power_tariff
+  - climate.verwarming

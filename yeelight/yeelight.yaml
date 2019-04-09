@@ -1,0 +1,15 @@
+devices:
+  192.168.1.86:
+    name: Woonkamerlamp linksvoor
+  192.168.1.133:
+    name: Woonkamerlamp rechtsvoor
+  192.168.1.87:
+    name: Toiletlamp
+  192.168.1.138:
+    name: Badkamerlamp
+  192.168.1.18:
+    name: Slaapkamer Jurjen
+  192.168.1.176:
+    name: Slaapkamer Jesper
+  192.168.1.36:
+    name: Overlooplamp
