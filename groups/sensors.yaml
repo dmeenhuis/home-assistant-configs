@@ -7,5 +7,5 @@ entities:
   - binary_sensor.bewegingssensor_garage
   - binary_sensor.bewegingssensor_toilet               # Toilet
   - binary_sensor.bewegingssensor_overloop
-
+  - binary_sensor.bewegingssensor_salonkast
 

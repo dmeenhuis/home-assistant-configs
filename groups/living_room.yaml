@@ -4,3 +4,4 @@ entities:
   - light.middenwoonkamerlamp
   - light.woonkamerlamp_linksvoor
   - light.woonkamerlamp_rechtsvoor
+  - switch.salonkast_woonkamer
