@@ -4,15 +4,16 @@
     entity_id: binary_sensor.bewegingssensor_salonkast
     to: 'on'
   action:
-    service: switch.turn_on
-    entity_id: switch.salonkast_woonkamer
-- alias: Turn off salonkast lights x minutes after last movement
+    - service: timer.start
+      entity_id: timer.timer_salonkast
+    - service: switch.turn_on
+      entity_id: switch.salonkast_woonkamer
+- alias: Turn off salonkast lights after timer
   trigger:
-    platform: state
-    entity_id: binary_sensor.bewegingssensor_salonkast
-    to: 'off'
-    for:
-      seconds: 20
+    - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.timer_salonkast
   action:
     service: switch.turn_off
     entity_id: switch.salonkast_woonkamer
