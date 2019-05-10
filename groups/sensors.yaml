@@ -1,11 +1,15 @@
 name: Sensors
 entities:
-  - binary_sensor.bewegingssensor_keuken                # Keuken
-  #- binary_sensor.presence_13               # Slaapkamer Jesper
-  #- binary_sensor.presence_8                # Slaapkamer Jurjen
-  - binary_sensor.bewegingssensor_badkamer               # Badkamer
+  - binary_sensor.bewegingssensor_keuken
+  - sensor.bewegingssensor_keuken_battery
+  - binary_sensor.bewegingssensor_badkamer
+  - sensor.bewegingssensor_badkamer_battery
   - binary_sensor.bewegingssensor_garage
-  - binary_sensor.bewegingssensor_toilet               # Toilet
+  - sensor.bewegingssensor_garage_battery
+  - binary_sensor.bewegingssensor_toilet
+  - sensor.bewegingssensor_toilet_battery
   - binary_sensor.bewegingssensor_overloop
+  - sensor.bewegingssensor_overloop_battery
   - binary_sensor.bewegingssensor_salonkast
+  - sensor.bewegingssensor_salonkast_battery
 
