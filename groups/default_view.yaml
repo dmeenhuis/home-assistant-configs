@@ -13,7 +13,7 @@ entities:
   - group.bedroom_d_a
   - group.bedroom_jurjen
   - group.bedroom_jesper
-  - group.sensors
+  - group.motion_sensors
   - group.meter_readings
   - device_tracker.iphone
   - device_tracker.nexus_5x
