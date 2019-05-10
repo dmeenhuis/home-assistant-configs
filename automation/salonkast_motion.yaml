@@ -11,9 +11,9 @@
 - alias: Turn off salonkast lights after timer
   trigger:
     - platform: event
-        event_type: timer.finished
-        event_data:
-          entity_id: timer.timer_salonkast
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.timer_salonkast
   action:
     service: switch.turn_off
     entity_id: switch.salonkast_woonkamer
