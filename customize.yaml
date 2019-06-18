@@ -7,10 +7,6 @@ group.all_switches:
 group.all_automations:
   hidden: false
   friendly_name: Automations
-binary_sensor.presence_13:
-  friendly_name: Bewegingssensor Jesper
-binary_sensor.presence_8:
-  friendly_name: Bewegingssensor Jurjen
 binary_sensor.motion_at_home:
   device_class: motion
 binary_sensor.late_night:
