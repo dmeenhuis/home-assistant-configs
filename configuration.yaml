@@ -134,12 +134,6 @@ recorder:
   purge_keep_days: 4
   db_url: !secret homeassistant_recorder_db_url
 
-rfxtrx:
-  device: /dev/ttyUSB2
-
-# tradfri:
-#   host: !env_var TRADFRI_GATEWAY
-
 influxdb:
   host: !secret influxdb_host
   port: 8086

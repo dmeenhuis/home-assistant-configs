@@ -1,7 +1,0 @@
-# - platform: rfxtrx
-#   automatic_add: False
-#   devices:
-#     0b11000800f4e3fe03010f60:
-#       name: Schakelaar kerstboom
-#      0b1100020089f9ea02010f60:
-#        name: TV
