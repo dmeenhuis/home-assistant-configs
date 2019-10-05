@@ -1,0 +1,6 @@
+name: Afhaalophaalschema
+entities:
+  - sensor.non_recyclable_waste_pickup
+  - sensor.organic_waste_pickup
+  - sensor.paper_waste_pickup
+  - sensor.plastic_waste_pickup

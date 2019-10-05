@@ -15,6 +15,7 @@ entities:
   - group.bedroom_jesper
   - group.motion_sensors
   - group.meter_readings
+  - group.waste
   - device_tracker.iphone
   - device_tracker.nexus_5x
   - sun.sun
