@@ -35,12 +35,13 @@ class RpiWordclock(Light):
     Representation of an raspberry pi wordclock Light.
     """
 
-    def __init__(self, name, api_endpoint):
+    def __init__(self, light, api_endpoint):
         """
         Initialize an raspberry pi wordclock light.
         """
 
-        self._name = name
+        self._light = light
+        self._name = light.name
         self._state = None
         self._brightness = None
         self._off_brightness = 15
