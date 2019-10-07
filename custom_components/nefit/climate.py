@@ -15,17 +15,19 @@ import logging
 import voluptuous as vol
 
 from homeassistant.components.climate import (ClimateDevice, PLATFORM_SCHEMA)
-from homeassistant.components.climate.const import (STATE_AUTO, STATE_MANUAL, 
-    SUPPORT_TARGET_TEMPERATURE, SUPPORT_OPERATION_MODE)
+from homeassistant.components.climate.const import (SUPPORT_TARGET_TEMPERATURE, SUPPORT_PRESET_MODE,
+    CURRENT_HVAC_IDLE, CURRENT_HVAC_HEAT,
+    HVAC_MODE_HEAT)
 from homeassistant.const import TEMP_CELSIUS, ATTR_TEMPERATURE
 from homeassistant.const import STATE_UNKNOWN, EVENT_HOMEASSISTANT_STOP
 
 _LOGGER = logging.getLogger(__name__)
 
-SUPPORT_FLAGS = (SUPPORT_TARGET_TEMPERATURE | SUPPORT_OPERATION_MODE)
+SUPPORT_FLAGS = (SUPPORT_TARGET_TEMPERATURE | SUPPORT_PRESET_MODE)
 
-OPERATION_MANUAL = "manual"
-OPERATION_AUTO = "auto"
+# supported operating modes (preset mode)
+OPERATION_MANUAL = "Manual"
+OPERATION_CLOCK = "Clock"
 
 CONF_NAME = "name"
 CONF_SERIAL = "serial"
@@ -74,12 +76,13 @@ class NefitThermostat(ClimateDevice):
         self._attributes = {}
         self._stateattr = {}
         self._data = {}
-        self._operation_list = [OPERATION_MANUAL, OPERATION_AUTO]
+        self._hvac_modes = [HVAC_MODE_HEAT]
         self._url_events = {
             '/ecus/rrc/uiStatus': asyncio.Event(),
             '/heatingCircuits/hc1/actualSupplyTemperature': asyncio.Event(),
             '/system/sensors/temperatures/outdoor_t1': asyncio.Event(),
             '/system/appliance/systemPressure': asyncio.Event(),
+            '/system/appliance/displaycode': asyncio.Event(),
             '/ecus/rrc/recordings/yearTotal': asyncio.Event()
         }
 
@@ -96,7 +99,7 @@ class NefitThermostat(ClimateDevice):
         _LOGGER.debug("Waiting for connected event")        
         try:
             # await self._client.xmppclient.connected_event.wait()
-            await asyncio.wait_for(self._client.xmppclient.connected_event.wait(), timeout=5.0)
+            await asyncio.wait_for(self._client.xmppclient.connected_event.wait(), timeout=10.0)
             _LOGGER.debug("adding stop listener")
             self.hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STOP,
                                             self._shutdown)
@@ -145,8 +148,10 @@ class NefitThermostat(ClimateDevice):
             self._data['temp_setpoint'] = float(data['value']['TSP'])
             self._data['inhouse_temperature'] = float(data['value']['IHT'])
             self._data['user_mode'] = data['value']['UMD']
-            self._stateattr['boiler_indicator_raw'] = data['value']['BAI']
-            self._stateattr['current_time'] = data['value']['CTD']        
+            self._stateattr['boiler_indicator'] = data['value']['BAI']
+            self._stateattr['current_time'] = data['value']['CTD']
+        elif data['id'] == '/system/appliance/displaycode':
+            self._stateattr['status'] = self.get_status(data['value'])
         elif data['id'] == '/heatingCircuits/hc1/actualSupplyTemperature':
             self._stateattr['supply_temperature'] = data['value']
         elif data['id'] == '/system/sensors/temperatures/outdoor_t1':
@@ -197,18 +202,40 @@ class NefitThermostat(ClimateDevice):
         return self._data.get('temp_setpoint')
 
     @property
-    def operation_list(self):
-        """List of available operation modes."""
-        return [STATE_AUTO, STATE_MANUAL]
+    def hvac_modes (self):
+        """List of available modes."""
+        return self._hvac_modes
 
     @property
-    def current_operation(self):
+    def hvac_mode(self):
+        return HVAC_MODE_HEAT
+    
+    @property
+    def hvac_action(self):
+        """Return the current running hvac operation if supported."""
+        if self._stateattr.get('boiler_indicator') == 'CH': #HW (hot water) is not for climate
+            return CURRENT_HVAC_HEAT
+        
+        return CURRENT_HVAC_IDLE
+
+    @property
+    def preset_modes(self):
+        """Return available preset modes."""
+        return [
+            OPERATION_MANUAL,
+            OPERATION_CLOCK
+        ]
+
+
+    @property
+    def preset_mode(self):
+        """Return the current preset mode."""
         if self._data.get('user_mode') == 'manual':
             return OPERATION_MANUAL
         elif self._data.get('user_mode') == 'clock':
-            return OPERATION_AUTO
+            return OPERATION_CLOCK
         else:
-            return STATE_UNKNOWN
+            return OPERATION_MANUAL
 
     @property
     def device_state_attributes(self):
@@ -226,13 +253,13 @@ class NefitThermostat(ClimateDevice):
         """Return the maximum temperature."""
         return self.config.get(CONF_MAX_TEMP)
 
-    async def async_set_operation_mode(self, operation_mode):
+    async def async_set_preset_mode(self, preset_mode):
         """Set new target operation mode."""
-        _LOGGER.debug("set_operation_mode called mode={}.".format(operation_mode))
-        if operation_mode == "manual":
-            new_mode = "manual"
-        else:
+        _LOGGER.debug("set_preset_mode called mode={}.".format(preset_mode))
+        if preset_mode == OPERATION_CLOCK:
             new_mode = "clock"
+        else:
+            new_mode = "manual"
 
         self._client.set_usermode(new_mode)
         await asyncio.wait_for(self._client.xmppclient.message_event.wait(), timeout=10.0)
@@ -242,6 +269,7 @@ class NefitThermostat(ClimateDevice):
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
         temperature = kwargs.get(ATTR_TEMPERATURE)
+        self._data['target_temperature'] = temperature
         _LOGGER.debug("set_temperature called (temperature={}).".format(temperature))
         self._client.set_temperature(temperature)
         await asyncio.wait_for(self._client.xmppclient.message_event.wait(), timeout=10.0)
@@ -252,3 +280,31 @@ class NefitThermostat(ClimateDevice):
     def _shutdown(self, event):
         _LOGGER.debug("shutdown")
         self._client.disconnect()
+
+    def get_status(self, code):
+        display_codes = {
+            '-H': 'central heating active',
+            '=H': 'hot water active',
+            '0C': 'system starting',
+            '0L': 'system starting',
+            '0U': 'system starting',
+            '0E': 'system waiting',
+            '0H': 'system standby',
+            '0A': 'system waiting (boiler cannot transfer heat to central heating)',
+            '0Y': 'system waiting (boiler cannot transfer heat to central heating)',
+            '2E': 'boiler water pressure too low',
+            'H07': 'boiler water pressure too low',
+            '2F': 'sensors measured abnormal temperature',
+            '2L': 'sensors measured abnormal temperature',
+            '2P': 'sensors measured abnormal temperature',
+            '2U': 'sensors measured abnormal temperature',
+            '4F': 'sensors measured abnormal temperature',
+            '4L': 'sensors measured abnormal temperature',
+            '6A': 'burner doesn\'t ignite',
+            '6C': 'burner doesn\'t ignite',
+            'rE': 'system restarting'
+        }
+        if code in display_codes:
+            return display_codes[code]
+        else:
+            return 'unknown code '+code
