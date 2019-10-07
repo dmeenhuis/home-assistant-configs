@@ -10,6 +10,7 @@ _LOGGER = logging.getLogger(__name__)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
+    vol.Required(CONF_NAME): cv.string,
 })
 
 
@@ -40,12 +41,12 @@ class RpiWordclock(Light):
         Initialize an raspberry pi wordclock light.
         """
 
-        self._light = light
-        self._name = light.name
+        self._name = light
         self._state = None
         self._brightness = None
-        self._off_brightness = 15
+        self._off_brightness = 0
         self._api_endpoint = api_endpoint
+
 
     @property
     def name(self):
