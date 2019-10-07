@@ -5,3 +5,4 @@ entities:
   - light.woonkamerlamp_linksvoor
   - light.woonkamerlamp_rechtsvoor
   - switch.salonkast_woonkamer
+  - light.wordclock
