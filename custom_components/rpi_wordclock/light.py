@@ -13,7 +13,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
 
-def setup_platform(hass, config, add_devices, discovery_info=None):
+def setup_platform(hass, config, add_entities, discovery_info=None):
     """
     Setup the rpi_wordclock platform.
     """
@@ -26,7 +26,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     api_endpoint = 'http://' + host + '/api'
 
     # Add devices
-    add_devices([RpiWordclock(name, api_endpoint)])
+    add_entities([RpiWordclock(name, api_endpoint)])
     _LOGGER.info("Added rpi_wordclock light at " + host)
 
 
