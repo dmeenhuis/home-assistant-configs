@@ -52,7 +52,7 @@ variable:
       icon: mdi:map-marker
       name: "Last motion"
 
-device_tracker: !include_dir_list device_tracker/
+#device_tracker: !include_dir_list device_tracker/
 
 person: !include_dir_merge_list persons/
 
