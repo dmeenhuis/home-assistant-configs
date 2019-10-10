@@ -8,17 +8,6 @@ filter:
     - entity_id: "binary_sensor.bewegingssensor*"
       state: 'on'
 
-type: custom:monster-card
-show_empty: false
-card:
-  type: entities
-  title: Batterij bijna leeg
-filter:
-  include:
-    - entity_id: "sensor.*battery*"
-      attributes:
-        battery: '< 50'
-
 # entities:
 #   - binary_sensor.bewegingssensor_keuken
 #   - sensor.bewegingssensor_keuken_battery
