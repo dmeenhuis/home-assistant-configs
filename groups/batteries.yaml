@@ -1,10 +1,10 @@
-type: custom:monster-card
-show_empty: false
-card:
-  type: entities
-  title: Batterij bijna leeg
-filter:
-  include:
-    - entity_id: "sensor.*battery*"
-      attributes:
-        battery: '< 50'
+# type: custom:monster-card
+# show_empty: false
+# card:
+#   type: entities
+#   title: Batterij bijna leeg
+# filter:
+#   include:
+#     - entity_id: "sensor.*battery*"
+#       attributes:
+#         battery: '< 50'
