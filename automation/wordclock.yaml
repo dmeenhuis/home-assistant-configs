@@ -1,0 +1,16 @@
+- alias: Turn on wordclock during the day
+  trigger:
+    platform: time
+    at: '06:00:00'
+  action:
+    service: light.turn_on
+    entity_id: light.wordclock
+    data_template:
+      brightness_pct: >
+        {% if states.sensor.period_of_day.state == 'day' %}80
+        {% else %}30
+        {% endif %}
+      # color_temp: >
+      #   {% if states.binary_sensor.late_night.state == 'on' %}560
+      #   {% else %}275
+      #   {% endif %}

@@ -2,10 +2,7 @@
   sensors:
     motion_at_home:
       value_template: >-
-        {%- if is_state("binary_sensor.bewegingssensor_garage", "on")
-        or is_state("binary_sensor.bewegingssensor_overloop", "on")
-        or is_state("binary_sensor.bewegingssensor_badkamer", "on")
-        or is_state("binary_sensor.bewegingssensor_keuken", "on")
+        {%- if is_state("binary_sensor.bewegingssensor_keuken", "on")
         or is_state("binary_sensor.bewegingssensor_salonkast", "on")
         or is_state("binary_sensor.bewegingssensor_toilet", "on")
         or is_state("binary_sensor.bewegingssensor_woonkamer", "on")
