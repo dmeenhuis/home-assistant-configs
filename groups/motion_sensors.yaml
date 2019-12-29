@@ -1,12 +1,12 @@
-type: custom:monster-card
-show_empty: false
-card:
-  type: entities
-  title: Bewegingssensoren
-filter:
-  include:
-    - entity_id: "binary_sensor.bewegingssensor*"
-      state: 'on'
+#type: custom:monster-card
+#show_empty: false
+#card:
+#  type: entities
+#  title: Bewegingssensoren
+#filter:
+#  include:
+#    - entity_id: "binary_sensor.bewegingssensor*"
+#      state: 'on'
 
 # entities:
 #   - binary_sensor.bewegingssensor_keuken

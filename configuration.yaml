@@ -28,8 +28,26 @@ history:
 config:
 webhook:
 system_health:
+mobile_app:
+
+telegram_bot:
+  - platform: webhooks
+    api_key: !secret telegram_api_key
+    allowed_chat_ids:
+      - !secret telegram_chat_id
+
+notify:
+  - name: telegram
+    platform: telegram
+    chat_id: !secret telegram_chat_id
 
 zigbee2mqtt_networkmap:
+
+homekit:
+  filter:
+    include_domains:
+      - light
+      - switch
 
 panel_iframe:
   networkmap:
@@ -104,11 +122,7 @@ http:
   server_port: 8123
   ssl_certificate: !env_var HTTP_SSL_CERTIFICATE
   ssl_key: !env_var HTTP_SSL_KEY
-  api_password: !secret homeassistant_api_password  
   base_url: !env_var HTTP_BASE_URL
-  trusted_networks:
-    - 127.0.0.1
-    - 192.168.1.0/24
 
 mqtt:
   broker: localhost
