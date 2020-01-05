@@ -5,9 +5,8 @@
       transition: 2
       brightness_pct: 10
     light.hoekwoonkamerlamp:
-      state: on
+      state: off
       transition: 2
-      brightness_pct: 10
     light.woonkamerlamp_linksvoor:
       state: on
       transition: 2
