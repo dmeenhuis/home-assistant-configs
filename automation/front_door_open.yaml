@@ -1,0 +1,30 @@
+- alias: Send notification when front door is open for too long
+  trigger:
+    platform: state
+    entity_id: binary_sensor.deursensor_voordeur
+    to: 'on'
+    for:
+      minutes: 2
+  action:
+    - service: notify.telegram
+      data:
+        title: "*Voordeur staat open*"
+        message: "De voordeur staat al 2 minuten open, misschien ben je vergeten deze te sluiten?"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.frontdoor_alert_triggered
+- alias: Send notification when front door has been closed again
+  trigger:
+    platform: state
+    entity_id: binary_sensor.deursensor_voordeur
+    to: 'off'
+  condition:
+    condition: state
+    entity_id: input_boolean.frontdoor_alert_triggered
+    state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.frontdoor_alert_triggered
+    - service: notify.telegram
+      data:
+        title: "*Voordeur is weer gesloten*"
+        message: "De voordeur is weer gesloten nadat deze te lang open is geweest."

@@ -120,12 +120,10 @@ weather: !include_dir_merge_list weather/
 
 http:
   server_port: 8123
-  ssl_certificate: !env_var HTTP_SSL_CERTIFICATE
-  ssl_key: !env_var HTTP_SSL_KEY
   base_url: !env_var HTTP_BASE_URL
 
 mqtt:
-  broker: localhost
+  broker: mqtt
   client_id: homeassistant
   username: !secret mqtt_username
   password: !secret mqtt_password
