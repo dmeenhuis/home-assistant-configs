@@ -32,12 +32,6 @@ system_health:
 mobile_app:
 map:
 
-#telegram_bot:
-#  - platform: webhooks
-#    api_key: !secret telegram_api_key
-#    allowed_chat_ids:
-#      - !secret telegram_chat_id
-
 notify:
   - name: telegram
     platform: telegram
@@ -76,9 +70,9 @@ variable:
       icon: mdi:map-marker
       name: "Last motion"
 
-#device_tracker: !include_dir_list device_tracker/
-automation: !include automations.yaml                                                                                                                                                              automation old: !include_dir_merge_list automation/
+automation: !include automations.yaml
 automation old: !include_dir_merge_list automation/
+
 person: !include_dir_merge_list persons/
 zone: !include_dir_merge_list zones/
 group: !include_dir_named groups/
@@ -88,12 +82,12 @@ sensor: !include_dir_merge_list sensors/
 switch: !include_dir_merge_list switches/
 light: !include_dir_merge_list light/
 scene: !include_dir_list scenes/
-input_boolean: !include_dir_named input_boolean/                                                                                                                                                   input_select: !include_dir_named input_select/                                                                                                                                                     input_datetime: !include_dir_named input_datetime/
+input_boolean: !include_dir_named input_boolean/
 input_datetime: !include_dir_named input_datetime/
-input_number: !include_dir_named input_number/                                                                                                                                                                                                   timer: !include_dir_named timer/                                                                                                                                                                                                                                                                                                                                                                      automation: !include automations.yaml                                                                                                                                                              automation old: !include_dir_merge_list automation/
-input_select: !include_dir_named input_select/                                                                                                                                                                                                   weather: !include_dir_merge_list weather/
+input_number: !include_dir_named input_number/
+input_select: !include_dir_named input_select/
 script: !include_dir_merge_list scripts/
-timer: !include_dir_named timer/                                                                                                                                                                                                                                                                                                                                                                      automation: !include automations.yaml                                                                                                                                                              automation old: !include_dir_merge_list automation/
+timer: !include_dir_named timer/
 weather: !include_dir_merge_list weather/
 
 yeelight:
