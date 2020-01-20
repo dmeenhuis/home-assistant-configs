@@ -1,0 +1,5 @@
+- name: Work Antsje
+  latitude: !secret work_person2_latitude
+  longitude: !secret work_person2_longitude
+  radius: 300
+  icon: mdi:work

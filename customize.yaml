@@ -1,3 +1,7 @@
+person.dennis:
+  entity_picture: "/local/dennis.jpg"
+person.antsje:
+  entity_picture: "/local/antsje.jpg"
 group.all_lights:
   hidden: false
   friendly_name: Verlichting
