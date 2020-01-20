@@ -14,3 +14,6 @@ deps
 .uuid
 .storage/
 __pycache__
+known_devices.yaml
+.homekit.state
+.spotify-token-cache
