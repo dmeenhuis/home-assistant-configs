@@ -1,5 +1,4 @@
-- start_media_receiver:
-  alias: Start media receiver
+- alias: Start media receiver
   description: Start the Denon receiver in the house
   fields:
     volume:
