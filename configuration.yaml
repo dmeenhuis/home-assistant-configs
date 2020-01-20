@@ -77,7 +77,8 @@ variable:
       name: "Last motion"
 
 #device_tracker: !include_dir_list device_tracker/
-
+automation: !include automations.yaml                                                                                                                                                              automation old: !include_dir_merge_list automation/
+automation old: !include_dir_merge_list automation/
 person: !include_dir_merge_list persons/
 zone: !include_dir_merge_list zones/
 group: !include_dir_named groups/
@@ -87,6 +88,13 @@ sensor: !include_dir_merge_list sensors/
 switch: !include_dir_merge_list switches/
 light: !include_dir_merge_list light/
 scene: !include_dir_list scenes/
+input_boolean: !include_dir_named input_boolean/                                                                                                                                                   input_select: !include_dir_named input_select/                                                                                                                                                     input_datetime: !include_dir_named input_datetime/
+input_datetime: !include_dir_named input_datetime/
+input_number: !include_dir_named input_number/                                                                                                                                                                                                   timer: !include_dir_named timer/                                                                                                                                                                                                                                                                                                                                                                      automation: !include automations.yaml                                                                                                                                                              automation old: !include_dir_merge_list automation/
+input_select: !include_dir_named input_select/                                                                                                                                                                                                   weather: !include_dir_merge_list weather/
+script: !include_dir_merge_list scripts/
+timer: !include_dir_named timer/                                                                                                                                                                                                                                                                                                                                                                      automation: !include automations.yaml                                                                                                                                                              automation old: !include_dir_merge_list automation/
+weather: !include_dir_merge_list weather/
 
 yeelight:
   devices:
@@ -111,18 +119,6 @@ yeelight:
     192.168.1.36:
       name: Overlooplamp
       model: color1
-
-input_boolean: !include_dir_named input_boolean/
-input_select: !include_dir_named input_select/
-input_datetime: !include_dir_named input_datetime/
-input_number: !include_dir_named input_number/
-
-timer: !include_dir_named timer/
-
-automation: !include automations.yaml
-automation old: !include_dir_merge_list automation/
-
-weather: !include_dir_merge_list weather/
 
 http:
   server_port: 8123
