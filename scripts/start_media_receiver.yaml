@@ -11,6 +11,8 @@ start_media_receiver:
   sequence:
   - service: media_player.turn_on
     entity_id: media_player.denon_avr_x1300w
+  - delay:
+      seconds: 15   # wait for the device to be properly started
   - service: media_player.select_source
     entity_id: media_player.denon_avr_x1300w
     data_template:
