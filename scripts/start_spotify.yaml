@@ -1,4 +1,5 @@
-- alias: Start Spotify
+start_spotify:
+  alias: Start Spotify
   description: Start a Spotify playlist on Denon media player
   fields:
     source:
