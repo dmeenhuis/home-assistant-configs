@@ -1,0 +1,24 @@
+- start_media_receiver:
+  alias: Start media receiver
+  description: Start the Denon receiver in the house
+  fields:
+    volume:
+      description: Volume at which to play
+      example: '0.3'
+    source:
+      description: Which source to use on the receiver
+      example: Spotify
+  sequence:
+  - service: media_player.turn_on
+    entity_id: media_player.denon_avr_x1300w
+  - service: media_player.select_source
+    entity_id: media_player.denon_avr_x1300w
+    data_template:
+      source: '{{ source }}'
+  - wait_template: '{{ is_state("media_player.denon_avr_x1300w", "on") }}'
+    timeout: 00:01:00
+    continue_on_timeout: 'false'
+  - service: media_player.volume_set
+    entity_id: media_player.denon_avr_x1300w
+    data_template:
+      volume_level: '{{ volume }}'
