@@ -2,12 +2,9 @@ start_spotify:
   alias: Start Spotify
   description: Start a Spotify playlist on Denon media player
   fields:
-    source:
-      description: The name of the speaker as it appears in Spotify
-      example: Denon AVR-X1300W
     playlist:
       description: The playlist URI from Spotify
-      example: 6rPTm9dYftKcFAfwyRqmDZ
+      example: 7kSU1hAXAqbAL0B3EuwuvZ
   sequence:
   - service: homeassistant.update_entity
     entity_id: media_player.spotify
@@ -16,8 +13,13 @@ start_spotify:
     continue_on_timeout: 'false'
   - service: media_player.select_source
     entity_id: media_player.spotify
-    data_template:
-      source: '{{ source }}'
+    data:
+      source: 'Denon AVR-X1300W'
+  - delay:
+      seconds: 12   # wait for the device to be properly started
+  - wait_template: '{{ is_state("media_player.denon_avr_x1300w", "on") }}'
+    timeout: 00:01:00
+    continue_on_timeout: 'false'
   - service: spotify.play_playlist
     data_template:
       media_content_id: spotify:playlist:{{ playlist }}
