@@ -2,48 +2,11 @@ person.dennis:
   entity_picture: "/local/dennis.jpg"
 person.antsje:
   entity_picture: "/local/antsje.jpg"
-group.all_lights:
-  hidden: false
-  friendly_name: Verlichting
-group.all_switches:
-  hidden: false
-  friendly_name: Schakelaars
-group.all_automations:
-  hidden: false
-  friendly_name: Automations
 binary_sensor.motion_at_home:
   device_class: motion
 binary_sensor.late_night:
   icon: mdi-brightness-3
 binary_sensor.bayesian_sleeping:
   icon: mdi-brightness-3
-light.yeelight_color1_7c49eb15137e:
-  friendly_name: Toiletlamp
-sensor.power_consumption:
-  hidden: false
-sensor.voltage_sags_phase_l1:
-  hidden: true
-sensor.voltage_sags_phase_l2:
-  hidden: true
-sensor.voltage_sags_phase_l3:
-  hidden: true
-sensor.voltage_swells_phase_l1:
-  hidden: true
-sensor.voltage_swells_phase_l2:
-  hidden: true
-sensor.voltage_swells_phase_l3:
-  hidden: true
-sensor.long_power_failure_count:
-  hidden: true
-sensor.power_consumption_phase_l1:
-  hidden: true
-sensor.power_consumption_phase_l2:
-  hidden: true
-sensor.power_consumption_phase_l3:
-  hidden: true
-sensor.power_production_phase_l1:
-  hidden: true
-sensor.power_production_phase_l2:
-  hidden: true
-sensor.power_production_phase_l3:
-  hidden: true
+sensor.br_condition_2:
+  friendly_name: weather
