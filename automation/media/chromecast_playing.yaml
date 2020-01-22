@@ -1,7 +1,7 @@
 - alias: "Chromecast playing"
   trigger:
     - platform: state
-      entity_id: media_player.chromecast_chromecast_woonkamer
+      entity_id: media_player.chromecast_woonkamer
       to: 'playing'
   condition:
     - condition: state
@@ -19,15 +19,15 @@
 - alias: "Chromecast paused or turned off"
   trigger:
     - platform: state
-      entity_id: media_player.chromecast_chromecast_woonkamer
+      entity_id: media_player.chromecast_woonkamer
       to: 'paused'
       from: 'playing'
     - platform: state
-      entity_id: media_player.chromecast_chromecast_woonkamer
+      entity_id: media_player.chromecast_woonkamer
       to: 'off'
       from: 'playing'
     - platform: state
-      entity_id: media_player.chromecast_chromecast_woonkamer
+      entity_id: media_player.chromecast_woonkamer
       to: 'off'
       from: 'paused'
   condition:
