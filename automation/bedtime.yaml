@@ -1,33 +1,46 @@
-- alias: Bedtijd (vr, za)
+- alias: Turn off everything when sleep mode is enabled
   trigger:
-    platform: time
-    at: "01:00:00"
+    platform: state
+    entity_id: binary_sensor.sleep_mode
+    to: 'on'
   condition:
-    - condition: time
-      weekday:
-        - fri
-        - sat
     - condition: state
       entity_id: input_boolean.guest_mode
       state: 'off'
   action:
     - service: scene.turn_on
-      entity_id: scene.alle_lampen_op_begane_grond_uit
-- alias: Bedtijd (ma, di, wo, do, zo)
-  trigger:
-    platform: time
-    at: "23:00:00"
-  condition:
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - sun
-    - condition: state
-      entity_id: input_boolean.guest_mode
-      state: 'off'
-  action:
-    - service: scene.turn_on
-      entity_id: scene.alle_lampen_op_begane_grond_uit
+      entity_id: scene.turn_off_everything
+
+# - alias: Bedtijd (vr, za)
+#   trigger:
+#     platform: time
+#     at: "01:00:00"
+#   condition:
+#     - condition: time
+#       weekday:
+#         - fri
+#         - sat
+#     - condition: state
+#       entity_id: input_boolean.guest_mode
+#       state: 'off'
+#   action:
+#     - service: scene.turn_on
+#       entity_id: scene.alle_lampen_op_begane_grond_uit
+# - alias: Bedtijd (ma, di, wo, do, zo)
+#   trigger:
+#     platform: time
+#     at: "23:00:00"
+#   condition:
+#     - condition: time
+#       weekday:
+#         - mon
+#         - tue
+#         - wed
+#         - thu
+#         - sun
+#     - condition: state
+#       entity_id: input_boolean.guest_mode
+#       state: 'off'
+#   action:
+#     - service: scene.turn_on
+#       entity_id: scene.alle_lampen_op_begane_grond_uit

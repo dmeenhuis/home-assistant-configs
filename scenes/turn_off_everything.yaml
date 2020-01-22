@@ -1,4 +1,4 @@
-- name: Alle lampen uit
+- name: Turn off everything
   entities:
     group.living_room: off
     group.garage: off
@@ -7,6 +7,8 @@
     group.bedroom_d_a: off
     group.bedroom_jesper: off
     group.bedroom_jurjen: off
-    light.toiletlamp: off
-    light.badkamerlamp: off
+    group.toilet: off
+    group.bathroom: off
     switch.tv: off
+    switch.salonkast_woonkamer: off
+    light.wordclock: off

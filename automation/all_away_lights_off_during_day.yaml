@@ -3,7 +3,7 @@
   trigger:
     - platform: state
       entity_id: group.people
-      to: 'on'
+      from: 'home'
   condition:
     - condition: state
       entity_id: input_boolean.lighting_automations
@@ -15,4 +15,4 @@
       before: sunset
   action:
     - service: scene.turn_on
-      entity_id: scene.alle_lampen_uit
+      entity_id: scene.turn_off_everything
