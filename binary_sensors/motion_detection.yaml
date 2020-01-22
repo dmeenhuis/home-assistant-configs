@@ -9,6 +9,11 @@
         or is_state("binary_sensor.bewegingssensor_salonkast", "on")
         or is_state("binary_sensor.bewegingssensor_toilet", "on")
         or is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
+    house_idle:
+      friendly_name: Geen beweging in huis
+      value_template: >
+        {{ is_state("binary_sensor.motion_detected", "off") }}
+      delay_on: "00:15:00"
     motion_detected_in_last_hour:
       friendly_name: Beweging gedetecteerd in het afgelopen uur
       value_template: >

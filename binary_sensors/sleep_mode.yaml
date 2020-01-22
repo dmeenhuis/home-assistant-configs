@@ -1,14 +1,14 @@
 - platform: bayesian
   prior: 0.25
-  name: 'Bayesian sleeping'
+  name: 'Sleep mode'
   probability_threshold: 0.85
   observations:
-    - entity_id: input_boolean.person1_home
+    - entity_id: group.people
       prob_given_true: 0.99
       prob_given_false: 0.5
       platform: state
-      to_state: 'on'
-    - entity_id: 'input_boolean.house_idle'
+      to_state: 'home'
+    - entity_id: 'binary_sensor.house_idle'
       prob_given_true: 0.6
       platform: 'state'
       to_state: 'on'
