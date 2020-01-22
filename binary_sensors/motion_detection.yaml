@@ -1,0 +1,46 @@
+- platform: template
+  sensors:
+    motion_detected:
+      value_template: >-
+        {{ is_state("binary_sensor.bewegingssensor_garage", "on")
+        or is_state("binary_sensor.bewegingssensor_overloop", "on")
+        or is_state("binary_sensor.bewegingssensor_badkamer", "on")
+        or is_state("binary_sensor.bewegingssensor_keuken", "on")
+        or is_state("binary_sensor.bewegingssensor_salonkast", "on")
+        or is_state("binary_sensor.bewegingssensor_toilet", "on")
+        or is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
+    motion_detected_in_last_hour:
+      friendly_name: Beweging gedetecteerd in het afgelopen uur
+      value_template: >
+        {{ is_state("binary_sensor.motion_detected", "on") }}
+      delay_off: "01:00:00"
+    activity_in_bathroom:
+      friendly_name: Activiteit in de badkamer
+      value_template: >
+        {{ is_state("binary_sensor.bewegingssensor_badkamer", "on") }}
+      delay_off: "00:03:00"
+    activity_in_toilet:
+      friendly_name: Activiteit in the toilet
+      value_template: >
+        {{ is_state("binary_sensor.bewegingssensor_toilet", "on") }}
+      delay_off: "00:01:00"
+    activity_in_kitchen:
+      friendly_name: Activiteit in de keuken
+      value_template: >
+        {{ is_state("binary_sensor.motion_sensor_kitchen", "on") }}
+      delay_off: "00:01:00"
+    activity_in_living_room:
+      friendly_name: Activiteit in de woonkamer
+      value_template: >
+        {{ is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
+      delay_off: "00:01:00"
+    activity_overloop:
+      friendly_name: Activiteit op de overloop
+      value_template: >
+        {{ is_state("binary_sensor.bewegingssensor_overloop", "on") }}
+      delay_off: "00:01:00"
+    activity_in_garage:
+      friendly_name: Activiteit in de garage
+      value_template: >
+        {{ is_state("binary_sensor.bewegingssensor_garage", "on") }}
+      delay_off: "00:01:00"

@@ -1,6 +1,6 @@
 - platform: template
   sensors:
-    motion_at_home:
+    motion_detected:
       value_template: >-
         {%- if is_state("binary_sensor.bewegingssensor_keuken", "on")
         or is_state("binary_sensor.bewegingssensor_salonkast", "on")

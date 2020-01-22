@@ -1,0 +1,32 @@
+- platform: tod
+  name: Late night
+  after: '23:00'
+  before: '05:30'
+- platform: tod
+  name: Late evening
+  after: '22:00'
+  before: '23:00'
+- platform: tod
+  name: Early morning
+  after: '21:00'
+  before: '23:00'
+- platform: template
+  sensors:
+    late_night_workday:
+      entity_id: sensor.time
+      value_template: >
+        {{
+          (
+            (now().isoweekday() > 0 and now().isoweekday() < 4) 
+              and (
+                strptime("23:00", "%H%M") <= now().strftime("%H:%M")
+                or now().strftime("%H:%M") < strptime("05:45", "%H%M")
+              )
+          ) or (
+            (now().isoweekday() == 0 or now().isoweekday() >= 4)
+              and (
+                now().strftime("%H:%M") >= strptime("00:00", "%H%M")
+                and now().strftime("%H:%M") < strptime("07:00", "%H%M")
+              )
+          )
+        }}

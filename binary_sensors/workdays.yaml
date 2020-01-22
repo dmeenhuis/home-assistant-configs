@@ -1,0 +1,7 @@
+- platform: workday
+  name: Workday tomorrow
+  country: NL
+  days_offset: 1
+- platform: workday
+  name: Workday today
+  country: NL

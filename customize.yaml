@@ -2,7 +2,7 @@ person.dennis:
   entity_picture: "/local/dennis.jpg"
 person.antsje:
   entity_picture: "/local/antsje.jpg"
-binary_sensor.motion_at_home:
+binary_sensor.motion_detected:
   device_class: motion
 binary_sensor.late_night:
   icon: mdi-brightness-3
