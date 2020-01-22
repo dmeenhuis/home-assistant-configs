@@ -1,18 +1,18 @@
-- alias: House idle when no motion has been detected for x minutes
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_detected
-    to: 'off'
-    for:
-      minutes: 10
-  action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.house_idle
-- alias: House no longer idle when any motion has been detected
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_detected
-    to: 'on'
-  action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.house_idle
+# - alias: House idle when no motion has been detected for x minutes
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.motion_detected
+#     to: 'off'
+#     for:
+#       minutes: 10
+#   action:
+#     service: input_boolean.turn_on
+#     entity_id: input_boolean.house_idle
+# - alias: House no longer idle when any motion has been detected
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.motion_detected
+#     to: 'on'
+#   action:
+#     service: input_boolean.turn_off
+#     entity_id: input_boolean.house_idle
