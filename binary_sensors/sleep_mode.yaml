@@ -1,7 +1,7 @@
 - platform: bayesian
   prior: 0.25
   name: 'Sleep mode'
-  probability_threshold: 0.85
+  probability_threshold: 0.90
   observations:
     - entity_id: group.people
       prob_given_true: 0.99
