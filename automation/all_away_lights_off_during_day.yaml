@@ -1,5 +1,4 @@
-- alias: 'All away lights off during day'
-  initial_state: 'on'
+- alias: All away lights off during day
   trigger:
     - platform: state
       entity_id: group.people

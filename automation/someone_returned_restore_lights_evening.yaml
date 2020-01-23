@@ -13,7 +13,6 @@
       state: 'off'
     - condition: sun
       after: sunset
-      before: sunrise
   action:
     - service: scene.turn_on
       entity_id: scene.zonsondergang

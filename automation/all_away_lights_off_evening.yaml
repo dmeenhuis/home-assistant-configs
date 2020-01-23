@@ -1,5 +1,4 @@
 - alias: 'All away lights off during evening'
-  initial_state: 'on'
   trigger:
     - platform: state
       entity_id: group.people
@@ -13,7 +12,6 @@
       state: 'off'
     - condition: sun
       after: sunset
-      before: sunrise
   action:
     - service: scene.turn_on
       entity_id: scene.s_avonds_weg
