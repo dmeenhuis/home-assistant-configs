@@ -25,6 +25,7 @@ frontend:
 conversation:
 logbook:
 zeroconf:
+ffmpeg:
 history:
 config:
 webhook:
@@ -78,6 +79,7 @@ zone: !include_dir_merge_list zones/
 group: !include_dir_named groups/
 media_player: !include_dir_merge_list mediaplayers/
 binary_sensor: !include_dir_merge_list binary_sensors/
+camera: !include_dir_merge_list cameras/
 sensor: !include_dir_merge_list sensors/
 switch: !include_dir_merge_list switches/
 light: !include_dir_merge_list light/
