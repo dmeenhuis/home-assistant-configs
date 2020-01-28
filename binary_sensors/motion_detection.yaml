@@ -9,6 +9,15 @@
         or is_state("binary_sensor.bewegingssensor_salonkast", "on")
         or is_state("binary_sensor.bewegingssensor_toilet", "on")
         or is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
+    motion_detected_anywhere_except_overloop:
+      value_template: >-
+        {{ is_state("binary_sensor.bewegingssensor_garage", "on")
+        or is_state("binary_sensor.bewegingssensor_badkamer", "on")
+        or is_state("binary_sensor.bewegingssensor_keuken", "on")
+        or is_state("binary_sensor.bewegingssensor_salonkast", "on")
+        or is_state("binary_sensor.bewegingssensor_toilet", "on")
+        or is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
+      delay_off: "00:05:00"
     house_idle:
       friendly_name: Geen beweging in huis
       value_template: >
