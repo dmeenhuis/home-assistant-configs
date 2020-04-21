@@ -63,6 +63,38 @@ climate:
   accesskey: !secret nefit_access_key
   password: !secret nefit_password
 
+utility_meter:
+  daily_power_offpeak:
+    source: sensor.dsmr_reading_electricity_delivered_1
+    cycle: daily
+  daily_power_peak:
+    source: sensor.dsmr_reading_electricity_delivered_2
+    cycle: daily
+  daily_power_returned_offpeak:
+    source: sensor.dsmr_reading_electricity_returned_1
+    cycle: daily
+  daily_power_returned_peak:
+    source: sensor.dsmr_reading_electricity_returned_2
+    cycle: daily
+  daily_gas:
+    source: sensor.gas_consumption
+    cycle: daily
+  monthly_power_offpeak:
+    source: sensor.dsmr_reading_electricity_delivered_1
+    cycle: monthly
+  monthly_power_peak:
+    source: sensor.dsmr_reading_electricity_delivered_2
+    cycle: monthly
+  monthly_power_returned_offpeak:
+    source: sensor.dsmr_reading_electricity_returned_1
+    cycle: monthly
+  monthly_power_returned_peak:
+    source: sensor.dsmr_reading_electricity_returned_2
+    cycle: monthly
+  monthly_gas:
+    source: sensor.dsmr_consumption_gas_delivered
+    cycle: monthly
+
 variable:
   last_motion:
     value: 'Unknown'
