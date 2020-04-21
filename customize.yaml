@@ -12,12 +12,16 @@ sensor.br_condition_2:
   friendly_name: weather
 sensor.organic_waste_pickup:
   entity_picture: '/local/afval/gft.png'
+  friendly_name: GFT
 sensor.non_recyclable_waste_pickup:
   entity_picture: '/local/afval/rest.png'
+  friendly_name: Plastic
 sensor.paper_waste_pickup:
   entity_picture: '/local/afval/papier.png'
+  friendly_name: Papier
 sensor.plastic_waste_pickup:
   entity_picture: '/local/afval/plastic.png'
+  friendly_name: Restafval
 sensor.dsmr_day_consumption_electricity1:
   friendly_name: Elektriciteitsverbruik vandaag (laagtarief)
 sensor.dsmr_day_consumption_electricity2:
