@@ -10,3 +10,11 @@ binary_sensor.bayesian_sleeping:
   icon: mdi-brightness-3
 sensor.br_condition_2:
   friendly_name: weather
+sensor.organic_waste_pickup:
+  entity_picture: '/local/afval/gft.png'
+sensor.non_recyclable_waste_pickup:
+  entity_picture: '/local/afval/rest.png'
+sensor.paper_waste_pickup:
+  entity_picture: '/local/afval/papier.png'
+sensor.plastic_waste_pickup:
+  entity_picture: '/local/afval/plastic.png'
