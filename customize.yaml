@@ -18,3 +18,19 @@ sensor.paper_waste_pickup:
   entity_picture: '/local/afval/papier.png'
 sensor.plastic_waste_pickup:
   entity_picture: '/local/afval/plastic.png'
+sensor.dsmr_day_consumption_electricity1:
+  friendly_name: Elektriciteitsverbruik vandaag (laagtarief)
+sensor.dsmr_day_consumption_electricity2:
+  friendly_name: Elektriciteitsverbruik vandaag (hoogtarief)
+sensor.dsmr_day_consumption_electricity1_returned:
+  friendly_name: Teruglevering vandaag (laagtarief)
+sensor.dsmr_day_consumption_electricity2_returned:
+  friendly_name: Teruglevering vandaag (hoogtarief)
+sensor.dsmr_day_consumption_gas:
+  friendly_name: Gasverbruik vandaag
+sensor.dsmr_consumption_gas_currently_delivered:
+  friendly_name: Huidig gasverbruik
+sensor.dsmr_reading_electricity_currently_delivered:
+  friendly_name: Huidig elektriciteitsverbruik
+sensor.dsmr_reading_electricity_currently_returned:
+  friendly_name: Huidige teruglevering
