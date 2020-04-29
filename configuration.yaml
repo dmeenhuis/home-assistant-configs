@@ -44,6 +44,10 @@ cast:
   media_player:
     - host: 192.168.1.219
 
+spotify:
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_client_secret
+
 homekit:
   filter:
     include_domains:
@@ -52,9 +56,9 @@ homekit:
 
 panel_iframe:
   networkmap:
-    title: 'Zigbee Map'
-    url: '/local/zigbee2mqtt_networkmap/map.html'
-    icon: 'mdi:graphql'
+    title: "Zigbee Map"
+    url: "/local/zigbee2mqtt_networkmap/map.html"
+    icon: "mdi:graphql"
 
 climate:
   platform: nefit
@@ -97,7 +101,7 @@ utility_meter:
 
 variable:
   last_motion:
-    value: 'Unknown'
+    value: "Unknown"
     restore: true
     attributes:
       icon: mdi:map-marker
@@ -160,11 +164,11 @@ mqtt:
   password: !secret mqtt_password
   discovery: true
   birth_message:
-    topic: 'hass/status'
-    payload: 'online'
+    topic: "hass/status"
+    payload: "online"
   will_message:
-    topic: 'hass/status'
-    payload: 'offline'
+    topic: "hass/status"
+    payload: "offline"
 
 recorder:
   purge_interval: 1
