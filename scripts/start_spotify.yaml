@@ -31,4 +31,4 @@ start_spotify:
     - service: media_player.volume_set
       data:
         entity_id: media_player.denon_avr_x1300w
-        volume_level: 0.5
+        volume_level: 0.4
