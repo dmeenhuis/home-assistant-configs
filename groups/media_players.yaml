@@ -1,6 +1,5 @@
 name: Media players
 icon: mdi:play-box-outline
-view: yes
 entities:
   - media_player.chromecast_woonkamer
   - media_player.denon_avr_x1300w
