@@ -1,8 +1,7 @@
-- alias: 'Update Zigbee network map'  
-  hide_entity: true
+- alias: "Update Zigbee network map"
   trigger:
     platform: time_pattern
-    minutes: '/10'
+    minutes: "/10"
     seconds: 00
   action:
     service: zigbee2mqtt_networkmap.update
