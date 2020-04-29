@@ -5,7 +5,9 @@
     to: 'on'
   action:
     service: light.turn_on
-    entity_id: light.keukenspots
+    data:
+      entity_id: light.keukenspots
+      brightness_pct: 100
 - alias: Turn off kitchen lights x minutes after last movement
   trigger:
     platform: state
