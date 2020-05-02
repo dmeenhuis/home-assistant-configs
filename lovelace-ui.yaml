@@ -1,141 +1,246 @@
 background: var(--background-image)
 custom_header:
   background: rgba(155, 155, 155, 0.25)
-  button_text: {options: '{{ hours24 }}:{{ minutesLZ }}'}
+  button_text:
+    options: '{{ hours24 }}:{{ minutesLZ }}'
   compact_mode: true
   swipe_animate: fade
   swipe_prevent_default: true
-resources:
-- {type: module, url: /community_plugin/button-card/button-card.js}
-- {type: module, url: /community_plugin/simple-weather-card/simple-weather-card-bundle.js}
-- {type: module, url: /community_plugin/custom-header/custom-header.js}
-- {type: module, url: /community_plugin/lovelace-slider-entity-row/slider-entity-row.js}
-- {type: module, url: /community_plugin/lovelace-auto-entities/auto-entities.js}
-- {type: module, url: /community_plugin/mini-media-player/mini-media-player-bundle.js}
 title: D&A
 views:
-- badges: [person.dennis, person.antsje, sensor.br_condition_2, sun.sun]
+- badges:
+  - person.dennis
+  - person.antsje
+  - sensor.br_condition_2
+  - sun.sun
   cards:
   - entities:
-    - {entity: light.hoekwoonkamerlamp, type: 'custom:slider-entity-row'}
-    - {entity: light.middenwoonkamerlamp, type: 'custom:slider-entity-row'}
-    - {entity: light.woonkamerlamp_linksvoor, type: 'custom:slider-entity-row'}
-    - {entity: light.woonkamerlamp_rechtsvoor, type: 'custom:slider-entity-row'}
-    - {entity: switch.salonkast_woonkamer}
+    - entity: light.hoekwoonkamerlamp
+      type: custom:slider-entity-row
+    - entity: light.middenwoonkamerlamp
+      type: custom:slider-entity-row
+    - entity: light.woonkamerlamp_linksvoor
+      type: custom:slider-entity-row
+    - entity: light.woonkamerlamp_rechtsvoor
+      type: custom:slider-entity-row
+    - entity: switch.salonkast_woonkamer
     - switch.tv
     show_header_toggle: true
     title: Woonkamer
     type: entities
   - entities:
-    - {entity: light.keukenspots, type: 'custom:slider-entity-row'}
-    - {entity: light.wordclock}
+    - entity: light.keukenspots
+      type: custom:slider-entity-row
+    - entity: light.wordclock
     show_header_toggle: true
     title: Keuken
     type: entities
   - entities:
-    - {entity: light.voordeurlamp_buiten, type: 'custom:slider-entity-row'}
+    - entity: light.voordeurlamp_buiten
+      type: custom:slider-entity-row
     - binary_sensor.deursensor_voordeur
     show_header_toggle: true
     title: Buiten
     type: entities
+  - cards:
+    - cards:
+      - entities:
+        - entity: sensor.dsmr_reading_electricity_currently_delivered
+          name: Verbruik
+          show_indicator: true
+          show_legend: false
+          show_state: true
+        - color: green
+          entity: sensor.dsmr_reading_electricity_currently_returned
+          name: Teruglevering
+          show_indicator: true
+          show_legend: false
+          show_state: true
+        legend: false
+        line_width: 3
+        name: Energieverbruik
+        show:
+          fill: fade
+          graph: line
+        type: custom:mini-graph-card
+      type: horizontal-stack
+    - cards:
+      - entities:
+        - color: red
+          entity: sensor.dsmr_consumption_gas_currently_delivered
+        name: Gas
+        show:
+          fill: fade
+          graph: line
+        type: custom:mini-graph-card
+      - entities:
+        - entity: sensor.dsmr_day_consumption_total_cost
+        name: Kosten vandaag
+        show:
+          fill: fade
+          graph: line
+        type: custom:mini-graph-card
+      type: horizontal-stack
+    type: vertical-stack
   - entities:
-    - {entity: light.overlooplamp, type: 'custom:slider-entity-row'}
+    - entity: light.overlooplamp
+      type: custom:slider-entity-row
     show_header_toggle: true
     title: Overloop
     type: entities
-  - entities: [light.garagelamp, binary_sensor.deursensor_garage]
+  - entities:
+    - light.garagelamp
+    - binary_sensor.deursensor_garage
     show_header_toggle: true
     title: Garage
     type: entities
-  - entities: [light.toiletlamp]
+  - entities:
+    - light.toiletlamp
     show_header_toggle: true
     title: Toilet
     type: entities
   - entities:
-    - {entity: light.badkamerlamp, type: 'custom:slider-entity-row'}
+    - entity: light.badkamerlamp
+      type: custom:slider-entity-row
     show_header_toggle: true
     title: Badkamer
     type: entities
-  - card: {title: Batterij bijna leeg, type: entities}
+  - card:
+      title: Batterij bijna leeg
+      type: entities
     filter:
       include:
-      - attributes: {battery: < 25}
+      - attributes:
+          battery: < 25
         entity_id: sensor.*battery*
     show_empty: false
     show_header_toggle: false
     type: custom:auto-entities
-  - {entity: climate.verwarming, type: thermostat}
-  - {entity: weather.dark_sky, name: Weather, type: 'custom:simple-weather-card'}
-  - icon: mdi:sofa
-    name: Play music in living room
-    styles:
-      card:
-      - {font-size: 12px}
-      - {font-weight: bold}
-      - {height: 70px}
-    tap_action:
-      action: call-service
-      service: script.start_spotify
-      service_data: {playlist: 37i9dQZF1DX4sWSpwq3LiO}
-    type: custom:button-card
-  - card: {title: Bewegingssensoren, type: entities}
+  - entity: climate.verwarming
+    type: thermostat
+  - entity: weather.dark_sky
+    name: Weather
+    type: custom:simple-weather-card
+  - entities:
+    - input_boolean.guest_mode
+    - input_boolean.holiday_mode
+    show_header_toggle: false
+    title: Instellingen
+    type: entities
+  - cards:
+    - icon: mdi:music
+      name: Play Peaceful Piano
+      styles:
+        card:
+        - font-size: 12px
+        - font-weight: bold
+        - height: 70px
+      tap_action:
+        action: call-service
+        service: script.start_spotify
+        service_data:
+          playlist: 37i9dQZF1DX4sWSpwq3LiO
+      type: custom:button-card
+    - icon: mdi:music
+      name: Play Acoustic Favorites
+      styles:
+        card:
+        - font-size: 12px
+        - font-weight: bold
+        - height: 70px
+      tap_action:
+        action: call-service
+        service: script.start_spotify
+        service_data:
+          playlist: 37i9dQZF1DWX9VXBLRgDqu
+      type: custom:button-card
+    type: horizontal-stack
+  - card:
+      title: Bewegingssensoren
+      type: entities
     filter:
       include:
-      - {entity_id: binary_sensor.bewegingssensor*, state: 'on'}
+      - entity_id: binary_sensor.bewegingssensor*
+        state: 'on'
     show_empty: false
     show_header_toggle: false
     type: custom:auto-entities
-  - card: {title: Afhaalophaalschema, type: entities}
+  - card:
+      show_header_toggle: false
+      title: Afvalophaalschema
+      type: entities
     filter:
       include:
-      - {entity_id: sensor.*_waste_pickup}
-    show_header_toggle: false
-    sort: {method: state}
+      - entity_id: sensor.*_waste_pickup
+    sort:
+      method: state
     type: custom:auto-entities
-  - artwork: cover
-    entity: media_player.d_a_s_chromecast
-    hide: {power: true, source: false, volume: true}
-    icon: mdi:chromecast
-    type: custom:mini-media-player
   icon: mdi:home
   path: default_view
   title: Home
 - badges: []
   cards:
-  - entities: [input_datetime.wakeup_time, input_number.wakeup_turn_off_after, input_boolean.wakeup_enabled,
-      input_boolean.wakeup_weekend]
+  - entities:
+    - input_datetime.wakeup_time
+    - input_number.wakeup_turn_off_after
+    - input_boolean.wakeup_enabled
+    - input_boolean.wakeup_weekend
     show_header_toggle: true
     title: Wake-up lights
-    type: entities
-  - entities: [input_boolean.guest_mode]
-    show_header_toggle: true
-    title: Instellingen
     type: entities
   icon: mdi:settings
   path: configuration
   title: Configuration
 - badges: []
   cards:
-  - {entity: media_player.d_a_s_chromecast, type: media-control}
-  - {entity: media_player.denon_avr_x1300w, type: media-control}
-  - {entity: media_player.kodi_media_player, type: media-control}
+  - entity: media_player.d_a_s_chromecast
+    type: media-control
+  - entity: media_player.denon_avr_x1300w
+    type: media-control
+  - entity: media_player.kodi_media_player
+    type: media-control
+  - entity: media_player.spotify
+    type: media-control
   icon: mdi:play-box-outline
   path: media_players
   title: Media players
-- badges: [sensor.zigbee2mqtt_bridge_state, timer.zigbee_permit_join]
+- badges:
+  - sensor.zigbee2mqtt_bridge_state
+  - timer.zigbee_permit_join
   cards:
-  - entities: [automation.zigbee2mqtt_log_level]
+  - entities:
+    - automation.zigbee2mqtt_log_level
     title: Automation
     type: entities
-  - entities: [input_boolean.zigbee_permit_join]
+  - entities:
+    - input_boolean.zigbee_permit_join
     title: Input boolean
     type: entities
-  - entities: [input_select.zigbee2mqtt_log_level]
+  - entities:
+    - input_select.zigbee2mqtt_log_level
     title: Input select
     type: entities
-  - entities: [switch.zigbee2mqtt_main_join]
+  - entities:
+    - switch.zigbee2mqtt_main_join
     title: Switch
     type: entities
   icon: mdi:rss-box
   path: zigbee2mqtt
   title: zigbee2mqtt
+- badges: []
+  cards:
+  - entities:
+    - sensor.dsmr_day_consumption_electricity1
+    - sensor.dsmr_day_consumption_electricity2
+    - sensor.dsmr_day_consumption_electricity1_returned
+    - sensor.dsmr_day_consumption_electricity2_returned
+    - sensor.dsmr_day_consumption_gas
+    - sensor.dsmr_consumption_gas_currently_delivered
+    - sensor.dsmr_reading_electricity_currently_delivered
+    - sensor.dsmr_reading_electricity_currently_returned
+    show_header_toggle: false
+    title: Energieverbruik
+    type: entities
+  icon: mdi:counter
+  path: energieverbruik
+  title: Energieverbruik
