@@ -33,6 +33,19 @@ system_health:
 mobile_app:
 map:
 
+ios:
+  push:
+    categories:
+      - name: waste pickup
+        identifier: "wastepickup"
+        actions:
+          - identifier: "DONE"
+            title: "Klaar"
+            destructive: no
+          - identifier: "SNOOZE"
+            title: "Snooze"
+            destructive: yes
+
 zigbee2mqtt_networkmap:
 
 cast:
