@@ -119,7 +119,5 @@ class RpiWordclock(Light):
         self._state = True if self._brightness > self._off_brightness else False
 
     def log(self, reply):
-        _LOGGER.info("Communication with rpi_wordclock " + self._name + " succeeded.")
-        _LOGGER.info(reply.text)
         if not reply.status_code == requests.codes.ok:
-            _LOGGER.error("Communication with rpi_wordclock " + self._name + " failed.")
+            _LOGGER.error("Communication with rpi_wordclock " + self._name + " failed: " + reply.text)
