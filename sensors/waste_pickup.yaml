@@ -4,8 +4,192 @@
       entity_id: sensor.time
       friendly_name: Plastic
       entity_picture_template: '/local/afval/plastic.png'
+      attribute_templates:
+        pickup_date: "{{ states('sensor.plastic_waste_pickup') }}"
+        pickup_day: >
+          {% set day = strptime(states('sensor.plastic_waste_pickup'), '%Y-%m-%d').timestamp() | timestamp_custom('%A') %}
+          {% if(day == "Monday") %}
+          Maandag
+          {% elif(day == "Tuesday") %}
+          Dinsdag
+          {% elif(day == "Wednesday") %}
+          Woensdag
+          {% elif(day == "Thursday") %}
+          Donderdag
+          {% elif(day == "Friday") %}
+          Vrijdag
+          {% elif(day == "Saturday") %}
+          Zaterdag
+          {% elif(day == "Sunday") %}
+          Zondag
+          {% endif %}
       value_template: >
         {% set sensor_date = strptime(states('sensor.plastic_waste_pickup'), "%Y-%m-%d").timestamp() | timestamp_custom('%Y%m%d') %}
+        {% set day = 86400 %}
+        {% set today = now().timestamp() | timestamp_custom('%Y%m%d') %}
+        {% set now_ts = now().timestamp() %}
+        {% set tomorrow = (now_ts | int + day) | timestamp_custom('%Y%m%d') %}
+        {% set in_two_days = (now_ts | int + (2 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_three_days = (now_ts | int + (3 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_four_days = (now_ts | int + (4 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_five_days = (now_ts | int + (5 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_six_days = (now_ts | int + (6 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_week = (now_ts | int + (7 * day)) | timestamp_custom('%Y%m%d') %}
+
+        {% if(sensor_date == today) %}
+        Vandaag
+        {% elif(sensor_date == tomorrow) %}
+        Morgen
+        {% elif(sensor_date == in_two_days) %}
+        2 dagen
+        {% elif(sensor_date == in_three_days) %}
+        3 dagen
+        {% elif(sensor_date == in_four_days) %}
+        4 dagen
+        {% elif(sensor_date == in_five_days) %}
+        5 dagen
+        {% elif(sensor_date == in_six_days) %}
+        6 dagen
+        {% elif(sensor_date == in_week) %}
+        1 week
+        {% elif(sensor_date > in_week) %}
+        meer dan een week
+        {% endif %}
+    organic_waste_pickup_custom:
+      entity_id: sensor.time
+      friendly_name: GFT
+      entity_picture_template: '/local/afval/gft.png'
+      attribute_templates:
+        pickup_date: "{{ states('sensor.organic_waste_pickup') }}"
+        pickup_day: >
+          {% set day = strptime(states('sensor.plastic_waste_pickup'), '%Y-%m-%d').timestamp() | timestamp_custom('%A') %}
+          {% if(day == "Monday") %}
+          Maandag
+          {% elif(day == "Tuesday") %}
+          Dinsdag
+          {% elif(day == "Wednesday") %}
+          Woensdag
+          {% elif(day == "Thursday") %}
+          Donderdag
+          {% elif(day == "Friday") %}
+          Vrijdag
+          {% elif(day == "Saturday") %}
+          Zaterdag
+          {% elif(day == "Sunday") %}
+          Zondag
+          {% endif %}
+      value_template: >
+        {% set sensor_date = strptime(states('sensor.organic_waste_pickup'), "%Y-%m-%d").timestamp() | timestamp_custom('%Y%m%d') %}
+        {% set day = 86400 %}
+        {% set today = now().timestamp() | timestamp_custom('%Y%m%d') %}
+        {% set now_ts = now().timestamp() %}
+        {% set tomorrow = (now_ts | int + day) | timestamp_custom('%Y%m%d') %}
+        {% set in_two_days = (now_ts | int + (2 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_three_days = (now_ts | int + (3 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_four_days = (now_ts | int + (4 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_five_days = (now_ts | int + (5 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_six_days = (now_ts | int + (6 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_week = (now_ts | int + (7 * day)) | timestamp_custom('%Y%m%d') %}
+
+        {% if(sensor_date == today) %}
+        Vandaag
+        {% elif(sensor_date == tomorrow) %}
+        Morgen
+        {% elif(sensor_date == in_two_days) %}
+        2 dagen
+        {% elif(sensor_date == in_three_days) %}
+        3 dagen
+        {% elif(sensor_date == in_four_days) %}
+        4 dagen
+        {% elif(sensor_date == in_five_days) %}
+        5 dagen
+        {% elif(sensor_date == in_six_days) %}
+        6 dagen
+        {% elif(sensor_date == in_week) %}
+        1 week
+        {% elif(sensor_date > in_week) %}
+        meer dan een week
+        {% endif %}
+    non_recyclable_waste_pickup_custom:
+      entity_id: sensor.time
+      friendly_name: Restafval
+      entity_picture_template: '/local/afval/rest.png'
+      attribute_templates:
+        pickup_date: "{{ states('sensor.non_recyclable_waste_pickup') }}"
+        pickup_day: >
+          {% set day = strptime(states('sensor.plastic_waste_pickup'), '%Y-%m-%d').timestamp() | timestamp_custom('%A') %}
+          {% if(day == "Monday") %}
+          Maandag
+          {% elif(day == "Tuesday") %}
+          Dinsdag
+          {% elif(day == "Wednesday") %}
+          Woensdag
+          {% elif(day == "Thursday") %}
+          Donderdag
+          {% elif(day == "Friday") %}
+          Vrijdag
+          {% elif(day == "Saturday") %}
+          Zaterdag
+          {% elif(day == "Sunday") %}
+          Zondag
+          {% endif %}
+      value_template: >
+        {% set sensor_date = strptime(states('sensor.non_recyclable_waste_pickup'), "%Y-%m-%d").timestamp() | timestamp_custom('%Y%m%d') %}
+        {% set day = 86400 %}
+        {% set today = now().timestamp() | timestamp_custom('%Y%m%d') %}
+        {% set now_ts = now().timestamp() %}
+        {% set tomorrow = (now_ts | int + day) | timestamp_custom('%Y%m%d') %}
+        {% set in_two_days = (now_ts | int + (2 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_three_days = (now_ts | int + (3 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_four_days = (now_ts | int + (4 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_five_days = (now_ts | int + (5 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_six_days = (now_ts | int + (6 * day)) | timestamp_custom('%Y%m%d') %}
+        {% set in_week = (now_ts | int + (7 * day)) | timestamp_custom('%Y%m%d') %}
+
+        {% if(sensor_date == today) %}
+        Vandaag
+        {% elif(sensor_date == tomorrow) %}
+        Morgen
+        {% elif(sensor_date == in_two_days) %}
+        2 dagen
+        {% elif(sensor_date == in_three_days) %}
+        3 dagen
+        {% elif(sensor_date == in_four_days) %}
+        4 dagen
+        {% elif(sensor_date == in_five_days) %}
+        5 dagen
+        {% elif(sensor_date == in_six_days) %}
+        6 dagen
+        {% elif(sensor_date == in_week) %}
+        1 week
+        {% elif(sensor_date > in_week) %}
+        meer dan een week
+        {% endif %}
+    paper_waste_pickup_custom:
+      entity_id: sensor.time
+      friendly_name: Papier
+      entity_picture_template: '/local/afval/papier.png'
+      attribute_templates:
+        pickup_date: "{{ states('sensor.paper_waste_pickup') }}"
+        pickup_day: >
+          {% set day = strptime(states('sensor.plastic_waste_pickup'), '%Y-%m-%d').timestamp() | timestamp_custom('%A') %}
+          {% if(day == "Monday") %}
+          Maandag
+          {% elif(day == "Tuesday") %}
+          Dinsdag
+          {% elif(day == "Wednesday") %}
+          Woensdag
+          {% elif(day == "Thursday") %}
+          Donderdag
+          {% elif(day == "Friday") %}
+          Vrijdag
+          {% elif(day == "Saturday") %}
+          Zaterdag
+          {% elif(day == "Sunday") %}
+          Zondag
+          {% endif %}
+      value_template: >
+        {% set sensor_date = strptime(states('sensor.paper_waste_pickup'), "%Y-%m-%d").timestamp() | timestamp_custom('%Y%m%d') %}
         {% set day = 86400 %}
         {% set today = now().timestamp() | timestamp_custom('%Y%m%d') %}
         {% set now_ts = now().timestamp() %}
