@@ -1,0 +1,4 @@
+name: "Snooze timer"
+has_time: true
+has_date: false
+initial: "00:15"

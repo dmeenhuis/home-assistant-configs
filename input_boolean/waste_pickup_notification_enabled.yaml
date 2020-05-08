@@ -1,0 +1,3 @@
+name: "Waste pickup light notifications"
+initial: on
+icon: mdi:bell-ring

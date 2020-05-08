@@ -1,0 +1,4 @@
+name: "Send waste pickup notification at"
+has_time: true
+has_date: false
+initial: "20:00"
