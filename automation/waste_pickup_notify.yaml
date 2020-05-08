@@ -19,6 +19,8 @@
         data:
           push:
             category: "wastepickup"
+          action_data:
+            entity_id: sensor.plastic_waste_pickup_custom
     - service: notify.mobile_app_pocophone
       data:
         title: Oranje container aan de weg zetten
@@ -46,6 +48,8 @@
         data:
           push:
             category: "wastepickup"
+          action_data:
+            entity_id: sensor.organic_waste_pickup_custom
     - service: notify.mobile_app_pocophone
       data:
         title: Groene container aan de weg zetten
@@ -73,6 +77,8 @@
         data:
           push:
             category: "wastepickup"
+          action_data:
+            entity_id: sensor.non_recyclabe_waste_pickup_custom
     - service: notify.mobile_app_pocophone
       data:
         title: Grijze container aan de weg zetten
@@ -100,6 +106,8 @@
         data:
           push:
             category: "wastepickup"
+          action_data:
+            entity_id: sensor.paper_waste_pickup_custom
     - service: notify.mobile_app_pocophone
       data:
         title: Blauwe container aan de weg zetten
