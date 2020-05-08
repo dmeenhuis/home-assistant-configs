@@ -1,16 +1,24 @@
 - alias: "Send notification when plastic waste pickup is tomorrow"
   trigger:
-    platform: state
-    entity_id: sensor.plastic_waste_pickup_custom
-    to: 'Morgen'
+    platform: template
+    value_template: "{{ states('sensor.time') == (states.input_datetime.waste_pickup_notification_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
   condition:
-    condition: time
-    after: '20:00:00'
+    - condition: state
+      entity_id: input_boolean.waste_pickup_notification_enabled
+      state: "on"
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: sensor.plastic_waste_pickup_custom
+          state: "Morgen"
   action:
     - service: notify.mobile_app_iphone
       data:
         title: Oranje container aan de weg zetten
         message: "{{ state_attr('sensor.plastic_waste_pickup_custom', 'pickup_day') }} wordt de container voor plasticafval geleegd."
+        data:
+          push:
+            category: "wastepickup"
     - service: notify.mobile_app_pocophone
       data:
         title: Oranje container aan de weg zetten
@@ -19,17 +27,25 @@
 
 - alias: "Send notification when organic waste pickup is tomorrow"
   trigger:
-    platform: state
-    entity_id: sensor.organic_waste_pickup_custom
-    to: 'Morgen'
+    platform: template
+    value_template: "{{ states('sensor.time') == (states.input_datetime.waste_pickup_notification_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
   condition:
-    condition: time
-    after: '20:00:00'
+    - condition: state
+      entity_id: input_boolean.waste_pickup_notification_enabled
+      state: "on"
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: sensor.organic_waste_pickup_custom
+          state: "Morgen"
   action:
     - service: notify.mobile_app_iphone
       data:
         title: Groene container aan de weg zetten
         message: "{{ state_attr('sensor.organic_waste_pickup_custom', 'pickup_day') }} wordt de container voor groenafval geleegd."
+        data:
+          push:
+            category: "wastepickup"
     - service: notify.mobile_app_pocophone
       data:
         title: Groene container aan de weg zetten
@@ -38,17 +54,25 @@
 
 - alias: "Send notification when non-recyclable waste pickup is tomorrow"
   trigger:
-    platform: state
-    entity_id: sensor.non_recyclable_waste_pickup_custom
-    to: 'Morgen'
+    platform: template
+    value_template: "{{ states('sensor.time') == (states.input_datetime.waste_pickup_notification_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
   condition:
-    condition: time
-    after: '20:00:00'
+    - condition: state
+      entity_id: input_boolean.waste_pickup_notification_enabled
+      state: "on"
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: sensor.non_recyclable_waste_pickup_custom
+          state: "Morgen"
   action:
     - service: notify.mobile_app_iphone
       data:
         title: Grijze container aan de weg zetten
         message: "{{ state_attr('sensor.non_recyclable_waste_pickup_custom', 'pickup_day') }} wordt de container voor restafval geleegd."
+        data:
+          push:
+            category: "wastepickup"
     - service: notify.mobile_app_pocophone
       data:
         title: Grijze container aan de weg zetten
@@ -57,17 +81,25 @@
 
 - alias: "Send notification when paper waste pickup is tomorrow"
   trigger:
-    platform: state
-    entity_id: sensor.paper_waste_pickup_custom
-    to: 'Morgen'
+    platform: template
+    value_template: "{{ states('sensor.time') == (states.input_datetime.waste_pickup_notification_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
   condition:
-    condition: time
-    after: '20:00:00'
+    - condition: state
+      entity_id: input_boolean.waste_pickup_notification_enabled
+      state: "on"
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: sensor.paper_waste_pickup_custom
+          state: "Morgen"
   action:
     - service: notify.mobile_app_iphone
       data:
         title: Blauwe container aan de weg zetten
         message: "{{ state_attr('sensor.paper_waste_pickup_custom', 'pickup_day') }} wordt de container voor papierafval geleegd."
+        data:
+          push:
+            category: "wastepickup"
     - service: notify.mobile_app_pocophone
       data:
         title: Blauwe container aan de weg zetten
