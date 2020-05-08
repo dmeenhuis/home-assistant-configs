@@ -1,0 +1,5 @@
+name: Waste pickup
+entities:
+  - input_boolean.waste_pickup_notification_enabled
+  - input_datetime.waste_pickup_notification_time
+  - input_datetime.waste_pickup_notification_snooze_time
