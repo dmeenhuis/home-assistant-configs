@@ -8,11 +8,11 @@
   action:
     - service: notify.mobile_app_iphone
       data:
-        title: "*Voordeur staat open*"
+        title: "Voordeur staat open"
         message: "De voordeur staat al 2 minuten open, misschien ben je vergeten deze te sluiten?"
     - service: notify.mobile_app_pocophone
       data:
-        title: "*Voordeur staat open*"
+        title: "Voordeur staat open"
         message: "De voordeur staat al 2 minuten open, misschien ben je vergeten deze te sluiten?"
     - service: input_boolean.turn_on
       entity_id: input_boolean.frontdoor_alert_triggered
@@ -30,9 +30,9 @@
       entity_id: input_boolean.frontdoor_alert_triggered
     - service: notify.mobile_app_iphone
       data:
-        title: "*Voordeur is weer gesloten*"
-        message: "De voordeur is weer gesloten nadat deze te lang open is geweest."
+        title: "Voordeur is weer gesloten"
+        message: "De voordeur is weer gesloten."
     - service: notify.mobile_app_pocophone
       data:
-        title: "*Voordeur is weer gesloten*"
-        message: "De voordeur is weer gesloten nadat deze te lang open is geweest."
+        title: "Voordeur is weer gesloten"
+        message: "De voordeur is weer gesloten."

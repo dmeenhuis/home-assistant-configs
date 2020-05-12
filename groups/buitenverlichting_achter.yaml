@@ -1,0 +1,5 @@
+name: Buitenverlichting achter
+icon: mdi:lightbulb
+entities:
+  - light.buitenlamp_achter
+  - switch.buitenverlichting_lichtsnoer
