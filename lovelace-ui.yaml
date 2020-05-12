@@ -14,6 +14,38 @@ views:
   - sensor.br_condition_2
   - sun.sun
   cards:
+  - cards:
+    - icon: mdi:music
+      name: Play Peaceful Piano
+      styles:
+        card:
+        - font-size: 12px
+        - font-weight: bold
+        - height: 70px
+      tap_action:
+        action: call-service
+        service: script.start_spotify
+        service_data:
+          playlist: 37i9dQZF1DX4sWSpwq3LiO
+      type: custom:button-card
+    - icon: mdi:music
+      name: Play Acoustic Favorites
+      styles:
+        card:
+        - font-size: 12px
+        - font-weight: bold
+        - height: 70px
+      tap_action:
+        action: call-service
+        service: script.start_spotify
+        service_data:
+          playlist: 37i9dQZF1DWX9VXBLRgDqu
+      type: custom:button-card
+    type: horizontal-stack
+  - entity: media_player.spotify
+    hide:
+      progress: true
+    type: custom:mini-media-player
   - entities:
     - entity: light.hoekwoonkamerlamp
       type: custom:slider-entity-row
@@ -39,6 +71,7 @@ views:
     - entity: light.voordeurlamp_buiten
       type: custom:slider-entity-row
     - binary_sensor.deursensor_voordeur
+    - group.buitenverlichting_achter
     show_header_toggle: true
     title: Buiten
     type: entities
@@ -127,34 +160,6 @@ views:
     show_header_toggle: false
     title: Instellingen
     type: entities
-  - cards:
-    - icon: mdi:music
-      name: Play Peaceful Piano
-      styles:
-        card:
-        - font-size: 12px
-        - font-weight: bold
-        - height: 70px
-      tap_action:
-        action: call-service
-        service: script.start_spotify
-        service_data:
-          playlist: 37i9dQZF1DX4sWSpwq3LiO
-      type: custom:button-card
-    - icon: mdi:music
-      name: Play Acoustic Favorites
-      styles:
-        card:
-        - font-size: 12px
-        - font-weight: bold
-        - height: 70px
-      tap_action:
-        action: call-service
-        service: script.start_spotify
-        service_data:
-          playlist: 37i9dQZF1DWX9VXBLRgDqu
-      type: custom:button-card
-    type: horizontal-stack
   - card:
       title: Bewegingssensoren
       type: entities
@@ -185,8 +190,15 @@ views:
     - input_number.wakeup_turn_off_after
     - input_boolean.wakeup_enabled
     - input_boolean.wakeup_weekend
-    show_header_toggle: true
+    show_header_toggle: false
     title: Wake-up lights
+    type: entities
+  - entities:
+    - input_boolean.waste_pickup_notification_enabled
+    - input_datetime.waste_pickup_notification_time
+    - input_datetime.waste_pickup_notification_snooze_time
+    show_header_toggle: false
+    title: Waste pickup notifications
     type: entities
   icon: mdi:settings
   path: configuration
