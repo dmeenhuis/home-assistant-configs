@@ -8,7 +8,9 @@
     group.bedroom_jesper: off
     group.bedroom_jurjen: off
     group.toilet: off
+    group.buitenverlichting_achter: off
     group.bathroom: off
     switch.tv: off
     switch.salonkast_woonkamer: off
     light.wordclock: off
+    media_player.denon_avr_x1300w: off
