@@ -2,7 +2,7 @@
   trigger:
     platform: sun
     event: sunset
-    offset: "0:45:00"
+    offset: "0:30:00"
   action:
     service: homeassistant.turn_on
     entity_id: group.buitenverlichting_achter
