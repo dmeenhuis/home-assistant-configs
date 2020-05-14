@@ -12,7 +12,7 @@
           entity_id: sensor.plastic_waste_pickup_custom
           state: "Morgen"
   action:
-    - service: notify.mobile_app_iphone
+    - service: notify.all_devices
       data:
         title: Oranje container aan de weg zetten
         message: "{{ state_attr('sensor.plastic_waste_pickup_custom', 'pickup_day') }} wordt de container voor plasticafval geleegd."
@@ -21,11 +21,6 @@
             category: "wastepickup"
           action_data:
             entity_id: sensor.plastic_waste_pickup_custom
-    - service: notify.mobile_app_pocophone
-      data:
-        title: Oranje container aan de weg zetten
-        message: "{{ state_attr('sensor.plastic_waste_pickup_custom', 'pickup_day') }} wordt de container voor plasticafval geleegd."
-        sticky: true
 
 - alias: "Send notification when organic waste pickup is tomorrow"
   trigger:
@@ -41,7 +36,7 @@
           entity_id: sensor.organic_waste_pickup_custom
           state: "Morgen"
   action:
-    - service: notify.mobile_app_iphone
+    - service: notify.all_devices
       data:
         title: Groene container aan de weg zetten
         message: "{{ state_attr('sensor.organic_waste_pickup_custom', 'pickup_day') }} wordt de container voor groenafval geleegd."
@@ -50,11 +45,6 @@
             category: "wastepickup"
           action_data:
             entity_id: sensor.organic_waste_pickup_custom
-    - service: notify.mobile_app_pocophone
-      data:
-        title: Groene container aan de weg zetten
-        message: "{{ state_attr('sensor.organic_waste_pickup_custom', 'pickup_day') }} wordt de container voor groenafval geleegd."
-        sticky: true
 
 - alias: "Send notification when non-recyclable waste pickup is tomorrow"
   trigger:
@@ -70,7 +60,7 @@
           entity_id: sensor.non_recyclable_waste_pickup_custom
           state: "Morgen"
   action:
-    - service: notify.mobile_app_iphone
+    - service: notify.all_devices
       data:
         title: Grijze container aan de weg zetten
         message: "{{ state_attr('sensor.non_recyclable_waste_pickup_custom', 'pickup_day') }} wordt de container voor restafval geleegd."
@@ -79,11 +69,6 @@
             category: "wastepickup"
           action_data:
             entity_id: sensor.non_recyclabe_waste_pickup_custom
-    - service: notify.mobile_app_pocophone
-      data:
-        title: Grijze container aan de weg zetten
-        message: "{{ state_attr('sensor.non_recyclable_waste_pickup_custom', 'pickup_day') }} wordt de container voor restafval geleegd."
-        sticky: true
 
 - alias: "Send notification when paper waste pickup is tomorrow"
   trigger:
@@ -99,7 +84,7 @@
           entity_id: sensor.paper_waste_pickup_custom
           state: "Morgen"
   action:
-    - service: notify.mobile_app_iphone
+    - service: notify.all_devices
       data:
         title: Blauwe container aan de weg zetten
         message: "{{ state_attr('sensor.paper_waste_pickup_custom', 'pickup_day') }} wordt de container voor papierafval geleegd."
@@ -108,8 +93,3 @@
             category: "wastepickup"
           action_data:
             entity_id: sensor.paper_waste_pickup_custom
-    - service: notify.mobile_app_pocophone
-      data:
-        title: Blauwe container aan de weg zetten
-        message: "{{ state_attr('sensor.paper_waste_pickup_custom', 'pickup_day') }} wordt de container voor papierafval geleegd."
-        sticky: true
