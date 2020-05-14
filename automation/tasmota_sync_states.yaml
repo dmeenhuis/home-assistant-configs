@@ -1,0 +1,16 @@
+- alias: Sync Tasmota states
+  initial_state: true
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+  # sync state for devices with default fulltopics
+  - service: mqtt.publish
+    data:
+      topic: cmnd/tasmotas/state
+      payload: ''
+  # sync state for autodiscovery devices
+  - service: mqtt.publish
+    data:
+      topic: tasmotas/cmnd/state
+      payload: ''
