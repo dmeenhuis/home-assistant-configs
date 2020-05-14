@@ -33,6 +33,13 @@ system_health:
 mobile_app:
 map:
 
+notify:
+  - name: all_devices
+    platform: group
+    services:
+      - service: mobile_app_iphone
+      - service: mobile_app_pocophone
+
 ios:
   push:
     categories:
