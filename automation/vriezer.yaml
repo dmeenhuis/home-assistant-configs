@@ -1,0 +1,29 @@
+- alias: "Send notification when freezer switch is turned off"
+  trigger:
+    platform: state
+    entity_id: switch.schakelaar_vriezer
+    to: "off"
+    for:
+      minutes: 1
+  action:
+    - service: notify.all_devices
+      data:
+        title: De schakelaar van de vriezer is uitgeschakeld
+        message: "Controleer de schakelaar voordat alles ontdooit!"
+
+- alias: "Send notification when freezer drawers no power"
+  trigger:
+    platform: state
+    entity_id: sensor.vriezer_energy_current
+    to: 0
+    for:
+      minutes: 5
+  condition:
+    - condition: state
+      entity_id: switch.schakelaar_vriezer
+      state: "on"
+  action:
+    - service: notify.all_devices
+      data:
+        title: De vriezer lijkt geen stroom te verbruiken
+        message: "Controleer de vriezer voordat alles ontdooit!"
