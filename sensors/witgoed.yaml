@@ -15,7 +15,7 @@
       friendly_name: Status wasmachine
       value_template: >
         {% set current_power = (states('sensor.wasmachine_energy_power') | float) %}
-        {% if (current_power) > 10 %}
+        {% if (current_power) > 25 %}
         running
         {% elif (current_power > 0) %}
         idle
@@ -26,7 +26,7 @@
       friendly_name: Status wasdroger
       value_template: >
         {% set current_power = (states('sensor.wasdroger_energy_power') | float) %}
-        {% if (current_power) > 10 %}
+        {% if (current_power) > 25 %}
         running
         {% elif (current_power > 0) %}
         idle
