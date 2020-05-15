@@ -1,0 +1,35 @@
+- platform: template
+  sensors:
+    status_vaatwasser:
+      friendly_name: Status vaatwasser
+      value_template: >
+        {% set current_power = (states('sensor.vaatwasser_energy_power') | float) %}
+        {% if (current_power) > 10 %}
+        running
+        {% elif (current_power > 0) %}
+        idle
+        {% else %}
+        off
+        {% endif %}
+    status_wasmachine:
+      friendly_name: Status wasmachine
+      value_template: >
+        {% set current_power = (states('sensor.wasmachine_energy_power') | float) %}
+        {% if (current_power) > 10 %}
+        running
+        {% elif (current_power > 0) %}
+        idle
+        {% else %}
+        off
+        {% endif %}
+    status_wasdroger:
+      friendly_name: Status wasdroger
+      value_template: >
+        {% set current_power = (states('sensor.wasdroger_energy_power') | float) %}
+        {% if (current_power) > 10 %}
+        running
+        {% elif (current_power > 0) %}
+        idle
+        {% else %}
+        off
+        {% endif %}
