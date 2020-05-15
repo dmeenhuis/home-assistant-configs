@@ -4,13 +4,23 @@
     platform: homeassistant
     event: start
   action:
-  # sync state for devices with default fulltopics
-  - service: mqtt.publish
-    data:
-      topic: cmnd/tasmotas/state
-      payload: ''
-  # sync state for autodiscovery devices
-  - service: mqtt.publish
-    data:
-      topic: tasmotas/cmnd/state
-      payload: ''
+    - service: mqtt.publish
+      data:
+        topic: tasmota/cmnd/switch_wasmachine/serialsend5
+        payload: "55aa0001000000"
+    - service: mqtt.publish
+      data:
+        topic: tasmota/cmnd/switch_wasdroger/serialsend5
+        payload: "55aa0001000000"
+    - service: mqtt.publish
+      data:
+        topic: tasmota/cmnd/switch_vaatwasser/serialsend5
+        payload: "55aa0001000000"
+    - service: mqtt.publish
+      data:
+        topic: tasmota/cmnd/switch_koelkast/serialsend5
+        payload: "55aa0001000000"
+    - service: mqtt.publish
+      data:
+        topic: tasmota/cmnd/switch_vriezer/serialsend5
+        payload: "55aa0001000000"
