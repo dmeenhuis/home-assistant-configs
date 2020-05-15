@@ -4,7 +4,7 @@
       friendly_name: Status vaatwasser
       icon_template: >
         {% if (is_state('sensor.status_vaatwasser', 'running')) %} mdi:run
-        {% elif (is_state('sensor.status_vaatwasser', 'running')) %} mdi:toggle-switch
+        {% elif (is_state('sensor.status_vaatwasser', 'idle')) %} mdi:toggle-switch
         {% else %} mdi:toggle-switch-off
         {% endif %}
       value_template: >
@@ -17,7 +17,7 @@
       friendly_name: Status wasmachine
       icon_template: >
         {% if (is_state('sensor.status_wasmachine', 'running')) %} mdi:run
-        {% elif (is_state('sensor.status_wasmachine', 'running')) %} mdi:toggle-switch
+        {% elif (is_state('sensor.status_wasmachine', 'idle')) %} mdi:toggle-switch
         {% else %} mdi:toggle-switch-off
         {% endif %}
       value_template: >
@@ -30,7 +30,7 @@
       friendly_name: Status wasdroger
       icon_template: >
         {% if (is_state('sensor.status_wasdroger', 'running')) %} mdi:run
-        {% elif (is_state('sensor.status_wasdroger', 'running')) %} mdi:toggle-switch
+        {% elif (is_state('sensor.status_wasdroger', 'idle')) %} mdi:toggle-switch
         {% else %} mdi:toggle-switch-off
         {% endif %}
       value_template: >
