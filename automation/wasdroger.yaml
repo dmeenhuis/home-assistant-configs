@@ -3,6 +3,8 @@
     platform: state
     entity_id: sensor.status_wasdroger
     from: "Running"
+    for:
+      minutes: 1
   action:
     - service: notify.all_devices
       data:
