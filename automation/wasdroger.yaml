@@ -1,0 +1,10 @@
+- alias: "Send notification when tumble dryer is done"
+  trigger:
+    platform: state
+    entity_id: sensor.status_wasdroger
+    from: "Running"
+  action:
+    - service: notify.all_devices
+      data:
+        title: De wasdroger is klaar!
+        message: "Snel de kleren eruit, anders is het straks allemaal in de kreukels..."

@@ -1,0 +1,10 @@
+- alias: "Send notification when dishwasher is done"
+  trigger:
+    platform: state
+    entity_id: sensor.status_vaatwasser
+    from: "Running"
+  action:
+    - service: notify.all_devices
+      data:
+        title: De vaatwasser is klaar!
+        message: "Pak de spullen zo maar uit, dan is de keuken weer netjes..."
