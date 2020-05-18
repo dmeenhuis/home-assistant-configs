@@ -4,7 +4,7 @@
       friendly_name: Status vaatwasser
       delay_off:
         seconds: 30
-      delay_onf:
+      delay_on:
         seconds: 30
       icon_template: >
         {% if (is_state('binary_sensor.status_vaatwasser', 'on')) %} mdi:run
@@ -16,7 +16,7 @@
       friendly_name: Status wasmachine
       delay_off:
         seconds: 30
-      delay_onf:
+      delay_on:
         seconds: 30
       icon_template: >
         {% if (is_state('binary_sensor.status_wasmachine', 'on')) %} mdi:run
@@ -28,7 +28,7 @@
       friendly_name: Status wasdroger
       delay_off:
         seconds: 30
-      delay_onf:
+      delay_on:
         seconds: 30
       icon_template: >
         {% if (is_state('binary_sensor.status_wasdroger', 'on')) %} mdi:run
