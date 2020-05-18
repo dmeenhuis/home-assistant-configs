@@ -1,9 +1,8 @@
 - alias: "Send notification when tumble dryer is done"
   trigger:
     platform: state
-    entity_id: sensor.status_wasdroger
-    from: "Running"
-    to: "Idle"
+    entity_id: binary_sensor.status_wasdroger
+    to: "off"
     for:
       minutes: 1
   action:

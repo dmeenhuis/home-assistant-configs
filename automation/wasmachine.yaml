@@ -1,9 +1,8 @@
 - alias: "Send notification when washing machine is done"
   trigger:
     platform: state
-    entity_id: sensor.status_wasmachine
-    from: "Running"
-    to: "Idle"
+    entity_id: binary_sensor.status_wasmachine
+    to: "off"
     for:
       minutes: 1
   action:
