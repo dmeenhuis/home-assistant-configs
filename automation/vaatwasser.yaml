@@ -9,4 +9,8 @@
     - service: notify.all_devices
       data:
         title: De vaatwasser is klaar!
-        message: "Pak de spullen zo maar uit, dan is de keuken weer netjes..."
+        message: "Pak de spullen maar uit, dan is ie weer klaar om ingeladen te worden..."
+        data:
+          apns_headers:
+            "apns-collapse-id": "vaatwasser"
+            tag: "vaatwasser"

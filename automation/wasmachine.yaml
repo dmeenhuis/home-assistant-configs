@@ -10,3 +10,7 @@
       data:
         title: De wasmachine is klaar!
         message: "Snel de kleren eruit, anders ruikt het straks niet zo fris meer..."
+        data:
+          apns_headers:
+            "apns-collapse-id": "wasmachine"
+            tag: "wasmachiner"

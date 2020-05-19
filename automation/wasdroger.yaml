@@ -10,3 +10,7 @@
       data:
         title: De wasdroger is klaar!
         message: "Snel de kleren eruit, anders is het straks allemaal in de kreukels..."
+        data:
+          apns_headers:
+            "apns-collapse-id": "wasdroger"
+            tag: "wasdroger"
