@@ -75,12 +75,14 @@ panel_iframe:
     url: "/local/zigbee2mqtt_networkmap/map.html"
     icon: "mdi:graphql"
 
-climate:
-  - platform: nefit
-    name: Verwarming
-    serial: !secret nefit_serial
+nefiteasy:
+  devices:
+  - serial: !secret nefit_serial
     accesskey: !secret nefit_access_key
     password: !secret nefit_password
+    name: Verwarming
+
+climate:
   - platform: intesishome
     username: !secret airconwithme_username
     password: !secret airconwithme_password
