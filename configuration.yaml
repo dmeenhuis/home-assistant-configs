@@ -76,11 +76,15 @@ panel_iframe:
     icon: "mdi:graphql"
 
 climate:
-  platform: nefit
-  name: Verwarming
-  serial: !secret nefit_serial
-  accesskey: !secret nefit_access_key
-  password: !secret nefit_password
+  - platform: nefit
+    name: Verwarming
+    serial: !secret nefit_serial
+    accesskey: !secret nefit_access_key
+    password: !secret nefit_password
+  - platform: intesishome
+    username: !secret airconwithme_username
+    password: !secret airconwithme_password
+    device: airconwithme
 
 utility_meter:
   daily_power_offpeak:
