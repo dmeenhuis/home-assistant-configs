@@ -11,21 +11,17 @@
     - service: scene.turn_on
       entity_id: scene.turn_off_everything
 
-# - alias: Bedtijd (vr, za)
-#   trigger:
-#     platform: time
-#     at: "01:00:00"
-#   condition:
-#     - condition: time
-#       weekday:
-#         - fri
-#         - sat
-#     - condition: state
-#       entity_id: input_boolean.guest_mode
-#       state: 'off'
-#   action:
-#     - service: scene.turn_on
-#       entity_id: scene.alle_lampen_op_begane_grond_uit
+- alias: Turn off everything at night, when guest mode is enabled
+  trigger:
+    platform: time
+    at: "01:00:00"
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'on'
+  action:
+    - service: scene.turn_on
+      entity_id: scene.turn_off_everything
 # - alias: Bedtijd (ma, di, wo, do, zo)
 #   trigger:
 #     platform: time
