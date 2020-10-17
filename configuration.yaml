@@ -32,6 +32,8 @@ webhook:
 system_health:
 mobile_app:
 map:
+wake_on_lan:
+zigbee2mqtt_networkmap:
 
 notify:
   - name: all_devices
@@ -53,7 +55,14 @@ ios:
             title: "Snooze"
             destructive: yes
 
-zigbee2mqtt_networkmap:
+webostv:
+  host: 192.168.1.106
+  name: LG OLED65GX6LA
+  turn_on_action:
+    service: wake_on_lan.send_magic_packet
+    data:
+      mac: !secret lg_oled_mac
+      #broadcast_address: 192.168.1.255
 
 cast:
   media_player:
