@@ -53,7 +53,7 @@ SENSOR_TYPES = {
         device_class: 'temperature'
     },
     'system_pressure': {
-        name: "CV pressure",
+        name: "System pressure",
         url: '/system/appliance/systemPressure',
         unit: PRESSURE_BAR,
         device_class: 'pressure'
@@ -109,4 +109,14 @@ SWITCH_TYPES = {
         name: "Presence {}",
         icon: 'mdi:account-check'
     },
+    'weather_dependent': {
+        name: "Weather dependent",
+        url: '/heatingCircuits/hc1/control',
+        icon: 'mdi:weather-partly-snowy-rainy'
+    },
+    'lockui': {
+        name: "Lock UI",
+        url: '/ecus/rrc/lockuserinterface',
+        icon: 'mdi:lock'
+    }
 }
