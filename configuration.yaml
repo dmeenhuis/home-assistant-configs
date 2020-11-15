@@ -33,7 +33,6 @@ system_health:
 mobile_app:
 map:
 wake_on_lan:
-zigbee2mqtt_networkmap:
 
 notify:
   - name: all_devices
@@ -77,12 +76,6 @@ homekit:
     include_domains:
       - light
       - switch
-
-panel_iframe:
-  networkmap:
-    title: "Zigbee Map"
-    url: "/local/zigbee2mqtt_networkmap/map.html"
-    icon: "mdi:graphql"
 
 nefiteasy:
   devices:
