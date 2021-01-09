@@ -55,17 +55,13 @@ ios:
             destructive: yes
 
 webostv:
-  host: 192.168.1.106
+  host: 192.168.0.106
   name: LG OLED65GX6LA
   turn_on_action:
     service: wake_on_lan.send_magic_packet
     data:
       mac: !secret lg_oled_mac
       #broadcast_address: 192.168.1.255
-
-cast:
-  media_player:
-    - host: 192.168.1.219
 
 spotify:
   client_id: !secret spotify_client_id
@@ -154,25 +150,16 @@ weather: !include_dir_merge_list weather/
 
 yeelight:
   devices:
-    192.168.1.86:
+    192.168.2.10:
       name: Woonkamerlamp linksvoor
       model: color1
-    192.168.1.133:
+    192.168.2.11:
       name: Woonkamerlamp rechtsvoor
       model: color1
-    192.168.1.87:
-      name: Toiletlamp
-      model: color1
-    192.168.1.138:
+    192.168.2.13:
       name: Badkamerlamp
       model: color1
-    192.168.1.18:
-      name: Slaapkamer Jurjen
-      model: color1
-    192.168.1.176:
-      name: Buitenlamp achter
-      model: color1
-    192.168.1.36:
+    192.168.2.12:
       name: Overlooplamp
       model: color1
 

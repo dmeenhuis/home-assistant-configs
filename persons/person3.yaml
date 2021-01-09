@@ -1,0 +1,5 @@
+- name: Jurjen
+  id: jde
+  user_id: !secret user_id_person3
+  device_trackers:
+    - device_tracker.nokia_jurjen
