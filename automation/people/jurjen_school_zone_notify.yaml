@@ -1,0 +1,31 @@
+- alias: "Send notification when Jurjen arrives at school"
+  trigger:
+    platform: zone
+    entity_id: person.jurjen
+    zone: zone.basisschool
+    event: enter
+  action:
+    - service: notify.all_devices
+      data:
+        title: Jurjen is op school
+        message: "Jurjen is zojuist veilig op school aangekomen"
+        data:
+          apns_headers:
+            "apns-collapse-id": "people"
+            tag: "people"
+
+- alias: "Send notification when Jurjen leaves from school"
+  trigger:
+    platform: zone
+    entity_id: person.jurjen
+    zone: zone.basisschool
+    event: leave
+  action:
+    - service: notify.all_devices
+      data:
+        title: Jurjen is weggegaan van school
+        message: "Jurjen is zojuist weggegaan van school en is waarschijnlijk op weg naar huis"
+        data:
+          apns_headers:
+            "apns-collapse-id": "people"
+            tag: "people"
