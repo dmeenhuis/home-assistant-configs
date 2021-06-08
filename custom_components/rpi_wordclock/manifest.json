@@ -6,5 +6,6 @@
   "codeowners": [
     "@bk1285"
   ],
-  "requirements": []
+  "requirements": [],
+  "version": "0.0.1"
 }

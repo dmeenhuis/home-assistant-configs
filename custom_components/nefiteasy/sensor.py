@@ -2,11 +2,8 @@
 
 import logging
 
-from .const import CONF_SENSORS, DOMAIN, SENSOR_TYPES
+from .const import DOMAIN, SENSOR_TYPES
 from .nefit_entity import NefitEntity
-
-# from homeassistant.core import callback
-
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,7 +33,7 @@ class NefitSensor(NefitEntity):
     @property
     def state(self):
         """Return the state/value of the sensor."""
-        return self._client.data[self._key]
+        return self.coordinator.data.get(self._key)
 
     @property
     def device_class(self):
@@ -61,8 +58,13 @@ class NefitYearTotal(NefitSensor):
     @property
     def state(self):
         """Return the state/value of the sensor."""
+        data = self.coordinator.data.get(self._key)
+
+        if data is None:
+            return None
+
         return "{:.1f}".format(
-            self._client.data[self._key] * 0.12307692
+            data * 0.12307692
         )  # convert kWh to m3, for LPG, multiply with 0.040742416
 
 
@@ -72,32 +74,32 @@ class NefitStatus(NefitSensor):
     @property
     def state(self):
         """Return the state/value of the sensor."""
-        return get_status(self._client.data[self._key])
+        return get_status(self.coordinator.data.get(self._key))
 
 
 def get_status(code):
     """Return status of sensor."""
     display_codes = {
-        "-H": "central heating active",
-        "=H": "hot water active",
-        "0C": "system starting",
-        "0L": "system starting",
-        "0U": "system starting",
-        "0E": "system waiting",
-        "0H": "system standby",
-        "0A": "system waiting (boiler cannot transfer heat to central heating)",
-        "0Y": "system waiting (boiler cannot transfer heat to central heating)",
-        "2E": "boiler water pressure too low",
-        "H07": "boiler water pressure too low",
-        "2F": "sensors measured abnormal temperature",
-        "2L": "sensors measured abnormal temperature",
-        "2P": "sensors measured abnormal temperature",
-        "2U": "sensors measured abnormal temperature",
-        "4F": "sensors measured abnormal temperature",
-        "4L": "sensors measured abnormal temperature",
-        "6A": "burner doesn't ignite",
-        "6C": "burner doesn't ignite",
-        "rE": "system restarting",
+        "-H": "-H: central heating active",
+        "=H": "=H: hot water active",
+        "0C": "0C: system starting",
+        "0L": "0L: system starting",
+        "0U": "0U: system starting",
+        "0E": "0E: system waiting",
+        "0H": "0H: system standby",
+        "0A": "0A: system waiting (boiler cannot transfer heat to central heating)",
+        "0Y": "0Y: system waiting (boiler cannot transfer heat to central heating)",
+        "2E": "2E: boiler water pressure too low",
+        "H07": "H07: boiler water pressure too low",
+        "2F": "2F: sensors measured abnormal temperature",
+        "2L": "2L: sensors measured abnormal temperature",
+        "2P": "2P: sensors measured abnormal temperature",
+        "2U": "2U: sensors measured abnormal temperature",
+        "4F": "4F: sensors measured abnormal temperature",
+        "4L": "4L: sensors measured abnormal temperature",
+        "6A": "6A: burner doesn't ignite",
+        "6C": "6C: burner doesn't ignite",
+        "rE": "rE: system restarting",
     }
     if code in display_codes:
         return display_codes[code]
