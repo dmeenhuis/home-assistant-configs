@@ -3,7 +3,7 @@
     status_vaatwasser:
       friendly_name: Status vaatwasser
       delay_off:
-        minutes: 1
+        minutes: 2
       delay_on:
         seconds: 30
       icon_template: >
@@ -15,8 +15,7 @@
     status_wasmachine:
       friendly_name: Status wasmachine
       delay_off:
-        minutes: 1
-        seconds: 30
+        minutes: 2
       delay_on:
         seconds: 30
       icon_template: >
@@ -28,7 +27,7 @@
     status_wasdroger:
       friendly_name: Status wasdroger
       delay_off:
-        minutes: 1
+        minutes: 2
       delay_on:
         seconds: 30
       icon_template: >

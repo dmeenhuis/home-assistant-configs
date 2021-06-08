@@ -25,6 +25,7 @@ frontend:
 conversation:
 logbook:
 zeroconf:
+stream:
 ffmpeg:
 history:
 config:
@@ -123,8 +124,8 @@ variable:
     value: "Unknown"
     restore: true
     attributes:
-      icon: mdi:map-marker
-      name: "Last motion"
+      friendly_name: "Last motion"
+      icon: mdi-map-marker
 
 automation: !include automations.yaml
 automation old: !include_dir_merge_list automation/
@@ -165,7 +166,11 @@ yeelight:
 
 http:
   server_port: 8123
-  base_url: !secret http_base_url
+  cors_allowed_origins:
+    - !secret http_base_url
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.0.0.0/8
 
 mqtt:
   broker: mqtt
