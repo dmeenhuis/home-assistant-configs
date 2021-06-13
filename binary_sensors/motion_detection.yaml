@@ -36,7 +36,7 @@
     activity_in_bathroom:
       friendly_name: Activiteit in de badkamer
       value_template: >
-        {{ is_state("binary_sensor.bewegingssensor_badkamer", "on") }}
+        {{ is_state("binary_sensor.bewegingssensor_badkamer_motion", "on") }}
       delay_off: "00:03:00"
     activity_in_toilet:
       friendly_name: Activiteit in de toilet
@@ -46,7 +46,7 @@
     activity_in_kitchen:
       friendly_name: Activiteit in de keuken
       value_template: >
-        {{ is_state("binary_sensor.bewegingssensor_keuken", "on") }}
+        {{ is_state("binary_sensor.bewegingssensor_keuken_motion", "on") }}
       delay_off: "00:02:00"
     activity_in_living_room:
       friendly_name: Activiteit in de woonkamer
