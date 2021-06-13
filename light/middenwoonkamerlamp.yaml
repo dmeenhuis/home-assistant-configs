@@ -1,6 +1,0 @@
-- platform: mqtt
-  name: Middenwoonkamerlamp
-  schema: json
-  command_topic: "zigbee2mqtt/group_middenwoonkamerlamp/set"
-  state_topic: "zigbee2mqtt/group_middenwoonkamerlamp"
-  brightness: true
