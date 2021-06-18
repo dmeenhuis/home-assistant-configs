@@ -1,5 +1,5 @@
 - name: Jesper
   id: jmh
   user_id: !secret user_id_person4
-#  device_trackers:
-#    - device_tracker.iphone
+  device_trackers:
+    - device_tracker.iphone_van_jesper
