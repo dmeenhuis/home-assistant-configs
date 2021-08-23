@@ -5,34 +5,28 @@
       unit_of_measurement: kWh
       value_template: "{{ states('sensor.daily_energy_offpeak')|float + states('sensor.daily_energy_peak')|float }}"
       device_class: energy
-      last_reset: "1970-01-01T00:00:00+00:00"
     daily_energy_returned:
       friendly_name: Daily Energy Returned
       unit_of_measurement: kWh
       value_template: "{{ states('sensor.daily_energy_returned_offpeak')|float + states('sensor.daily_energy_returned_peak')|float }}"
       device_class: energy
-      last_reset: "1970-01-01T00:00:00+00:00"
     monthly_energy:
       friendly_name: Monthly Energy
       unit_of_measurement: kWh
       value_template: "{{ states('sensor.monthly_energy_offpeak')|float + states('sensor.monthly_energy_peak')|float }}"
       device_class: energy
-      last_reset: "1970-01-01T00:00:00+00:00"
     monthly_energy_returned:
       friendly_name: Monthly Energy Returned
       unit_of_measurement: kWh
       value_template: "{{ states('sensor.monthly_energy_returned_offpeak')|float + states('sensor.monthly_energy_returned_peak')|float }}"
       device_class: energy
-      last_reset: "1970-01-01T00:00:00+00:00"
     total_energy:
       friendly_name: Total Energy
       unit_of_measurement: kWh
       value_template: "{{ states('sensor.dsmr_reading_electricity_delivered_1')|float + states('sensor.dsmr_reading_electricity_delivered_2')|float }}"
       device_class: energy
-      last_reset: "1970-01-01T00:00:00+00:00"
     total_energy_returned:
       friendly_name: Total Energy Returned
       unit_of_measurement: kWh
       value_template: "{{ states('sensor.dsmr_reading_electricity_returned_1')|float + states('sensor.dsmr_reading_electricity_returned_2')|float }}"
       device_class: energy
-      last_reset: "1970-01-01T00:00:00+00:00"
