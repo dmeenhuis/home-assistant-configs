@@ -39,14 +39,17 @@ sensor.dsmr_reading_electricity_currently_delivered:
 sensor.dsmr_reading_electricity_currently_returned:
   friendly_name: Huidige teruglevering
 sensor.vaatwasser_energy_total:
+  friendly_name: Vaatwasser totaalverbruik
   last_reset: '1970-01-01T00:00:00+00:00'
   device_class: energy
   state_class: measurement
 sensor.wasmachine_energy_total:
+  friendly_name: Wasmachine totaalverbruik
   last_reset: '1970-01-01T00:00:00+00:00'
   device_class: energy
   state_class: measurement
 sensor.wasdroger_energy_total:
+  friendly_name: Wasdroger totaalverbruik
   last_reset: '1970-01-01T00:00:00+00:00'
   device_class: energy
   state_class: measurement
