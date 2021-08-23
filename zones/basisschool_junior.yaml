@@ -1,0 +1,5 @@
+- name: Basisschool Junior
+  latitude: !secret basisschool_junior_latitude
+  longitude: !secret basisschool_junior_longitude
+  radius: 75
+  icon: mdi:school
