@@ -88,31 +88,31 @@ climate:
     device: airconwithme
 
 utility_meter:
-  daily_power_offpeak:
+  daily_energy_offpeak:
     source: sensor.dsmr_reading_electricity_delivered_1
     cycle: daily
-  daily_power_peak:
+  daily_energy_peak:
     source: sensor.dsmr_reading_electricity_delivered_2
     cycle: daily
-  daily_power_returned_offpeak:
+  daily_energy_returned_offpeak:
     source: sensor.dsmr_reading_electricity_returned_1
     cycle: daily
-  daily_power_returned_peak:
+  daily_energy_returned_peak:
     source: sensor.dsmr_reading_electricity_returned_2
     cycle: daily
   daily_gas:
     source: sensor.gas_consumption
     cycle: daily
-  monthly_power_offpeak:
+  monthly_energy_offpeak:
     source: sensor.dsmr_reading_electricity_delivered_1
     cycle: monthly
-  monthly_power_peak:
+  monthly_energy_peak:
     source: sensor.dsmr_reading_electricity_delivered_2
     cycle: monthly
-  monthly_power_returned_offpeak:
+  monthly_energy_returned_offpeak:
     source: sensor.dsmr_reading_electricity_returned_1
     cycle: monthly
-  monthly_power_returned_peak:
+  monthly_energy_returned_peak:
     source: sensor.dsmr_reading_electricity_returned_2
     cycle: monthly
   monthly_gas:
