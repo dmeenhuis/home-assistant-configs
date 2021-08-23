@@ -8,11 +8,11 @@ homeassistant:
   time_zone: Europe/Amsterdam
   customize: !include customize.yaml
   customize_glob:
-    sensor.*.energy:
+    sensor.*_energy:
       last_reset: '1970-01-01T00:00:00+00:00'
       device_class: energy
       state_class: measurement
-    sensor.*.energy_returned:
+    sensor.*_energy_returned:
       last_reset: '1970-01-01T00:00:00+00:00'
       device_class: energy
       state_class: measurement
