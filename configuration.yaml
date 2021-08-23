@@ -36,6 +36,15 @@ map:
 wake_on_lan:
 energy:
 default_config:
+customize_glob:
+  sensor.*.energy:
+    last_reset: '1970-01-01T00:00:00+00:00'
+    device_class: energy
+    state_class: measurement
+  sensor.*.energy_returned:
+    last_reset: '1970-01-01T00:00:00+00:00'
+    device_class: energy
+    state_class: measurement
 
 notify:
   - name: all_devices
@@ -120,16 +129,6 @@ utility_meter:
   monthly_gas:
     source: sensor.dsmr_consumption_gas_delivered
     cycle: monthly
-
-customize_glob:
-  sensor.*.energy:
-    last_reset: '1970-01-01T00:00:00+00:00'
-    device_class: energy
-    state_class: measurement
-  sensor.*.energy_returned:
-    last_reset: '1970-01-01T00:00:00+00:00'
-    device_class: energy
-    state_class: measurement
 
 variable:
   last_motion:
