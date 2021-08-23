@@ -7,6 +7,15 @@ homeassistant:
   temperature_unit: C
   time_zone: Europe/Amsterdam
   customize: !include customize.yaml
+  customize_glob:
+    sensor.*.energy:
+      last_reset: '1970-01-01T00:00:00+00:00'
+      device_class: energy
+      state_class: measurement
+    sensor.*.energy_returned:
+      last_reset: '1970-01-01T00:00:00+00:00'
+      device_class: energy
+      state_class: measurement
   auth_providers:
     - type: homeassistant
     - type: trusted_networks
@@ -36,15 +45,6 @@ map:
 wake_on_lan:
 energy:
 default_config:
-customize_glob:
-  sensor.*.energy:
-    last_reset: '1970-01-01T00:00:00+00:00'
-    device_class: energy
-    state_class: measurement
-  sensor.*.energy_returned:
-    last_reset: '1970-01-01T00:00:00+00:00'
-    device_class: energy
-    state_class: measurement
 
 notify:
   - name: all_devices
