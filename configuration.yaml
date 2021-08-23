@@ -34,6 +34,8 @@ system_health:
 mobile_app:
 map:
 wake_on_lan:
+energy:
+default_config:
 
 notify:
   - name: all_devices
@@ -151,16 +153,16 @@ weather: !include_dir_merge_list weather/
 
 yeelight:
   devices:
-    192.168.2.10:
+    192.168.63.11:
       name: Woonkamerlamp linksvoor
       model: color1
-    192.168.2.11:
+    192.168.101.82:
       name: Woonkamerlamp rechtsvoor
       model: color1
-    192.168.2.13:
+    192.168.133.214:
       name: Badkamerlamp
       model: color1
-    192.168.2.12:
+    192.168.251.110:
       name: Overlooplamp
       model: color1
 
