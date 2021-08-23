@@ -20,3 +20,13 @@
       unit_of_measurement: kWh
       value_template: "{{ states('sensor.monthly_energy_returned_offpeak')|float + states('sensor.monthly_energy_returned_peak')|float }}"
       device_class: energy
+    total_energy:
+      friendly_name: Total Energy
+      unit_of_measurement: kWh
+      value_template: "{{ states('sensor.dsmr_reading_electricity_delivered_1')|float + states('sensor.dsmr_reading_electricity_delivered_2')|float }}"
+      device_class: energy
+    total_energy_returned:
+      friendly_name: Total Energy Returned
+      unit_of_measurement: kWh
+      value_template: "{{ states('sensor.dsmr_reading_electricity_returned_1')|float + states('sensor.dsmr_reading_electricity_returned_2')|float }}"
+      device_class: energy
