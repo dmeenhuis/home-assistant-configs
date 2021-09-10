@@ -18,3 +18,4 @@ known_devices.yaml
 .homekit.state
 .spotify-token-cache
 *.log
+*.log*
