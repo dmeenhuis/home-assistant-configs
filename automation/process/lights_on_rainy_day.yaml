@@ -1,14 +1,19 @@
 - alias: 'Turn on some lights on rainy days'
   trigger:
     - platform: state
-      entity_id: sensor.br_condition
+      entity_id: sensor.buienradar_condition
       to: 'rainy'
+    - platform: numeric_state
+      entity_id: sensor.buienalarm_precipitation
+      above: 0
+      for:
+        minutes: 5
   condition:
     - condition: state
       entity_id: group.people
       state: 'home'
     - condition: time
-      after: '14:00'
+      after: '12:00'
     - condition: sun
       before: sunset
   action:
@@ -17,8 +22,13 @@
 - alias: 'Rain is over'
   trigger:
     - platform: state
-      entity_id: sensor.br_condition
+      entity_id: sensor.buienradar_condition
       from: 'rainy'
+    - platform: numeric_state
+      entity_id: sensor.buienalarm_precipitation
+      below: 0.1
+      for:
+        minutes: 10
   condition:
     - condition: sun
       before: sunset
