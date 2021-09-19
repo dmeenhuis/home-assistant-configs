@@ -2,7 +2,11 @@
   trigger:
     platform: state
     entity_id: binary_sensor.activity_overloop
-    to: 'on'
+    to: "on"
+  condition:
+    - platform: numeric_state
+      entity_id: sensor.light_sensor_overloop
+      below: 50
   action:
     service: light.turn_on
     entity_id: light.overlooplamp
@@ -20,7 +24,7 @@
   trigger:
     platform: state
     entity_id: binary_sensor.activity_overloop
-    to: 'off'
+    to: "off"
   action:
     service: light.turn_off
     entity_id: light.overlooplamp

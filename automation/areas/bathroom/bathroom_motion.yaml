@@ -2,7 +2,11 @@
   trigger:
     platform: state
     entity_id: binary_sensor.activity_in_bathroom
-    to: 'on'
+    to: "on"
+  condition:
+    - platform: numeric_state
+      entity_id: sensor.light_sensor_badkamer
+      below: 100
   action:
     service: light.turn_on
     entity_id: light.badkamerlamp
@@ -20,7 +24,7 @@
   trigger:
     platform: state
     entity_id: binary_sensor.activity_in_bathroom
-    to: 'off'
+    to: "off"
   action:
     service: light.turn_off
     entity_id: light.badkamerlamp
