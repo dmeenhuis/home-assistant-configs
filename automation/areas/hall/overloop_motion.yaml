@@ -4,7 +4,7 @@
     entity_id: binary_sensor.activity_overloop
     to: "on"
   condition:
-    - platform: numeric_state
+    - condition: numeric_state
       entity_id: sensor.light_sensor_overloop
       below: 50
   action:
