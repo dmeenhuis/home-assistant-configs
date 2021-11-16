@@ -7,7 +7,6 @@
     service: light.turn_on
     data:
       entity_id: light.bijkeukenlamp
-      brightness_pct: 90
 - alias: Turn off bijkeuken lights x minutes after last movement
   trigger:
     platform: state
