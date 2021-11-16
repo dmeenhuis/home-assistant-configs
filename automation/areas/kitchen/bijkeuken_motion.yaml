@@ -1,0 +1,18 @@
+- alias: Turn on bijkeuken lights when there is motion
+  trigger:
+    platform: state
+    entity_id: binary_sensor.activity_in_bijkeuken
+    to: "on"
+  action:
+    service: light.turn_on
+    data:
+      entity_id: light.bijkeukenlamp
+      brightness_pct: 90
+- alias: Turn off bijkeuken lights x minutes after last movement
+  trigger:
+    platform: state
+    entity_id: binary_sensor.activity_in_bijkeuken
+    to: "off"
+  action:
+    service: light.turn_off
+    entity_id: light.bijkeukenlamp
