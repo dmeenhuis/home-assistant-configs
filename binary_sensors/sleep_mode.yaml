@@ -34,7 +34,7 @@
       platform: "state"
       to_state: "off"
     - entity_id: "binary_sensor.living_room_presence"
-      prob_given_true: 0.8
+      prob_given_true: 0.9
       prob_given_false: 0.05
       platform: state
       to_state: "off"
