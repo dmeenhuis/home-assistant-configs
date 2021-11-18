@@ -3,18 +3,19 @@
     late_night:
       entity_id: sensor.time
       value_template: >
+        {% set nowFormat = now().strftime("%H%M") -%}
         {{
           (
             (is_state("binary_sensor.workday_tomorrow", "on")) 
               and (
-                strptime("22:00", "%H%M") <= now().strftime("%H:%M")
-                or now().strftime("%H:%M") < strptime("05:45", "%H%M")
+                ("22:00" | timestamp_custom("%H%M")) <= nowFormat
+                or nowFormat < ("05:45" | timestamp_custom("%H%M"))
               )
           ) or (
             (is_state("binary_sensor.workday_tomorrow", "off"))
               and (
-                now().strftime("%H:%M") >= strptime("00:00", "%H%M")
-                and now().strftime("%H:%M") < strptime("07:00", "%H%M")
+                nowFormat >= ("00:00" | timestamp_custom("%H%M"))
+                and nowFormat < ("07:00" | timestamp_custom("%H%M"))
               )
           )
         }}
