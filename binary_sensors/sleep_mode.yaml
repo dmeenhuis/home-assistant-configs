@@ -33,16 +33,6 @@
       prob_given_false: 1
       platform: "state"
       to_state: "off"
-    - entity_id: "binary_sensor.motion_detected_in_last_hour"
-      prob_given_true: 0.13
-      prob_given_false: 0.9375
-      platform: "state"
-      to_state: "on"
-    - entity_id: "binary_sensor.motion_detected_in_last_hour"
-      prob_given_true: 0.88
-      prob_given_false: 0.0625
-      platform: "state"
-      to_state: "off"
     - entity_id: "binary_sensor.living_room_presence"
       prob_given_true: 0.8
       prob_given_false: 0.05
