@@ -1,4 +1,4 @@
-"""Custom Exceptions."""
+"""Custom Exceptions for HACS."""
 
 
 class HacsException(Exception):
@@ -15,3 +15,11 @@ class HacsNotModifiedException(HacsException):
 
 class HacsExpectedException(HacsException):
     """For stuff that are expected."""
+
+
+class HacsRepositoryExistException(HacsException):
+    """For repositories that are already exist."""
+
+
+class HacsExecutionStillInProgress(HacsException):
+    """Exception to raise if execution is still in progress."""
