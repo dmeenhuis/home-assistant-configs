@@ -3,25 +3,25 @@
     solaredge_lifetime_energy_kwh:
       friendly_name: solaredge (Lifetime energy kWh)
       unit_of_measurement: kWh
-      value_template: "{{ (states('sensor.solaredge_lifetime_energy') | float / 1000) | round(2)"
+      value_template: "{{ (states('sensor.solaredge_lifetime_energy') | float / 1000) | round(2) }}"
       device_class: energy
     solaredge_energy_today_kwh:
       friendly_name: solaredge (Energy today kWh)
       unit_of_measurement: kWh
-      value_template: "{{ (states('sensor.solaredge_energy_today') | float / 1000) | round(2)"
+      value_template: "{{ (states('sensor.solaredge_energy_today') | float / 1000) | round(2) }}"
       device_class: energy
     solaredge_energy_this_year_kwh:
       friendly_name: solaredge (Energy this year kWh)
       unit_of_measurement: kWh
-      value_template: "{{ (states('sensor.solaredge_energy_this_year') | float / 1000) | round(2)"
+      value_template: "{{ (states('sensor.solaredge_energy_this_year') | float / 1000) | round(2) }}"
       device_class: energy
     solaredge_energy_this_month_kwh:
       friendly_name: solaredge (Energy this month kWh)
       unit_of_measurement: kWh
-      value_template: "{{ (states('sensor.solaredge_energy_this_month') | float / 1000) | round(2)"
+      value_template: "{{ (states('sensor.solaredge_energy_this_month') | float / 1000) | round(2) }}"
       device_class: energy
     solaredge_current_power_kw:
       friendly_name: solaredge (Current power kWh)
       unit_of_measurement: kWh
-      value_template: "{{ (states('sensor.solaredge_current_power') | float / 1000) | round(2)"
+      value_template: "{{ (states('sensor.solaredge_current_power') | float / 1000) | round(2) }}"
       device_class: energy
