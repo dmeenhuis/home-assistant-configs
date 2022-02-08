@@ -80,10 +80,16 @@ spotify:
   client_secret: !secret spotify_client_secret
 
 homekit:
+  advertise_ip: 192.168.0.20
   filter:
     include_domains:
       - light
-      - switch
+    include_entities:
+      - switch.salonkast_woonkamer
+      - switch.tv
+      - switch.schakelaar_buitenverlichting_voor
+      - group.buitenverlichting_achter
+      - switch.buitenverlichting_lichtsnoer
 
 nefiteasy:
   devices:
@@ -200,3 +206,30 @@ recorder:
   purge_interval: 1
   purge_keep_days: 4
   db_url: !secret homeassistant_recorder_db_url
+
+influxdb:
+  api_version: "2"
+  host: influxdb
+  port: 8086
+  ssl: false
+  token: "HG_V28Fy4sgbkLn5jhbQeTCVLpGw1LA8I8DoehQV6HmsdBlCikH7zu7513B09uEQosRt-bFBf0mU3PZBGXEtCA=="
+  organization: local
+  bucket: home-assistant
+  precision: 's'
+  include:
+    entity_globs:
+      - sensor.dsmr*
+      - sensor.energy*
+      - sensor.gas*
+      - sensor.daily_energy*
+      - sensor.monthly_energy*
+      - sensor.vaatwasser_*
+      - sensor.wasmachine_*
+      - sensor.wasdroger_*
+      - sensor.bv14220072_*
+      - sensor.temperature*
+      - sensor.light_sensor*
+      - sensor.buienradar_temperature
+      - sensor.d_a_total_money_lifetime
+      - sensor.humidity*
+      - sensor.solaredge*

@@ -64,3 +64,6 @@ sensor.d_a_total_lifetime_energy_output:
 sensor.d_a_total_energy_today:
   device_class: energy
   state_class: total_increasing
+sensor.solaredge_lifetime_energy_kwh:
+  device_class: energy
+  state_class: total_increasing
