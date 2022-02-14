@@ -22,6 +22,6 @@
       device_class: energy
     solaredge_current_power_kw:
       friendly_name: solaredge (Current power kWh)
-      unit_of_measurement: kWh
+      unit_of_measurement: kW
       value_template: "{{ (states('sensor.solaredge_current_power') | float / 1000) | round(2) }}"
       device_class: energy

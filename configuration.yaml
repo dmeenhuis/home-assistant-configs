@@ -233,3 +233,6 @@ influxdb:
       - sensor.d_a_total_money_lifetime
       - sensor.humidity*
       - sensor.solaredge*
+      - sensor.d_a_total_lifetime_energy_output
+      - sensor.d_a_total_output_power
+      - sensor.d_a_total_energy_today
