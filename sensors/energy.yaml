@@ -10,6 +10,11 @@
       unit_of_measurement: kWh
       value_template: "{{ states('sensor.daily_energy_returned_offpeak')|float + states('sensor.daily_energy_returned_peak')|float }}"
       device_class: energy
+    daily_energy_produced:
+      friendly_name: Daily Energy Produced
+      unit_of_measurement: kWh
+      value_template: "{{ states('sensor.solaredge_energy_today_kwh')|float + states('sensor.d_a_total_energy_today')|float }}"
+      device_class: energy
     monthly_energy:
       friendly_name: Monthly Energy
       unit_of_measurement: kWh
