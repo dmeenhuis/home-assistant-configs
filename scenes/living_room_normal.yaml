@@ -4,10 +4,14 @@
       state: on
       transition: 2
       brightness_pct: 60
-    light.hoekwoonkamerlamp:
+    light.oosterse_lamp:
       state: on
       transition: 2
-      brightness_pct: 60
+      brightness_pct: 50
+    light.houtbloklamp:
+      state: on
+      transition: 2
+      brightness_pct: 5
     light.woonkamerlamp_linksvoor:
       state: on
       transition: 2

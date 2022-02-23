@@ -1,18 +1,18 @@
-- alias: Buitenverlichting voor uit na zonsopkomst
-  trigger:
-    platform: time
-    at: "06:30:00"
-  condition:
-    - condition: sun
-      before: sunrise
-  action:
-    service: switch.turn_on
-    entity_id: switch.schakelaar_buitenverlichting_voor
-- alias: Buitenverlichting voor uit na zonsopkomst
-  trigger:
-    platform: sun
-    event: sunrise
-    offset: "0:30:00"
-  action:
-    service: switch.turn_off
-    entity_id: switch.schakelaar_buitenverlichting_voor
+# - alias: Buitenverlichting voor aan voor zonsopkomst
+#   trigger:
+#     platform: time
+#     at: "06:30:00"
+#   condition:
+#     - condition: sun
+#       before: sunrise
+#   action:
+#     service: switch.turn_on
+#     entity_id: switch.schakelaar_buitenverlichting_voor
+# - alias: Buitenverlichting voor uit na zonsopkomst
+#   trigger:
+#     platform: sun
+#     event: sunrise
+#     offset: "0:30:00"
+#   action:
+#     service: switch.turn_off
+#     entity_id: switch.schakelaar_buitenverlichting_voor

@@ -3,6 +3,6 @@
     light.middenwoonkamerlamp:
       state: on
       brightness_pct: 60
-    light.hoekwoonkamerlamp:
+    light.oosterse_lamp:
       state: on
-      brightness_pct: 60
+      brightness_pct: 50
