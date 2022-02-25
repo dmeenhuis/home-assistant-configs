@@ -1,5 +1,6 @@
 name: Woonkamer
 entities:
+  - light.aaplamp
   - light.houtbloklamp
   - light.oosterse_lamp
   - light.middenwoonkamerlamp

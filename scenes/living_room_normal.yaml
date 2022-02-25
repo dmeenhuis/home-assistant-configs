@@ -12,6 +12,10 @@
       state: on
       transition: 2
       brightness_pct: 5
+    light.aaplamp:
+      state: on
+      transition: 2
+      brightness_pct: 2
     light.woonkamerlamp_linksvoor:
       state: on
       transition: 2

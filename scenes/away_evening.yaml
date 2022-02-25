@@ -2,6 +2,7 @@
   entities:
     switch.tv: off
     light.middenwoonkamerlamp: off
+    light.aaplamp: off
     light.oosterse_lamp: off
     light.houtbloklamp: off
     group.kitchen: off

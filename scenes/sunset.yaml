@@ -9,6 +9,10 @@
       state: on
       transition: 1800
       brightness_pct: 50
+    light.aaplamp:
+      state: on
+      transition: 1800
+      brightness_pct: 2
     light.houtbloklamp:
       state: on
       transition: 1800
