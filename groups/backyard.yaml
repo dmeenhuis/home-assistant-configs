@@ -1,0 +1,4 @@
+name: Buiten achtertuin
+entities:
+  - group.buitenverlichting_achter
+  - switch.fontein_achtertuin

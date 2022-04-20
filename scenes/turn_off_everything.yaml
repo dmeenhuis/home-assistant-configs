@@ -8,7 +8,7 @@
     group.bedroom_jesper: off
     group.bedroom_jurjen: off
     group.toilet: off
-    group.buitenverlichting_achter: off
+    group.backyard: off
     group.bathroom: off
     switch.tv: off
     switch.salonkast_woonkamer: off

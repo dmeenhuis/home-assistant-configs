@@ -13,6 +13,7 @@
     group.bedroom_jurjen: off
     group.bathroom: off
     group.toilet: off
+    group.backyard: off
     light.woonkamerlamp_linksvoor: on
     light.woonkamerlamp_rechtsvoor: on
     light.bijkeukenlamp: off
