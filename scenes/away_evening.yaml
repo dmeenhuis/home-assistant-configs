@@ -4,7 +4,7 @@
     light.middenwoonkamerlamp: off
     light.aaplamp: off
     light.oosterse_lamp: off
-    light.houtbloklamp: off
+    light.houtbloklamp: on
     group.kitchen: off
     group.garage: off
     group.overloop: off
@@ -17,3 +17,4 @@
     light.woonkamerlamp_linksvoor: on
     light.woonkamerlamp_rechtsvoor: on
     light.bijkeukenlamp: off
+    light.voordeurlamp_buiten: on

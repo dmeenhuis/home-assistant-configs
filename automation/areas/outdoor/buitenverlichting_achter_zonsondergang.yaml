@@ -3,6 +3,10 @@
     platform: sun
     event: sunset
     offset: "0:15:00"
+  condition:
+    - condition: state
+      entity_id: input_boolean.holiday_mode
+      state: "off"
   action:
     service: homeassistant.turn_on
     entity_id: group.buitenverlichting_achter

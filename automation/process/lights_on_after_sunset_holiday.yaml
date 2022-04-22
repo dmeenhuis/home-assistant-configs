@@ -1,4 +1,4 @@
-- alias: Verlichting aan na zonsondergang
+- alias: Verlichting aan na zonsondergang wanneer op vakantie
   trigger:
     platform: sun
     event: sunset
@@ -6,7 +6,7 @@
   condition:
     - condition: state
       entity_id: input_boolean.holiday_mode
-      state: "off"
+      state: "on"
   action:
     - service: scene.turn_on
-      entity_id: scene.zonsondergang
+      entity_id: scene.away_evening
