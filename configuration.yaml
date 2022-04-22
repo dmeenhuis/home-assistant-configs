@@ -91,13 +91,6 @@ homekit:
       - group.buitenverlichting_achter
       - switch.buitenverlichting_lichtsnoer
 
-nefiteasy:
-  devices:
-  - serial: !secret nefit_serial
-    accesskey: !secret nefit_access_key
-    password: !secret nefit_password
-    name: Verwarming
-
 climate:
   - platform: intesishome
     username: !secret airconwithme_username
@@ -220,7 +213,6 @@ influxdb:
     entity_globs:
       - sensor.dsmr*
       - sensor.energy*
-      - sensor.gas*
       - sensor.daily_energy*
       - sensor.monthly_energy*
       - sensor.vaatwasser_*
