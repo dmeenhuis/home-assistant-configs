@@ -66,15 +66,6 @@ ios:
             title: "Snooze"
             destructive: yes
 
-webostv:
-  host: 192.168.0.106
-  name: LG OLED65GX6LA
-  turn_on_action:
-    service: wake_on_lan.send_magic_packet
-    data:
-      mac: !secret lg_oled_mac
-      #broadcast_address: 192.168.1.255
-
 spotify:
   client_id: !secret spotify_client_id
   client_secret: !secret spotify_client_secret
@@ -89,7 +80,9 @@ homekit:
       - switch.tv
       - switch.schakelaar_buitenverlichting_voor
       - group.buitenverlichting_achter
-      - switch.buitenverlichting_lichtsnoer
+      - switch.buitenverlichting_achtertuin
+      - switch.buitenverlichting_overkapping
+      - switch.fontein_achtertuin
 
 climate:
   - platform: intesishome

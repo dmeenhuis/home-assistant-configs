@@ -1,0 +1,5 @@
+- name: Nijenkamp
+  latitude: !secret huiswerkinstituut_latitude
+  longitude: !secret huiswerkinstituut_longitude
+  radius: 50
+  icon: mdi:school
