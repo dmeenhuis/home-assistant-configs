@@ -9,11 +9,11 @@ homeassistant:
   customize: !include customize.yaml
   customize_glob:
     sensor.*_energy:
-      last_reset: '1970-01-01T00:00:00+00:00'
+      last_reset: "1970-01-01T00:00:00+00:00"
       device_class: energy
       state_class: measurement
     sensor.*_energy_returned:
-      last_reset: '1970-01-01T00:00:00+00:00'
+      last_reset: "1970-01-01T00:00:00+00:00"
       device_class: energy
       state_class: measurement
   auth_providers:
@@ -28,7 +28,6 @@ discovery:
   ignore:
     - yeelight
 sun:
-updater:
 frontend:
   themes: !include_dir_merge_named themes
 conversation:
@@ -182,7 +181,7 @@ influxdb:
   token: "HG_V28Fy4sgbkLn5jhbQeTCVLpGw1LA8I8DoehQV6HmsdBlCikH7zu7513B09uEQosRt-bFBf0mU3PZBGXEtCA=="
   organization: local
   bucket: home-assistant
-  precision: 's'
+  precision: "s"
   include:
     entity_globs:
       - sensor.dsmr*
