@@ -6,7 +6,7 @@
     for:
       minutes: 2
   action:
-    - service: notify.mobile_app_iphone
+    - service: notify.all_devices
       data:
         title: "Voordeur staat open"
         message: "De voordeur staat al 2 minuten open, misschien ben je vergeten deze te sluiten?"
@@ -28,7 +28,7 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.frontdoor_alert_triggered
-    - service: notify.mobile_app_iphone
+    - service: notify.all_devices
       data:
         title: "Voordeur is weer gesloten"
         message: "De voordeur is weer gesloten."

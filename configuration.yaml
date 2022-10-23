@@ -50,25 +50,8 @@ notify:
   - name: all_devices
     platform: group
     services:
-      - service: mobile_app_iphone
+      - service: mobile_app_iphone_van_dennis
       - service: mobile_app_pocophone
-
-ios:
-  push:
-    categories:
-      - name: waste pickup
-        identifier: "wastepickup"
-        actions:
-          - identifier: "DONE"
-            title: "Klaar"
-            destructive: no
-          - identifier: "SNOOZE"
-            title: "Snooze"
-            destructive: yes
-
-spotify:
-  client_id: !secret spotify_client_id
-  client_secret: !secret spotify_client_secret
 
 homekit:
   advertise_ip: 192.168.0.20
@@ -176,7 +159,6 @@ http:
     - 172.0.0.0/8
 
 mqtt:
-  broker: mqtt
   client_id: homeassistant
   username: !secret mqtt_username
   password: !secret mqtt_password
@@ -189,7 +171,6 @@ mqtt:
     payload: "offline"
 
 recorder:
-  purge_interval: 1
   purge_keep_days: 4
   db_url: !secret homeassistant_recorder_db_url
 
