@@ -8,7 +8,7 @@
         {% else %} mdi:toggle-switch-off
         {% endif %}
       value_template: >
-        {% set current_power = (states('sensor.vaatwasser_energy_power') | float) %}
+        {% set current_power = (states('sensor.vaatwasser_energy_power') | float(0)) %}
         {% if (current_power) > 10 %} Running
         {% elif (current_power > 0) %} Idle
         {% else %} Off
@@ -21,7 +21,7 @@
         {% else %} mdi:toggle-switch-off
         {% endif %}
       value_template: >
-        {% set current_power = (states('sensor.wasmachine_energy_power') | float) %}
+        {% set current_power = (states('sensor.wasmachine_energy_power') | float(0)) %}
         {% if (current_power) > 10 %} Running
         {% elif (current_power > 0) %} Idle
         {% else %} Off
@@ -34,7 +34,7 @@
         {% else %} mdi:toggle-switch-off
         {% endif %}
       value_template: >
-        {% set current_power = (states('sensor.wasdroger_energy_power') | float) %}
+        {% set current_power = (states('sensor.wasdroger_energy_power') | float(0)) %}
         {% if (current_power) > 10 %} Running
         {% elif (current_power > 0) %} Idle
         {% else %} Off
