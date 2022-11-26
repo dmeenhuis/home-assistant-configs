@@ -2,4 +2,4 @@
   id: amt
   user_id: !secret user_id_person2
   device_trackers:
-    - device_tracker.phone_antsje
+    - device_tracker.sm_a528b
