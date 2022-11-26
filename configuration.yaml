@@ -50,7 +50,7 @@ notify:
     platform: group
     services:
       - service: mobile_app_iphone_van_dennis
-      - service: mobile_app_pocophone
+      - service: mobile_app_sm_a528b
 
 homekit:
   advertise_ip: 192.168.0.20
