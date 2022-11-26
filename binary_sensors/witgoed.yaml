@@ -11,7 +11,7 @@
         {% else %} mdi:toggle-switch-off
         {% endif %}
       value_template: >
-        {{ (states('sensor.vaatwasser_energy_power') | float) > 10 }}
+        {{ (states('sensor.vaatwasser_energy_power') | float(0)) > 10 }}
     status_wasmachine:
       friendly_name: Status wasmachine
       delay_off:
@@ -23,7 +23,7 @@
         {% else %} mdi:toggle-switch-off
         {% endif %}
       value_template: >
-        {{ (states('sensor.wasmachine_energy_power') | float) > 10 }}
+        {{ (states('sensor.wasmachine_energy_power') | float(0)) > 10 }}
     status_wasdroger:
       friendly_name: Status wasdroger
       delay_off:
@@ -35,4 +35,4 @@
         {% else %} mdi:toggle-switch-off
         {% endif %}
       value_template: >
-        {{ (states('sensor.wasdroger_energy_power') | float) > 10 }}
+        {{ (states('sensor.wasdroger_energy_power') | float(0)) > 10 }}
