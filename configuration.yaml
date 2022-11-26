@@ -158,16 +158,6 @@ http:
     - 172.0.0.0/8
 
 mqtt:
-  client_id: homeassistant
-  username: !secret mqtt_username
-  password: !secret mqtt_password
-  discovery: true
-  birth_message:
-    topic: "hass/status"
-    payload: "online"
-  will_message:
-    topic: "hass/status"
-    payload: "offline"
 
 recorder:
   purge_keep_days: 4

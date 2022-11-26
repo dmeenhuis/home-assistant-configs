@@ -2,3 +2,4 @@ name: Buiten
 entities:
   - light.voordeurlamp_buiten
   - binary_sensor.deursensor_voordeur
+  - switch.sierverlichting_buiten_voor
