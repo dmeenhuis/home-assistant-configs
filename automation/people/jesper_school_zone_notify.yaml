@@ -2,7 +2,7 @@
   trigger:
     platform: zone
     entity_id: person.jesper
-    zone: zone.basisschool_junior
+    zone: zone.basisschool
     event: enter
   action:
     - service: notify.all_devices
@@ -18,7 +18,7 @@
   trigger:
     platform: zone
     entity_id: person.jesper
-    zone: zone.basisschool_junior
+    zone: zone.basisschool
     event: leave
   action:
     - service: notify.all_devices
