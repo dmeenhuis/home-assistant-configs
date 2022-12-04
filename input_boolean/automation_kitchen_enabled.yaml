@@ -1,4 +1,3 @@
-name: "Automation kitchen enabled"
-friendly_name: "Keukenautomatisering"
+name: "Keukenautomatisering"
 initial: on
 icon: mdi:home-lightning-bolt
