@@ -16,3 +16,4 @@
     media_player.denon_avr_x1300w: off
     switch.sierverlichting_buiten_voor: off
     light.bijkeukenlamp: off
+    input_boolean.automation_kitchen_enabled: on
