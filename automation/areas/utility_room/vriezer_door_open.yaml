@@ -1,0 +1,24 @@
+- alias: Send notification when deep freezer door is open for too long
+  trigger:
+    platform: state
+    entity_id: binary_sensor.deursensor_vriezer
+    from: "off"
+    to: "on"
+    for:
+      minutes: 2
+  action:
+    - service: notify.all_devices
+      data:
+        title: "Vriezerdeur staat open"
+        message: "De vriezerdeur is niet gesloten, sluit deze snel voordat alles ontdooit!"
+- alias: Send notification when deep freezer door has been closed again
+  trigger:
+    platform: state
+    entity_id: binary_sensor.deursensor_vriezer
+    from: "on"
+    to: "off"
+  action:
+    - service: notify.all_devices
+      data:
+        title: "Vriezerdeur is weer gesloten"
+        message: "De vriezerdeur is weer gesloten."
