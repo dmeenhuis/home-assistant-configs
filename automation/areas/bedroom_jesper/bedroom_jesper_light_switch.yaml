@@ -48,19 +48,19 @@
         - 13
         - 0
   action:
-    - service: light.turn_on
-      data_template:
-        entity_id: light.slaapkamerlamp_jesper
-        xy_color: >
-          {% set idx = states('input_number.slaapkamerlamp_jesper_current_color') | int - 1 %}
-          {% set idx = idx % colors | length %}
-          {% set color = colors[idx] %}
-          {{ color }}
-        transition: 1
-    - service: input_number.set_value
-      entity_id: input_number.slaapkamerlamp_jesper_current_color
-      data:
-        value: >
-          {% set idx = states('input_number.slaapkamerlamp_jesper_current_color') | int - 1 %}
-          {% set idx = idx % colors | length %}
-          {{ idx }}
+    - service: light.turn_off
+      entity_id: light.slaapkamerlamp_jesper
+      # data_template:
+      #   xy_color: >
+      #     {% set idx = states('input_number.slaapkamerlamp_jesper_current_color') | int - 1 %}
+      #     {% set idx = idx % colors | length %}
+      #     {% set color = colors[idx] %}
+      #     {{ color }}
+      #   transition: 1
+    # - service: input_number.set_value
+    #   entity_id: input_number.slaapkamerlamp_jesper_current_color
+    #   data:
+    #     value: >
+    #       {% set idx = states('input_number.slaapkamerlamp_jesper_current_color') | int - 1 %}
+    #       {% set idx = idx % colors | length %}
+    #       {{ idx }}
