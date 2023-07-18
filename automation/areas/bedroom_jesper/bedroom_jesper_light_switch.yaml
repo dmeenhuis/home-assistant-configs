@@ -25,8 +25,7 @@
         xy_color: >
           {% set idx = states('input_number.slaapkamerlamp_jesper_current_color') | int + 1 %}
           {% set idx = idx % colors | length %}
-          {% set color = colors[idx] %}
-          {{ color }}
+          {{ colors[idx] }}
         transition: 1
     - service: input_number.set_value
       entity_id: input_number.slaapkamerlamp_jesper_current_color
@@ -47,20 +46,28 @@
         - 257
         - 13
         - 0
+  variables:
+    colors: |-
+      {{ [[0.217,0.077], [0.157,0.05], [0.136,0.04], [0.137,0.065],
+          [0.141,0.137], [0.146,0.238], [0.151,0.343], [0.157,0.457],
+          [0.164,0.591], [0.17,0.703], [0.172,0.747], [0.199,0.724],
+          [0.269,0.665], [0.36,0.588], [0.444,0.517], [0.527,0.447],
+          [0.612,0.374], [0.677,0.319], [0.701,0.299], [0.667,0.284],
+          [0.581,0.245], [0.477,0.196], [0.385,0.155], [0.301,0.116], 
+          [0.217,0.077]] }}
   action:
-    - service: light.turn_off
+    - service: light.turn_on
       entity_id: light.slaapkamerlamp_jesper
-      # data_template:
-      #   xy_color: >
-      #     {% set idx = states('input_number.slaapkamerlamp_jesper_current_color') | int - 1 %}
-      #     {% set idx = idx % colors | length %}
-      #     {% set color = colors[idx] %}
-      #     {{ color }}
-      #   transition: 1
-    # - service: input_number.set_value
-    #   entity_id: input_number.slaapkamerlamp_jesper_current_color
-    #   data:
-    #     value: >
-    #       {% set idx = states('input_number.slaapkamerlamp_jesper_current_color') | int - 1 %}
-    #       {% set idx = idx % colors | length %}
-    #       {{ idx }}
+      data_template:
+        xy_color: >
+          {% set idx = states('input_number.slaapkamerlamp_jesper_current_color') | int - 1 %}
+          {% set idx = idx % colors | length %}
+          {{ colors[idx] }}
+        transition: 1
+    - service: input_number.set_value
+      entity_id: input_number.slaapkamerlamp_jesper_current_color
+      data:
+        value: >
+          {% set idx = states('input_number.slaapkamerlamp_jesper_current_color') | int - 1 %}
+          {% set idx = idx % colors | length %}
+          {{ idx }}
