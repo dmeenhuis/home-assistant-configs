@@ -163,31 +163,31 @@ recorder:
   purge_keep_days: 4
   db_url: !secret homeassistant_recorder_db_url
 
-influxdb:
-  api_version: "2"
-  host: influxdb
-  port: 8086
-  ssl: false
-  token: "HG_V28Fy4sgbkLn5jhbQeTCVLpGw1LA8I8DoehQV6HmsdBlCikH7zu7513B09uEQosRt-bFBf0mU3PZBGXEtCA=="
-  organization: local
-  bucket: home-assistant
-  precision: "s"
-  include:
-    entity_globs:
-      - sensor.dsmr*
-      - sensor.energy*
-      - sensor.daily_energy*
-      - sensor.monthly_energy*
-      - sensor.vaatwasser_*
-      - sensor.wasmachine_*
-      - sensor.wasdroger_*
-      - sensor.bv14220072_*
-      - sensor.temperature*
-      - sensor.light_sensor*
-      - sensor.buienradar_temperature
-      - sensor.d_a_total_money_lifetime
-      - sensor.humidity*
-      - sensor.solaredge*
-      - sensor.d_a_total_lifetime_energy_output
-      - sensor.d_a_total_output_power
-      - sensor.d_a_total_energy_today
+# influxdb:
+#   api_version: "2"
+#   host: influxdb
+#   port: 8086
+#   ssl: false
+#   token: "HG_V28Fy4sgbkLn5jhbQeTCVLpGw1LA8I8DoehQV6HmsdBlCikH7zu7513B09uEQosRt-bFBf0mU3PZBGXEtCA=="
+#   organization: local
+#   bucket: home-assistant
+#   precision: "s"
+#   include:
+#     entity_globs:
+#       - sensor.dsmr*
+#       - sensor.energy*
+#       - sensor.daily_energy*
+#       - sensor.monthly_energy*
+#       - sensor.vaatwasser_*
+#       - sensor.wasmachine_*
+#       - sensor.wasdroger_*
+#       - sensor.bv14220072_*
+#       - sensor.temperature*
+#       - sensor.light_sensor*
+#       - sensor.buienradar_temperature
+#       - sensor.d_a_total_money_lifetime
+#       - sensor.humidity*
+#       - sensor.solaredge*
+#       - sensor.d_a_total_lifetime_energy_output
+#       - sensor.d_a_total_output_power
+#       - sensor.d_a_total_energy_today
