@@ -1,0 +1,7 @@
+#- platform: ffmpeg
+#  name: Camera woonkamer
+#  input: -rtsp_transport tcp -i rtsp://192.168.50.148/ch0_0.h264
+- platform: yi
+  name: Camera achtertuin
+  host: "192.168.50.148"
+  password: !secret yi_camera_ftp_password

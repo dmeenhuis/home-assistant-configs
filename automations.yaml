@@ -1,0 +1,12 @@
+- id: '1689619123749'
+  alias: Slaapkamerlamp Jesper
+  description: ''
+  use_blueprint:
+    path: Malte/zha-ikea-four-button-remote-styrbar-for-lights-e2001-e2002.yaml
+    input:
+      remote: 81155d6583b07adf4277dd457c65e349
+      brightness: 80
+      button_left_short: []
+      force_brightness: true
+      light:
+        entity_id: light.slaapkamerlamp_jesper

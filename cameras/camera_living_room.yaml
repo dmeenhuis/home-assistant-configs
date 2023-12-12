@@ -1,3 +1,0 @@
-- platform: ffmpeg
-  name: Camera woonkamer
-  input: -rtsp_transport tcp -i rtsp://192.168.50.148/ch0_0.h264

@@ -136,16 +136,16 @@ weather: !include_dir_merge_list weather/
 
 yeelight:
   devices:
-    192.168.63.11:
+    192.168.4.127:
       name: Woonkamerlamp linksvoor
       model: color1
-    192.168.101.82:
+    192.168.94.49:
       name: Woonkamerlamp rechtsvoor
       model: color1
-    192.168.133.214:
+    192.168.6.128:
       name: Badkamerlamp
       model: color1
-    192.168.251.110:
+    192.168.1.238:
       name: Overlooplamp
       model: color1
 
