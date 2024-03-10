@@ -158,6 +158,37 @@ http:
     - 172.0.0.0/8
 
 mqtt:
+  sensor:
+    - name: "EV Energy Total"
+      state_topic: "tasmota/tele/switch_ev"
+      value_template: '{{ value_json["ENERGY"]["Total"] }}'
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: measurement 
+    - name: "EV Energy Today"
+      state_topic: "tasmota/tele/switch_ev"
+      value_template: '{{ value_json["ENERGY"]["Today"] }}'
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: measurement 
+    - name: "EV Power"
+      state_topic: "tasmota/tele/switch_ev"
+      value_template: '{{ value_json["ENERGY"]["Power"] }}'
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement 
+    - name: "EV Voltage"
+      state_topic: "tasmota/tele/switch_ev"
+      value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+      unit_of_measurement: "V"
+      device_class: voltage
+      state_class: measurement 
+    - name: "EV Current"
+      state_topic: "tasmota/tele/switch_ev"
+      value_template: '{{ value_json["ENERGY"]["Current"] }}'
+      unit_of_measurement: "A"
+      device_class: current
+      state_class: measurement
 
 recorder:
   purge_keep_days: 4
