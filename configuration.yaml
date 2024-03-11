@@ -164,7 +164,7 @@ mqtt:
       value_template: '{{ value_json["ENERGY"]["Total"] }}'
       unit_of_measurement: "kWh"
       device_class: energy
-      state_class: measurement 
+      state_class: total_increasing 
     - name: "EV Energy Today"
       state_topic: "tasmota/tele/switch_ev/SENSOR"
       value_template: '{{ value_json["ENERGY"]["Today"] }}'
