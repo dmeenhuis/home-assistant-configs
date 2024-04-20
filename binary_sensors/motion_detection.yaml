@@ -8,6 +8,7 @@
         or is_state("binary_sensor.bewegingssensor_keuken_motion", "on")
         or is_state("binary_sensor.bewegingssensor_salonkast_motion", "on")
         or is_state("binary_sensor.bewegingssensor_toilet_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_gang_motion", "on")
         or is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
     motion_detected_anywhere_except_overloop:
       value_template: >-
@@ -16,6 +17,7 @@
         or is_state("binary_sensor.bewegingssensor_keuken_motion", "on")
         or is_state("binary_sensor.bewegingssensor_salonkast_motion", "on")
         or is_state("binary_sensor.bewegingssensor_toilet_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_gang_motion", "on")
         or is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
       delay_off: "00:05:00"
     house_idle:
@@ -42,6 +44,11 @@
       friendly_name: Activiteit in de toilet
       value_template: >
         {{ is_state("binary_sensor.bewegingssensor_toilet_motion", "on") }}
+      delay_off: "00:01:00"
+    activity_in_hall_downstairs:
+      friendly_name: Activiteit in de gang
+      value_template: >
+        {{ is_state("binary_sensor.bewegingssensor_gang_motion", "on") }}
       delay_off: "00:01:00"
     activity_in_kitchen:
       friendly_name: Activiteit in de keuken
