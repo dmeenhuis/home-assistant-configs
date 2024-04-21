@@ -194,6 +194,16 @@ recorder:
   purge_keep_days: 4
   db_url: !secret homeassistant_recorder_db_url
 
+entity_controller:
+  hallway_downstairs_light:
+    sensor: binary_sensor.activity_in_hall_downstairs
+    entity: switch.schakelaar_gang
+    delay: 300
+  toilet_light:
+    sensor: binary_sensor.activity_in_toilet
+    entity: switch.schakelaar_toilet
+    delay: 300
+
 # influxdb:
 #   api_version: "2"
 #   host: influxdb
