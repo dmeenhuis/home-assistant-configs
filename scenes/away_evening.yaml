@@ -1,12 +1,13 @@
 - name: "'s avonds weg"
   entities:
-    switch.tv: off
     light.middenwoonkamerlamp: off
     light.aaplamp: off
     light.oosterse_lamp: off
     light.houtbloklamp: on
+    group.bijkeuken: off
     group.kitchen: off
     group.garage: off
+    group.gang: off
     group.overloop: off
     group.bedroom_d_a: off
     group.bedroom_jesper: off
@@ -16,5 +17,4 @@
     group.backyard: off
     light.woonkamerlamp_linksvoor: on
     light.woonkamerlamp_rechtsvoor: on
-    light.bijkeukenlamp: off
     light.voordeurlamp_buiten: on
