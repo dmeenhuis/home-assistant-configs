@@ -1,16 +1,16 @@
-- alias: Turn on hall downstairs light when there is motion
-  trigger:
-    platform: state
-    entity_id: binary_sensor.activity_in_hall_downstairs
-    to: 'on'
-  action:
-    service: switch.turn_on
-    entity_id: switch.schakelaar_gang
-- alias: Turn off hall downstairs light x minutes after last movement
-  trigger:
-    platform: state
-    entity_id: binary_sensor.activity_in_hall_downstairs
-    to: 'off'
-  action:
-    service: switch.turn_off
-    entity_id: switch.schakelaar_gang
+# - alias: Turn on hall downstairs light when there is motion
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.activity_in_hall_downstairs
+#     to: 'on'
+#   action:
+#     service: switch.turn_on
+#     entity_id: switch.schakelaar_gang
+# - alias: Turn off hall downstairs light x minutes after last movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.activity_in_hall_downstairs
+#     to: 'off'
+#   action:
+#     service: switch.turn_off
+#     entity_id: switch.schakelaar_gang

@@ -1,16 +1,16 @@
-- alias: Turn on toilet light when there is motion
-  trigger:
-    platform: state
-    entity_id: binary_sensor.activity_in_toilet
-    to: 'on'
-  action:
-    service: switch.turn_on
-    entity_id: switch.schakelaar_toilet
-- alias: Turn off toilet light x minutes after last movement
-  trigger:
-    platform: state
-    entity_id: binary_sensor.activity_in_toilet
-    to: 'off'
-  action:
-    service: switch.turn_off
-    entity_id: switch.schakelaar_toilet
+# - alias: Turn on toilet light when there is motion
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.activity_in_toilet
+#     to: 'on'
+#   action:
+#     service: switch.turn_on
+#     entity_id: switch.schakelaar_toilet
+# - alias: Turn off toilet light x minutes after last movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.activity_in_toilet
+#     to: 'off'
+#   action:
+#     service: switch.turn_off
+#     entity_id: switch.schakelaar_toilet
