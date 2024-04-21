@@ -203,6 +203,20 @@ entity_controller:
     sensor: binary_sensor.activity_in_toilet
     entity: switch.schakelaar_toilet
     delay: 300
+  kitchen_light:
+    sensor: binary_sensor.activity_in_kitchen
+    entity: light.keukenspots
+    delay: 300
+    overrides:
+      - input_boolean.automation_kitchen_disabled
+  garage_light:
+    sensor: binary_sensor.activity_in_garage
+    entity: light.garagelamp
+    delay: 300
+  bijkeuken_light:
+    sensor: binary_sensor.activity_in_bijkeuken
+    entity: light.bijkeukenlamp
+    delay: 300
 
 # influxdb:
 #   api_version: "2"

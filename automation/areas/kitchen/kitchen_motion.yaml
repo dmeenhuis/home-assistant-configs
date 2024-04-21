@@ -1,26 +1,26 @@
-- alias: Turn on kitchen lights when there is motion
-  trigger:
-    platform: state
-    entity_id: binary_sensor.activity_in_kitchen
-    to: "on"
-  condition:
-    - condition: state
-      entity_id: input_boolean.automation_kitchen_enabled
-      state: "on"
-  action:
-    service: light.turn_on
-    data:
-      entity_id: light.keukenspots
-      brightness_pct: 90
-- alias: Turn off kitchen lights x minutes after last movement
-  trigger:
-    platform: state
-    entity_id: binary_sensor.activity_in_kitchen
-    to: "off"
-  condition:
-    - condition: state
-      entity_id: input_boolean.automation_kitchen_enabled
-      state: "on"
-  action:
-    service: light.turn_off
-    entity_id: light.keukenspots
+# - alias: Turn on kitchen lights when there is motion
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.activity_in_kitchen
+#     to: "on"
+#   condition:
+#     - condition: state
+#       entity_id: input_boolean.automation_kitchen_enabled
+#       state: "on"
+#   action:
+#     service: light.turn_on
+#     data:
+#       entity_id: light.keukenspots
+#       brightness_pct: 90
+# - alias: Turn off kitchen lights x minutes after last movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.activity_in_kitchen
+#     to: "off"
+#   condition:
+#     - condition: state
+#       entity_id: input_boolean.automation_kitchen_enabled
+#       state: "on"
+#   action:
+#     service: light.turn_off
+#     entity_id: light.keukenspots
