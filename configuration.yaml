@@ -199,10 +199,16 @@ entity_controller:
     sensor: binary_sensor.activity_in_hall_downstairs
     entity: switch.schakelaar_gang
     delay: 300
+    block_timeout: 300
+    sensor_type: duration
+    sensor_resets_timer: True
   toilet_light:
     sensor: binary_sensor.activity_in_toilet
     entity: switch.schakelaar_toilet
     delay: 300
+    block_timeout: 300
+    sensor_type: duration
+    sensor_resets_timer: True
   kitchen_light:
     sensor: binary_sensor.activity_in_kitchen
     entity: light.keukenspots
@@ -210,16 +216,22 @@ entity_controller:
     block_timeout: 300
     overrides:
       - input_boolean.automation_kitchen_disabled
+    sensor_type: duration
+    sensor_resets_timer: True
   garage_light:
     sensor: binary_sensor.activity_in_garage
     entity: light.garagelamp
     block_timeout: 300
     delay: 300
+    sensor_type: duration
+    sensor_resets_timer: True
   bijkeuken_light:
     sensor: binary_sensor.activity_in_bijkeuken
     entity: light.bijkeukenlamp
     block_timeout: 300
     delay: 300
+    sensor_type: duration
+    sensor_resets_timer: True
 
 # influxdb:
 #   api_version: "2"
