@@ -44,6 +44,7 @@ map:
 wake_on_lan:
 energy:
 default_config:
+adaptive_lighting:
 
 notify:
   - name: all_devices
@@ -133,21 +134,6 @@ input_select: !include_dir_named input_select/
 script: !include_dir_merge_named scripts/
 timer: !include_dir_named timer/
 weather: !include_dir_merge_list weather/
-
-yeelight:
-  devices:
-    192.168.4.127:
-      name: Woonkamerlamp linksvoor
-      model: color1
-    192.168.94.49:
-      name: Woonkamerlamp rechtsvoor
-      model: color1
-    192.168.6.128:
-      name: Badkamerlamp
-      model: color1
-    192.168.1.238:
-      name: Overlooplamp
-      model: color1
 
 http:
   server_port: 8123

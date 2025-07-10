@@ -1,4 +1,4 @@
-- name: Work Dennis
+- name: Werk
   latitude: !secret work_person1_latitude
   longitude: !secret work_person1_longitude
   radius: 300

@@ -1,0 +1,5 @@
+- name: Noordik
+  latitude: !secret middelbare_school_latitude
+  longitude: !secret middelbare_school_longitude
+  radius: 100
+  icon: mdi:school
