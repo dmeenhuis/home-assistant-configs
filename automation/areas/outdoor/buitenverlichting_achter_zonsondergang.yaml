@@ -9,4 +9,4 @@
       state: "off"
   action:
     service: homeassistant.turn_on
-    entity_id: group.buitenverlichting_achter
+    entity_id: group.outside

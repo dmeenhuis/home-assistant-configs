@@ -1,20 +1,16 @@
 - name: "'s avonds weg"
   entities:
-    light.middenwoonkamerlamp: off
-    light.aaplamp: off
-    light.oosterse_lamp: off
-    light.houtbloklamp: on
+    light.eetkamerlamp: off
+    light.plafonniere_schuifdeur: off
+    light.plafonniere_zithoek: off
+    light.hoekbanklamp_staand: on
+    light.vensterbanklamp: on
+    group.outside: on
     group.bijkeuken: off
     group.kitchen: off
-    group.garage: off
     group.gang: off
     group.overloop: off
     group.bedroom_d_a: off
     group.bedroom_jesper: off
     group.bedroom_jurjen: off
     group.bathroom: off
-    group.toilet: off
-    group.backyard: off
-    light.woonkamerlamp_linksvoor: on
-    light.woonkamerlamp_rechtsvoor: on
-    light.voordeurlamp_buiten: on

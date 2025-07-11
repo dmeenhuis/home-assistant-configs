@@ -1,5 +1,7 @@
-name: Woonkamer
+name: Woonkamer (alles)
 entities:
   - light.eetkamerlamp
   - light.hoekbanklamp_staand
   - light.vensterbanklamp
+  - light.plafonniere_schuifdeur
+  - light.plafonniere_zithoek

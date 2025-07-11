@@ -1,7 +1,7 @@
 - alias: Update last motion
   trigger:
     - platform: state
-      entity_id: binary_sensor.bewegingssensor_garage, binary_sensor.bewegingssensor_overloop, binary_sensor.bewegingssensor_badkamer, binary_sensor.bewegingssensor_keuken, binary_sensor.bewegingssensor_salonkast, binary_sensor.bewegingssensor_toilet, binary_sensor.bewegingssensor_woonkamer
+      entity_id: binary_sensor.bewegingssensor_garage, binary_sensor.bewegingssensor_overloop, binary_sensor.bewegingssensor_badkamer, binary_sensor.bewegingssensor_keuken
       to: 'on'
   action:
     - service: variable.set_variable

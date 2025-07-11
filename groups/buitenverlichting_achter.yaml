@@ -1,6 +1,0 @@
-name: Buitenverlichting achter
-icon: mdi:lightbulb
-entities:
-  - light.buitenlamp_achter
-  - switch.buitenverlichting_overkapping
-  - switch.buitenverlichting_achtertuin

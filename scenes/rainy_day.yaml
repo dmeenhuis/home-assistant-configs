@@ -1,8 +1,4 @@
 - name: Regenachtige dag
   entities:
-    light.middenwoonkamerlamp:
+    group.living_room:
       state: on
-      brightness_pct: 60
-    light.oosterse_lamp:
-      state: on
-      brightness_pct: 50

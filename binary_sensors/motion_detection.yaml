@@ -39,10 +39,6 @@
       friendly_name: Activiteit in de badkamer
       value_template: >
         {{ is_state("binary_sensor.bewegingssensor_badkamer_motion", "on") }}
-    activity_in_toilet:
-      friendly_name: Activiteit in de toilet
-      value_template: >
-        {{ is_state("binary_sensor.bewegingssensor_toilet_motion", "on") }}
     activity_in_hall_downstairs:
       friendly_name: Activiteit in de gang
       value_template: >
@@ -55,19 +51,10 @@
       friendly_name: Activiteit in de bijkeuken
       value_template: >
         {{ is_state("binary_sensor.bewegingssensor_bijkeuken_motion", "on") }}
-    activity_in_living_room:
-      friendly_name: Activiteit in de woonkamer
-      value_template: >
-        {{ is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
-      delay_off: "00:01:00"
     activity_overloop:
       friendly_name: Activiteit op de overloop
       value_template: >
         {{ is_state("binary_sensor.bewegingssensor_overloop", "on") }}
-    activity_in_garage:
-      friendly_name: Activiteit in de garage
-      value_template: >
-        {{ is_state("binary_sensor.bewegingssensor_garage", "on") }}
     living_room_presence:
       friendly_name: Aanwezigheid woonkamer
       value_template: >

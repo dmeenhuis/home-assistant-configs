@@ -1,18 +1,18 @@
-- alias: Turn on salonkast lights when there is motion
-  trigger:
-    platform: state
-    entity_id: binary_sensor.bewegingssensor_salonkast_motion
-    to: 'on'
-  action:
-    service: switch.turn_on
-    entity_id: switch.salonkast_woonkamer
-- alias: Turn off salonkast lights after timer
-  trigger:
-    platform: state
-    entity_id: binary_sensor.bewegingssensor_salonkast_motion
-    to: 'off'
-    for:
-      seconds: 5
-  action:
-    service: switch.turn_off
-    entity_id: switch.salonkast_woonkamer
+# - alias: Turn on salonkast lights when there is motion
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.bewegingssensor_salonkast_motion
+#     to: 'on'
+#   action:
+#     service: switch.turn_on
+#     entity_id: switch.salonkast_woonkamer
+# - alias: Turn off salonkast lights after timer
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.bewegingssensor_salonkast_motion
+#     to: 'off'
+#     for:
+#       seconds: 5
+#   action:
+#     service: switch.turn_off
+#     entity_id: switch.salonkast_woonkamer
