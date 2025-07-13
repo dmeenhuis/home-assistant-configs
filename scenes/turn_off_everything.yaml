@@ -11,5 +11,6 @@
     group.gang: off
     group.outside: off
     group.bathroom: off
+    group.office: off
     media_player.denon_avr_x1300w: off
     input_boolean.automation_kitchen_disabled: off

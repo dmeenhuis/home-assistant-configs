@@ -1,6 +1,5 @@
 - name: Zonsondergang
   entities:
-    group.living_room:
-      state: on
-    group.outside:
-      state: on
+    group.living_room: on
+    group.outside: on
+    group.office: on
