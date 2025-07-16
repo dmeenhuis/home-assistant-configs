@@ -44,6 +44,7 @@ map:
 wake_on_lan:
 energy:
 default_config:
+var:
 
 notify:
   - name: all_devices
