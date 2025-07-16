@@ -203,6 +203,13 @@ entity_controller:
     delay: 300
     sensor_type: duration
     sensor_resets_timer: True
+  office_lights:
+    sensor: binary_sensor.activity_in_office
+    entity: light.werkkamerspots
+    block_timeout: 300
+    delay: 300
+    sensor_type: duration
+    sensor_resets_timer: True
 
 # influxdb:
 #   api_version: "2"
