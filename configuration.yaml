@@ -211,6 +211,11 @@ entity_controller:
     sensor_type: duration
     sensor_resets_timer: True
 
+rest_command:
+ update_lg_dev:
+ url: !secret lg_update_dev_mode_url
+
+
 # influxdb:
 #   api_version: "2"
 #   host: influxdb
