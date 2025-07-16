@@ -38,7 +38,8 @@
     activity_in_bathroom:
       friendly_name: Activiteit in de badkamer
       value_template: >
-        {{ is_state("binary_sensor.bewegingssensor_badkamer_motion", "on") }}
+        {{ is_state("binary_sensor.bewegingssensor_badkamer_motion", "on")
+          or is_state("binary_sensor.presence_bathroom", "on") }}
     activity_in_hall_downstairs:
       friendly_name: Activiteit in de gang
       value_template: >
