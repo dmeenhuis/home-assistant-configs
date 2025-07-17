@@ -46,12 +46,6 @@ energy:
 default_config:
 
 var:
-  tv_media_source:
-    friendly_name: 'TV Media Source'
-    initial_value: ""
-
-shell_command:
-  tv_living_room_turn_on: !secret tv_living_room_turn_on
 
 notify:
   - name: all_devices
