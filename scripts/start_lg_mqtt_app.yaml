@@ -1,4 +1,4 @@
-start_spotify:
+start_mqtt_app_on_lg_tv:
   alias: Start MQTT app on LG TV
   description: Start the MQTT app on the LG TV
   sequence:
