@@ -214,7 +214,7 @@ entity_controller:
 
 rest_command:
  update_lg_dev:
- url: !secret lg_update_dev_mode_url
+  url: !secret lg_update_dev_mode_url
 
 
 # influxdb:
