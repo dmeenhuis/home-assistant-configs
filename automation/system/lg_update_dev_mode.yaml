@@ -1,10 +1,10 @@
-alias: Reset LG Dev session
-description: ""
-trigger:
-  - platform: time
-    at: "01:00:00"
-condition: []
-action:
-  - service: rest_command.update_lg_dev
-    data: {}
-mode: single
+- alias: Reset LG Dev session
+  description: ""
+  trigger:
+    - platform: time
+      at: "01:00:00"
+  condition: []
+  action:
+    - service: rest_command.update_lg_dev
+      data: {}
+  mode: single

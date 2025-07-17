@@ -1,29 +1,29 @@
-alias: "Start MQTT app on LG TV"
-description: ""
-trigger:
-  - platform: time
-    at: "02:00:00"
-condition: []
-action:
-  - service: media_player.turn_on
-    target:
-      entity_id: media_player.lg_oled65gx6la
-  - service: var.update
-    data:
-      entity_id: var.tv_media_source
-  - service: media_player.select_source
-    data:
-      source: LG TV 2 MQTT TV App
-    target:
-      entity_id: media_player.lg_oled65gx6la
-  - delay:
-      seconds: 10 # wait for the device to be properly started
-  - service: media_player.select_source
-    data:
-      source: "{{states('var.tv_media_source')}}"
-    target:
-      entity_id: media_player.lg_oled65gx6la
-  - service: media_player.turn_off
-    target:
-      entity_id: media_player.lg_oled65gx6la
-mode: single
+- alias: "Start MQTT app on LG TV"
+  description: ""
+  trigger:
+    - platform: time
+      at: "02:00:00"
+  condition: []
+  action:
+    - service: media_player.turn_on
+      target:
+        entity_id: media_player.lg_oled65gx6la
+    - service: var.update
+      data:
+        entity_id: var.tv_media_source
+    - service: media_player.select_source
+      data:
+        source: LG TV 2 MQTT TV App
+      target:
+        entity_id: media_player.lg_oled65gx6la
+    - delay:
+        seconds: 10 # wait for the device to be properly started
+    - service: media_player.select_source
+      data:
+        source: "{{states('var.tv_media_source')}}"
+      target:
+        entity_id: media_player.lg_oled65gx6la
+    - service: media_player.turn_off
+      target:
+        entity_id: media_player.lg_oled65gx6la
+  mode: single
