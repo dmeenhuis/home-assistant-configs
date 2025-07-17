@@ -44,7 +44,11 @@ map:
 wake_on_lan:
 energy:
 default_config:
+
 var:
+  tv_media_source:
+    friendly_name: 'TV Media Source'
+    initial_value: ""
 
 notify:
   - name: all_devices
