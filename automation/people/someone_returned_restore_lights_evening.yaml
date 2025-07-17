@@ -15,4 +15,4 @@
       after: sunset
   action:
     - service: scene.turn_on
-      entity_id: scene.zonsondergang
+      entity_id: scene.lights_before_leaving
