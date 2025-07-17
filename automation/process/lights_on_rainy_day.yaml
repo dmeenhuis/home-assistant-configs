@@ -13,10 +13,15 @@
       entity_id: group.people
       state: 'home'
     - condition: time
-      after: '12:00'
+      after: '10:00'
     - condition: sun
       before: sunset
   action:
+    - service: scene.create
+      data:
+        scene_id: living_room_before_rain
+        snapshot_entities: >-
+          {{ ['Woonkamer'] | map('area_entities') | sum(start=[]) | select('match', 'light') | list }}
     - service: scene.turn_on
       entity_id: scene.regenachtige_dag
 - alias: 'Rain is over'
@@ -34,5 +39,5 @@
       before: sunset
       before_offset: '01:00:00'
   action:
-    service: scene.turn_off
-    entity_id: scene.regenachtige_dag
+    service: scene.turn_on
+    entity_id: scene.living_room_before_rain
