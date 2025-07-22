@@ -205,9 +205,23 @@ entity_controller:
     delay: 300
     sensor_type: duration
     sensor_resets_timer: True
+  bathroom_lights_2:
+    sensor: binary_sensor.activity_in_bathroom_2
+    entity: switch.schakelaar_badkamer_2
+    block_timeout: 300
+    delay: 300
+    sensor_type: duration
+    sensor_resets_timer: True
   office_lights:
     sensor: binary_sensor.activity_in_office
     entity: light.werkkamerspots
+    block_timeout: 300
+    delay: 300
+    sensor_type: duration
+    sensor_resets_timer: True
+  bijkeuken_lights:
+    sensor: binary_sensor.activity_in_bijkeuken
+    entity: switch.schakelaar_bijkeuken
     block_timeout: 300
     delay: 300
     sensor_type: duration

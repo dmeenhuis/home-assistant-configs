@@ -38,8 +38,11 @@
     activity_in_bathroom:
       friendly_name: Activiteit in de badkamer
       value_template: >
-        {{ is_state("binary_sensor.bewegingssensor_badkamer_motion", "on")
-          or is_state("binary_sensor.presence_bathroom", "on") }}
+        {{ is_state("binary_sensor.bewegingssensor_badkamer_motion", "on") or is_state("binary_sensor.presence_bathroom", "on") }}
+    activity_in_bathroom_2:
+      friendly_name: Activiteit in badkamer 2
+      value_template: >
+        {{ is_state("binary_sensor.bewegingssensor_badkamer_2", "on") }}
     activity_in_hall_downstairs:
       friendly_name: Activiteit in de gang
       value_template: >
@@ -51,7 +54,7 @@
     activity_in_bijkeuken:
       friendly_name: Activiteit in de bijkeuken
       value_template: >
-        {{ is_state("binary_sensor.bewegingssensor_bijkeuken_motion", "on") }}
+        {{ is_state("binary_sensor.bewegingssensor_bijkeuken", "on") }}
     activity_overloop:
       friendly_name: Activiteit op de overloop
       value_template: >
@@ -59,7 +62,7 @@
     activity_in_office:
       friendly_name: Activiteit in de werkkamer
       value_template: >
-        {{ is_state("binary_sensor.presence_sensor_office", "on") }}
+        {{ is_state("binary_sensor.presence_sensor_office", "on") or is_state("binary_sensor.bewegingssensor_werkkamer", "on") }}
     living_room_presence:
       friendly_name: Aanwezigheid woonkamer
       value_template: >
