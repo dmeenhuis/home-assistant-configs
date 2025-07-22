@@ -10,3 +10,36 @@
       force_brightness: true
       light:
         entity_id: light.slaapkamerlamp_jesper
+- id: '1753003526949'
+  alias: Verlichting kast Dennis
+  description: ''
+  use_blueprint:
+    path: damru/ikea_E1743-E2201-E2213_ZHA-Z2M_control-light.yaml
+    input:
+      remote_devices:
+      - d4e87b059dbdc7a9f5e2cec51644fc75
+      light: light.ikea_of_sweden_tradfri_driver_10w_2
+      helper_brightness: 100
+      helper_force_brightness: true
+- id: '1753003661996'
+  alias: Verlichting kast Antsje
+  description: ''
+  use_blueprint:
+    path: damru/ikea_E1743-E2201-E2213_ZHA-Z2M_control-light.yaml
+    input:
+      remote_devices:
+      - 3f8997016857b26e3d5651b14add0a6d
+      light: light.ikea_of_sweden_tradfri_driver_10w_3
+      helper_force_brightness: true
+      helper_brightness: 100
+- id: '1753003716203'
+  alias: "Ikea's Rodret, Somrig or Tradfri \U0001F4A1 Light control"
+  description: ''
+  use_blueprint:
+    path: damru/ikea_E1743-E2201-E2213_ZHA-Z2M_control-light.yaml
+    input:
+      remote_devices:
+      - 755034a3af4395d4ecf51675e637a134
+      light: light.ikea_of_sweden_tradfri_driver_10w
+      helper_force_brightness: true
+      helper_brightness: 100
