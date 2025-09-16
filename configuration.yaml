@@ -24,9 +24,6 @@ homeassistant:
         - ::1
         - 192.168.1.0/24
 
-discovery:
-  ignore:
-    - yeelight
 sun:
 frontend:
   themes: !include_dir_merge_named themes
@@ -40,7 +37,6 @@ config:
 webhook:
 system_health:
 mobile_app:
-map:
 wake_on_lan:
 energy:
 default_config:
@@ -105,14 +101,6 @@ utility_meter:
   monthly_gas:
     source: sensor.dsmr_consumption_gas_delivered
     cycle: monthly
-
-variable:
-  last_motion:
-    value: "Unknown"
-    restore: true
-    attributes:
-      friendly_name: "Last motion"
-      icon: mdi-map-marker
 
 automation: !include automations.yaml
 automation old: !include_dir_merge_list automation/
