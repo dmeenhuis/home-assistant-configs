@@ -5,6 +5,7 @@
     light.plafonniere_zithoek: off
     light.hoekbanklamp_staand: on
     light.vensterbanklamp: on
+    light.oosterse_lamp: on
     group.outside: on
     group.bijkeuken: off
     group.kitchen: off

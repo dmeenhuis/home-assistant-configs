@@ -1,16 +1,19 @@
-# - alias: Voordeurlamp uit na zonsopkomst
-#   trigger:
-#     platform: sun
-#     event: sunrise
-#     offset: "+0:30:00"
-#   action:
-#     service: light.turn_off
-#     entity_id: light.voordeurlamp_buiten
-# - alias: Voordeurlamp aan na zonsondergang
-#   trigger:
-#     platform: sun
-#     event: sunset
-#     offset: "0:15:00"
-#   action:
-#     service: light.turn_on
-#     entity_id: light.voordeurlamp_buiten
+- alias: Buitenverlichting uit na zonsopkomst
+  trigger:
+    platform: sun
+    event: sunrise
+    offset: "+0:30:00"
+  action:
+    service: homeassistant.turn_off
+    entity_id: group.outside
+- alias: Buitenverlichting aan voor zonsopkomst
+  trigger:
+  - platform: time
+    at: "06:00:00"
+  condition:
+  - condition: template
+    value_template: >
+      {{ (as_timestamp(state_attr('sun.sun','next_rising')) + 1800) | timestamp_custom('%H:%M:%S') > "06:00:00" }}
+  action:
+    service: homeassistant.turn_on
+    entity_id: group.outside

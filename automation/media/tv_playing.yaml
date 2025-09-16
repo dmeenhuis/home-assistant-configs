@@ -1,0 +1,50 @@
+- alias: "TV playing"
+  trigger:
+    - platform: state
+      entity_id: media_player.lg_oled65gx6la
+      to: 'playing'
+  condition:
+    - condition: sun
+      after: sunset
+      after_offset: "-01:00"
+    - condition: state
+      entity_id: input_boolean.lighting_automations
+      state: 'on'
+  action:
+    - service: scene.create
+      data:
+        scene_id: living_room_before_dimming
+        snapshot_entities: >-
+          {{ ['Woonkamer'] | map('area_entities') | sum(start=[]) | select('match', 'light') | list }}
+    - service: scene.turn_on
+      entity_id: scene.living_room_dim
+- alias: "TV paused or turned off"
+  trigger:
+    - platform: state
+      entity_id: media_player.lg_oled65gx6la
+      to: 'paused'
+      from: 'playing'
+    - platform: state
+      entity_id: media_player.lg_oled65gx6la
+      to: 'off'
+      from: 'playing'
+    - platform: state
+      entity_id: media_player.lg_oled65gx6la
+      to: 'off'
+      from: 'paused'
+  condition:
+    - condition: sun
+      after: sunset
+      after_offset: "-01:00"
+    - condition: state
+      entity_id: input_boolean.lighting_automations
+      state: 'on'
+  action:
+    - service: scene.turn_on
+      entity_id: scene.living_room_before_dimming
+    - service: adaptive_lighting.apply
+      data:
+        entity_id: switch.adaptive_lighting_eetkamer
+    - service: adaptive_lighting.apply
+      data:
+        entity_id: switch.adaptive_lighting_d_a

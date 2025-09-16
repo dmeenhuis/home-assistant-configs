@@ -13,6 +13,13 @@
       state: 'off'
     - condition: sun
       after: sunset
+      after_offset: "-01:00"
   action:
     - service: scene.turn_on
       entity_id: scene.lights_before_leaving
+    - service: adaptive_lighting.apply
+      data:
+        entity_id: switch.adaptive_lighting_eetkamer
+    - service: adaptive_lighting.apply
+      data:
+        entity_id: switch.adaptive_lighting_d_a

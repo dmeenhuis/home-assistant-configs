@@ -1,0 +1,13 @@
+- name: "Woonkamer gedimd"
+  entities:
+    light.eetkamerlamp: off
+    light.plafonniere_schuifdeur: off
+    light.plafonniere_zithoek: off
+    light.hoekbanklamp_staand:
+      state: on
+      brightness_pct: 10
+    light.vensterbanklamp:
+      state: on
+      brightness_pct: 10
+    light.oosterse_lamp: off
+    group.kitchen: off

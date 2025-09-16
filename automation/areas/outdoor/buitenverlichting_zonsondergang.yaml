@@ -1,8 +1,7 @@
-- alias: Buitenverlichting achter aan na zonsondergang
+- alias: Buitenverlichting aan na zonsondergang
   trigger:
     platform: sun
     event: sunset
-    offset: "0:15:00"
   condition:
     - condition: state
       entity_id: input_boolean.holiday_mode

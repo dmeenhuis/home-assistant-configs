@@ -39,5 +39,12 @@
       before: sunset
       before_offset: '01:00:00'
   action:
-    service: scene.turn_on
-    entity_id: scene.living_room_before_rain
+    - service: scene.turn_on
+      entity_id: scene.living_room_before_rain
+    - service: adaptive_lighting.apply
+      data:
+        entity_id: switch.adaptive_lighting_eetkamer
+    - service: adaptive_lighting.apply
+      data:
+        entity_id: switch.adaptive_lighting_d_a
+    
