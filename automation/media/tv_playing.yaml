@@ -17,7 +17,7 @@
         snapshot_entities: >-
           {{ ['Woonkamer'] | map('area_entities') | sum(start=[]) | select('match', 'light') | list }}
     - service: scene.turn_on
-      entity_id: scene.living_room_dim
+      entity_id: scene.woonkamer_gedimd
 - alias: "TV paused or turned off"
   trigger:
     - platform: state
