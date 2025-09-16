@@ -27,14 +27,20 @@
       entity_id: media_player.lg_oled65gx6la
       to: 'paused'
       from: 'playing'
+      for:
+        seconds: 3
     - platform: state
       entity_id: media_player.lg_oled65gx6la
       to: 'off'
       from: 'playing'
+      for:
+        seconds: 3
     - platform: state
       entity_id: media_player.lg_oled65gx6la
       to: 'off'
       from: 'paused'
+      for:
+        seconds: 3
   condition:
     - condition: sun
       after: sunset
