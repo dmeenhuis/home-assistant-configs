@@ -38,6 +38,8 @@
     - condition: sun
       before: sunset
       before_offset: '01:00:00'
+    - condition: time
+      after: '10:00'
   action:
     - service: scene.turn_on
       entity_id: scene.living_room_before_rain
