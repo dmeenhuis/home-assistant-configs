@@ -4,10 +4,10 @@
     light.plafonniere_schuifdeur: off
     light.plafonniere_zithoek: off
     light.hoekbanklamp_staand:
-      state: on
-      brightness_pct: 10
+      state: "on"
+      brightness: 15
     light.vensterbanklamp:
-      state: on
-      brightness_pct: 10
+      state: "on"
+      brightness: 15
     light.oosterse_lamp: off
     group.kitchen: off
