@@ -1,0 +1,7 @@
+name: Slaapkamer Master
+entities:
+  - switch.slaapkamerlamp_d_a
+  - light.voeding_kast_antsje
+  - light.voeding_kast_dennis
+  - light.hoofdbordspot_links
+  - light.hoofdbordspot_rechts

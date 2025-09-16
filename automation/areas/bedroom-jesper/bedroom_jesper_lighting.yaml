@@ -1,0 +1,18 @@
+- alias: Slaapkamer Jesper verlichting aan
+  trigger:
+    platform: state
+    entity_id: switch.slaapkamerlamp_jesper
+    from: 'off'
+    to: 'on'
+  action:
+    service: homeassistant.turn_on
+    entity_id: group.bedroom_jesper
+- alias: Slaapkamer Jesper verlichting uit
+  trigger:
+    platform: state
+    entity_id: switch.slaapkamerlamp_jesper
+    from: 'on'
+    to: 'off'
+  action:
+    service: homeassistant.turn_off
+    entity_id: group.bedroom_jesper

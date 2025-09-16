@@ -1,0 +1,18 @@
+- alias: Slaapkamer Master verlichting aan
+  trigger:
+    platform: state
+    entity_id: switch.slaapkamerlamp_d_a
+    from: 'off'
+    to: 'on'
+  action:
+    service: homeassistant.turn_on
+    entity_id: group.bedroom_master
+- alias: Slaapkamer Master verlichting uit
+  trigger:
+    platform: state
+    entity_id: switch.slaapkamerlamp_d_a
+    from: 'on'
+    to: 'off'
+  action:
+    service: homeassistant.turn_off
+    entity_id: group.bedroom_master

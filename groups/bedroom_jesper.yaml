@@ -1,3 +1,4 @@
 name: Slaapkamer Jesper
 entities:
-  - light.slaapkamer_jesper
+  - light.voeding_kast_jesper
+  - switch.slaapkamerlamp_jesper
