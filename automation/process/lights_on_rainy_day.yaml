@@ -23,7 +23,7 @@
         snapshot_entities: >-
           {{ ['Woonkamer'] | map('area_entities') | sum(start=[]) | select('match', 'light') | list }}
     - delay:
-      seconds: 2
+        seconds: 2
     - service: scene.turn_on
       entity_id: scene.regenachtige_dag
 - alias: 'Rain is over'

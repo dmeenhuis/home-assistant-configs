@@ -17,7 +17,7 @@
         snapshot_entities: >-
           {{ ['Woonkamer'] | map('area_entities') | sum(start=[]) | select('match', 'light') | list }}
     - delay:
-      seconds: 2
+        seconds: 2
     - action: scene.turn_on
       target:
         entity_id: scene.woonkamer_gedimd
