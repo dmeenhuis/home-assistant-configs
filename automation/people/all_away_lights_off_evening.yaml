@@ -18,5 +18,7 @@
         scene_id: lights_before_leaving
         snapshot_entities: >-
           {{ union(['Woonkamer'] | map('area_entities') | sum(start=[]) | select('match', 'light') | list, ['Buiten'] | map('area_entities') | sum(start=[]) | select('match', 'switch') | list) }}
+    - delay:
+      seconds: 2
     - service: scene.turn_on
       entity_id: scene.s_avonds_weg

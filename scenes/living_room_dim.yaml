@@ -5,9 +5,11 @@
     light.plafonniere_zithoek: off
     light.hoekbanklamp_staand:
       state: "on"
-      brightness: 15
+      brightness: 50
     light.vensterbanklamp:
       state: "on"
-      brightness: 15
-    light.oosterse_lamp: off
+      brightness: 50
+    light.oosterse_lamp:
+      state: "on"
+      brightness: 50
     group.kitchen: off
