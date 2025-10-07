@@ -14,8 +14,12 @@
     - service: scene.create
       data:
         scene_id: living_room_before_dimming
-        snapshot_entities: >-
-          {{ ['Woonkamer'] | map('area_entities') | sum(start=[]) | select('match', 'light') | list }}
+        snapshot_entities:
+          - light.keukenspots
+          - light.eetkamerlamp
+          - light.hoekbanklamp_staand
+          - light.vensterbanklamp
+          - light.oosterse_lamp
     - delay:
         seconds: 2
     - action: scene.turn_on

@@ -1,62 +1,62 @@
-- alias: 'Turn on some lights on rainy days'
-  trigger:
-    - platform: state
-      entity_id: sensor.buienradar_condition
-      to: 'rainy'
-    - platform: numeric_state
-      entity_id: sensor.buienalarm_precipitation
-      above: 0
-      for:
-        minutes: 5
-  condition:
-    - condition: state
-      entity_id: group.people
-      state: 'home'
-    - condition: time
-      after: '10:00'
-    - condition: sun
-      before: sunset
-  action:
-    - service: scene.create
-      data:
-        scene_id: living_room_before_rain
-        snapshot_entities: >-
-          {{ ['Woonkamer'] | map('area_entities') | sum(start=[]) | select('match', 'light') | list }}
-    - delay:
-        seconds: 2
-    - service: scene.turn_on
-      entity_id: scene.regenachtige_dag
-- alias: 'Rain is over'
-  trigger:
-    - platform: state
-      entity_id: sensor.buienradar_condition
-      from: 'rainy'
-    - platform: numeric_state
-      entity_id: sensor.buienalarm_precipitation
-      below: 0.1
-      for:
-        minutes: 10
-  condition:
-    - condition: sun
-      before: sunset
-      before_offset: '01:00:00'
-    - condition: time
-      after: '10:00'
-  action:
-    - service: scene.turn_on
-      entity_id: scene.living_room_before_rain
-    - service: adaptive_lighting.apply
-      data:
-        entity_id: switch.adaptive_lighting_eetkamer
-    - service: adaptive_lighting.apply
-      data:
-        entity_id: switch.adaptive_lighting_d_a
-    - service: adaptive_lighting.set_manual_control
-      data:
-        entity_id: switch.adaptive_lighting_eetkamer
-        manual_control: false
-    - service: adaptive_lighting.set_manual_control
-      data:
-        entity_id: switch.adaptive_lighting_d_a
-        manual_control: false
+# - alias: 'Turn on some lights on rainy days'
+#   trigger:
+#     - platform: state
+#       entity_id: sensor.buienradar_condition
+#       to: 'rainy'
+#     - platform: numeric_state
+#       entity_id: sensor.buienalarm_precipitation
+#       above: 0
+#       for:
+#         minutes: 5
+#   condition:
+#     - condition: state
+#       entity_id: group.people
+#       state: 'home'
+#     - condition: time
+#       after: '10:00'
+#     - condition: sun
+#       before: sunset
+#   action:
+#     - service: scene.create
+#       data:
+#         scene_id: living_room_before_rain
+#         snapshot_entities: >-
+#           {{ ['Woonkamer'] | map('area_entities') | sum(start=[]) | select('match', 'light') | list }}
+#     - delay:
+#         seconds: 2
+#     - service: scene.turn_on
+#       entity_id: scene.regenachtige_dag
+# - alias: 'Rain is over'
+#   trigger:
+#     - platform: state
+#       entity_id: sensor.buienradar_condition
+#       from: 'rainy'
+#     - platform: numeric_state
+#       entity_id: sensor.buienalarm_precipitation
+#       below: 0.1
+#       for:
+#         minutes: 10
+#   condition:
+#     - condition: sun
+#       before: sunset
+#       before_offset: '01:00:00'
+#     - condition: time
+#       after: '10:00'
+#   action:
+#     - service: scene.turn_on
+#       entity_id: scene.living_room_before_rain
+#     - service: adaptive_lighting.apply
+#       data:
+#         entity_id: switch.adaptive_lighting_eetkamer
+#     - service: adaptive_lighting.apply
+#       data:
+#         entity_id: switch.adaptive_lighting_d_a
+#     - service: adaptive_lighting.set_manual_control
+#       data:
+#         entity_id: switch.adaptive_lighting_eetkamer
+#         manual_control: false
+#     - service: adaptive_lighting.set_manual_control
+#       data:
+#         entity_id: switch.adaptive_lighting_d_a
+#         manual_control: false
     
