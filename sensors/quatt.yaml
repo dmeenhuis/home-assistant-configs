@@ -1,0 +1,7 @@
+- platform: integration
+  source: sensor.cic_total_power_input
+  name: cic_lifetime_power_input
+  unit_prefix: k
+  round: 2
+  max_sub_interval:
+    minutes: 5
