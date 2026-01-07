@@ -1,7 +1,6 @@
 - platform: integration
   source: sensor.ehv8exhz_power
   name: ehv8exhz_lifetime_power
-  unit_prefix: k
   round: 2
   max_sub_interval:
     minutes: 5
