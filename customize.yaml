@@ -67,3 +67,6 @@ sensor.d_a_total_energy_today:
 sensor.solaredge_lifetime_energy_kwh:
   device_class: energy
   state_class: total_increasing
+sensor.ehv8exhz_lifetime_energy:
+  device_class: energy
+  state_class: total_increasing
