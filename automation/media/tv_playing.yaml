@@ -29,24 +29,30 @@
         transition: 2.5
 - alias: "TV paused or turned off"
   trigger:
-    - platform: state
-      entity_id: media_player.lg_oled65gx6la
-      to: 'paused'
-      from: 'playing'
-      for:
-        seconds: 2
-    - platform: state
-      entity_id: media_player.lg_oled65gx6la
-      to: 'off'
-      from: 'playing'
-      for:
-        seconds: 2
+    # - platform: state
+    #   entity_id: media_player.lg_oled65gx6la
+    #   to: 'paused'
+    #   from: 'playing'
+    #   for:
+    #     seconds: 2
     - platform: state
       entity_id: media_player.lg_oled65gx6la
       to: 'off'
-      from: 'paused'
+      # from: 'playing'
       for:
         seconds: 2
+    - platform: state
+      entity_id: media_player.lg_oled65gx6la
+      to: 'idle'
+      # from: 'playing'
+      for:
+        seconds: 2
+    # - platform: state
+    #   entity_id: media_player.lg_oled65gx6la
+    #   to: 'off'
+    #   from: 'paused'
+    #   for:
+    #     seconds: 2
   condition:
     - condition: sun
       after: sunset
