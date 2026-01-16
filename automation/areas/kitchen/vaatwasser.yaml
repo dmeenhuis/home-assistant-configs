@@ -1,9 +1,9 @@
 - alias: "Send notification when dishwasher is done"
   trigger:
     platform: state
-    entity_id: binary_sensor.status_vaatwasser
-    from: "on"
-    to: "off"
+    entity_id: sensor.vaatwasser_operation_state
+    from: "Running"
+    to: "Ready"
     for:
       minutes: 1
   action:
