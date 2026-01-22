@@ -70,3 +70,12 @@ sensor.solaredge_lifetime_energy_kwh:
 sensor.ehv8exhz_lifetime_energy:
   device_class: energy
   state_class: total_increasing
+sensor.quooker_energy:
+  device_class: energy
+  state_class: total_increasing
+sensor.wasmachine_energy:
+  device_class: energy
+  state_class: total_increasing
+sensor.wasdroger_energy:
+  device_class: energy
+  state_class: total_increasing
