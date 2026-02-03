@@ -1,3 +1,4 @@
 name: Werkkamer
 entities:
   - light.werkkamerspots
+  - light.inloopspots
