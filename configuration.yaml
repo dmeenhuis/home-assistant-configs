@@ -202,7 +202,9 @@ entity_controller:
     sensor_resets_timer: True
   office_lights:
     sensor: binary_sensor.activity_in_office
-    entity: group.werkkamer
+    entities:
+      - light.werkkamer
+      - light.inloopspots
     block_timeout: 300
     delay: 300
     sensor_type: duration
