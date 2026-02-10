@@ -203,7 +203,7 @@ entity_controller:
   office_lights:
     sensor: binary_sensor.activity_in_office
     entities:
-      - light.werkkamer
+      - light.werkkamerspots
       - light.inloopspots
     block_timeout: 300
     delay: 300
