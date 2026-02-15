@@ -13,17 +13,17 @@
       entity_id: input_boolean.lighting_automations
       state: 'on'
   action:
-    - service: scene.create
-      data:
-        scene_id: living_room_before_dimming
-        snapshot_entities:
-          - light.keukenspots
-          - light.eetkamerlamp
-          - light.hoekbanklamp_staand
-          - light.vensterbanklamp
-          - light.oosterse_lamp
-    - delay:
-        seconds: 2
+    # - service: scene.create
+    #   data:
+    #     scene_id: living_room_before_dimming
+    #     snapshot_entities:
+    #       - light.keukenspots
+    #       - light.eetkamerlamp
+    #       - light.hoekbanklamp_staand
+    #       - light.vensterbanklamp
+    #       - light.oosterse_lamp
+    # - delay:
+    #     seconds: 2
     - action: scene.turn_on
       target:
         entity_id: scene.woonkamer_gedimd
@@ -33,14 +33,14 @@
   trigger:
     - platform: state
       entity_id: media_player.lg_oled65gx6la
-      to: 'off'
+      from: 'playing'
       for:
         seconds: 2
-    - platform: state
-      entity_id: media_player.lg_oled65gx6la
-      to: 'idle'
-      for:
-        seconds: 2
+    # - platform: state
+    #   entity_id: media_player.lg_oled65gx6la
+    #   to: 'idle'
+    #   for:
+    #     seconds: 2
   condition:
     - condition: sun
       after: sunset
@@ -49,20 +49,41 @@
       entity_id: input_boolean.lighting_automations
       state: 'on'
   action:
-    - action: scene.turn_on
+    - action: light.turn_on
       target:
-        entity_id: scene.living_room_before_dimming
+        entity_id: light.keukenspots
+    - action: light.turn_on
+      target:
+        entity_id: light.eetkamerlamp
+    - action: light.turn_on
+      target:
+        entity_id: light.hoekbanklamp_staand
+    - action: light.turn_on
+      target:
+        entity_id: light.vensterbanklamp
+    - action: light.turn_on
+      target:
+        entity_id: light.oosterse_lamp
     - service: adaptive_lighting.apply
       data:
         entity_id: switch.adaptive_lighting_eetkamer
     - service: adaptive_lighting.apply
       data:
         entity_id: switch.adaptive_lighting_d_a
-    - service: adaptive_lighting.set_manual_control
-      data:
-        entity_id: switch.adaptive_lighting_eetkamer
-        manual_control: false
-    - service: adaptive_lighting.set_manual_control
-      data:
-        entity_id: switch.adaptive_lighting_d_a
-        manual_control: false
+    # - action: scene.turn_on
+    #   target:
+    #     entity_id: scene.living_room_before_dimming
+    # - service: adaptive_lighting.apply
+    #   data:
+    #     entity_id: switch.adaptive_lighting_eetkamer
+    # - service: adaptive_lighting.apply
+    #   data:
+    #     entity_id: switch.adaptive_lighting_d_a
+    # - service: adaptive_lighting.set_manual_control
+    #   data:
+    #     entity_id: switch.adaptive_lighting_eetkamer
+    #     manual_control: false
+    # - service: adaptive_lighting.set_manual_control
+    #   data:
+    #     entity_id: switch.adaptive_lighting_d_a
+    #     manual_control: false
