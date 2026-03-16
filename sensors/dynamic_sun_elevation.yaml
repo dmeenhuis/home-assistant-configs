@@ -4,7 +4,7 @@
       unique_id: sun_elevation_up_dynamic
       unit_of_measurement: "°"
       icon: mdi:weather-sunset-up
-      state: >
+      value_template: >
         {% set day = now().timetuple().tm_yday %}
         {% set lat = state_attr('zone.home', 'latitude') | float(52.0) %}
 
@@ -26,7 +26,7 @@
       unique_id: sun_elevation_down_dynamic
       unit_of_measurement: "°"
       icon: mdi:weather-sunset-down
-      state: >
+      value_template: >
         {% set day = now().timetuple().tm_yday %}
         {% set lat = state_attr('zone.home', 'latitude') | float(52.0) %}
 
