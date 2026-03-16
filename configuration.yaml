@@ -102,6 +102,8 @@ utility_meter:
     source: sensor.dsmr_consumption_gas_delivered
     cycle: monthly
 
+template: !include_dir_merge_list templates/
+
 automation: !include automations.yaml
 automation old: !include_dir_merge_list automation/
 
