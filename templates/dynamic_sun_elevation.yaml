@@ -16,9 +16,9 @@
         {% set day = now().timetuple().tm_yday %}
         {% set lat = state_attr('zone.home', 'latitude') | float(52.0) %}
 
-        {# Reference values for 50°N #}
-        {% set summer = -1.5 %}
-        {% set winter = 5.5 %}
+        {# Reference values for 50°N #} 
+        {% set summer = -3 %}
+        {% set winter = 5 %}
 
         {# Sinusoidal interpolation (physically correct) #}
         {# Day 80.75 ≈ March 21 (spring equinox) as reference #}
