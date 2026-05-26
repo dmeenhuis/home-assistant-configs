@@ -2,3 +2,4 @@ name: Buiten
 entities:
   - switch.buitenverlichting
   - switch.schakelaar_terrasverlichting
+  - switch.schakelaar_buitenverlichting_schuifdeur
