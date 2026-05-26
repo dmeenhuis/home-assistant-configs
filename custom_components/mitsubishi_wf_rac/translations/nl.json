@@ -1,0 +1,47 @@
+{
+  "config": {
+    "error": {
+      "unexpected_error": "Er is een onverwachte fout opgetreden. Raadpleeg het logboek voor details.",
+      "cannot_connect": "Kan niet verbinden met de Airco: {reason} ",
+      "name_invalid": "De naam is al in gebruik, of is korter dan 3 tekens. ",
+      "host_already_configured": "IP is al geconfigureerd voor [{error_name}]",
+      "too_many_devices_registered": "Er zijn te veel apparaten geregistreerd op deze airco. Verwijder een apparaat of reset de module."
+    },
+    "abort": {
+      "existing_instance_updated": "Huidige configuratie is geüpdatet.",
+      "already_configured": "Airco is al geconfigureerd"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "name": "Airco Naam",
+          "host": "Host (IP) adres",
+          "port": "Poort",
+          "force_update": "Negeer dubbel IP (kan en zal fouten veroorzaken, dus controleer het foutlog)"
+        },
+        "description": "Voer de juiste informatie toe om de airco handmatig toe te voegen ",
+        "title": "WF-RAC AC verbinding info"
+      },
+      "discovery_confirm": {
+        "description": "De airco met id: {id}, IP: {host} en poort: {port} is ontdekt. Hoe heet deze airco?",
+        "title": " WF-RAC Airco ontdekt ",
+        "data": {
+          "name": "Airco naam"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Hieronder zijn instellingen die je kan aanpassen voor deze airco.",
+        "data": {
+          "host": "Host (IP) address",
+          "availability_check": "Controleer beschikbaarheid",
+          "availability_retry_limit": "Herhaal limiet"
+        },
+        "title": "WF-RAC AC connectie info"
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "host": "[%key:common::config_flow::data::host%]",
+          "username": "[%key:common::config_flow::data::username%]",
+          "password": "[%key:common::config_flow::data::password%]"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+      "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "unknown": "[%key:common::config_flow::error::unknown%]"
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+    }
+  },
+  "entity": {
+    "lawn_mower": {
+      "lawn_mower": {
+        "name": "Lawn Mower"
+      }
+    },
+    "sensor": {
+      "battery": {
+        "name": "Battery"
+      },
+      "map_status": {
+        "name": "Map Status",
+        "state": {
+          "MAP_STATE_EMPTY": "No Map",
+          "MAP_STATE_INCOMPLETE": "Map Incomplete",
+          "MAP_STATE_COMPLETE": "Map Complete"
+        }
+      },
+      "map_area": {
+        "name": "Map Area"
+      },
+      "mow_height": {
+        "name": "Mow Height"
+      },
+      "mow_speed": {
+        "name": "Mow Speed",
+        "state": {
+          "MOW_SPEED_TYPE_LOW": "Low",
+          "MOW_SPEED_TYPE_MEDIUM": "Medium",
+          "MOW_SPEED_TYPE_ADAPTIVE_HIGH": "Adaptive High",
+          "MOW_SPEED_TYPE_AUTO": "Auto"
+        }
+      },
+      "clean_mode": {
+        "name": "Operation Mode",
+        "state": {
+          "MAP_CLEAN_INFO_MODE_GLOBAL": "Global Operation",
+          "MAP_CLEAN_INFO_MODE_SELECT_REGION": "Select Region Operation",
+          "MAP_CLEAN_INFO_MODE_DRAW_REGION": "Draw Region Operation",
+          "MAP_CLEAN_INFO_MODE_MOVE_TO_TARGET_POINT": "Move to Target Point"
+        }
+      },
+      "pose": {
+        "name": "Pose"
+      }
+    },
+    "camera": {
+      "map_camera": {
+        "name": "Map"
+      }
+    },
+    "binary_sensor": {
+      "charging_state": {
+        "name": "Charging State"
+      }
+    },
+    "select": {
+      "region_select": {
+        "name": "Region Select"
+      },
+      "mow_speed_setting": {
+        "name": "Mow Speed Setting",
+        "state": {
+          "MOW_SPEED_TYPE_LOW": "Low Speed",
+          "MOW_SPEED_TYPE_MEDIUM": "Medium Speed",
+          "MOW_SPEED_TYPE_ADAPTIVE_HIGH": "Adaptive High Speed",
+          "MOW_SPEED_TYPE_AUTO": "Auto Speed"
+        }
+      }
+    }
+  },
+  "state": {
+    "unknown": "Unknown",
+    "no_regions_available": "No regions available",
+    "all_regions": "All regions"
+  }
+}

@@ -1,0 +1,1858 @@
+import {
+    LitElement,
+    svg,
+    html,
+    css,
+} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";
+
+const DEBUG = false
+class QuattDashboardCard extends LitElement {
+    // Determine the base url and version of this card <script src=".../quatt-dashboard-card.js?v=...">
+    static _getBaseUrlAndVersion() {
+        // e.g. /quatt-dashboard-card/js/quatt-dashboard-card.js?v=1.2.3
+        const url = new URL(import.meta.url);
+
+        // Directory of the js-file: /quatt-dashboard-card/js
+        const jsDir = url.pathname.slice(0, url.pathname.lastIndexOf("/"));
+
+        // Go up one segment to get the base: /quatt-dashboard-card
+        let base = jsDir;
+        if (base.endsWith("/js")) {
+            base = base.slice(0, -"/js".length) || "/";
+        }
+
+        const version = url.searchParams.get("v") || "0";
+        return { base, version };
+    }
+
+    constructor() {
+        super();
+        const { base, version } = QuattDashboardCard._getBaseUrlAndVersion();
+        this._BASE_URL = base;
+        this._VERSION = version;
+
+        // Debug metrics
+        this._debugOn = false;
+        this._dbg = { dpr: 1, ppiScale: 1, svgFontPx: 0, vw: 0, vh: 0, coarse: false };
+
+        // Hi-PPI text scaling
+        this._updatePpiScale = this._updatePpiScale.bind(this);
+        // Run ASAP for mobile before first paint
+        requestAnimationFrame(this._updatePpiScale);
+
+        // Touch detection
+        this._isTouch =
+            (window.matchMedia && window.matchMedia("(pointer:coarse)").matches) ||
+            "ontouchstart" in window;
+
+        // Tooltip & press state
+        this._openTooltipId = null;
+        this._pressStartId = null;
+        this._pressHandledAsHold = false;
+        this._pressTimer = null;
+
+        // Bind once
+        this._onPressStart  = this._onPressStart.bind(this);
+        this._onPressEnd    = this._onPressEnd.bind(this);
+        this._onPressCancel = this._onPressCancel.bind(this);
+        this._onGlobalPointerDown = this._onGlobalPointerDown.bind(this);
+    }
+
+    _updateDebugMetrics() {
+        if (!DEBUG) return;
+        const svgEl = this.shadowRoot?.querySelector('svg');
+        const svgFS  = svgEl ? parseFloat(getComputedStyle(svgEl).fontSize) : 0;
+        const ppi    = parseFloat(getComputedStyle(this).getPropertyValue('--qdc-ppi-scale')) || 1;
+        this._dbg = {
+            dpr: window.devicePixelRatio || 1,
+            ppiScale: ppi,
+            svgFontPx: svgFS,
+            vw: Math.round(window.innerWidth),
+            vh: Math.round(window.innerHeight),
+            coarse: matchMedia('(pointer:coarse)').matches
+        };
+        this.requestUpdate();
+    }
+
+    _toggleDebug() {
+        if (!DEBUG) return;
+        this._debugOn = !this._debugOn;
+        this._updateDebugMetrics();
+    }
+
+    _updatePpiScale() {
+        const dpr = Math.max(1, window.devicePixelRatio || 1);
+        let scale =
+            dpr >= 3   ? 1.35 :
+            dpr >= 2.75? 1.25 :
+            dpr >= 2   ? 1.15 :
+                        1.00;
+        const cssScale = parseFloat(getComputedStyle(this).getPropertyValue('--qdc-ppi-scale')) || 1;
+        // Never shrink below CSS
+        scale = Math.max(cssScale, scale);
+        this.style.setProperty('--qdc-ppi-scale', String(scale));
+    }
+
+    static get properties() {
+        return {
+            hass: {},
+            config: {},
+        };
+    }
+
+    supervisoryControlModeDescription(workingMode) {
+        const mode = Number(typeof workingMode === "string" ? workingMode.trim() : workingMode);
+        const code = Number.isFinite(mode) ? Math.trunc(mode) : NaN;
+        const map = {
+            0:  'Standby',
+            1:  'Heating',
+            2:  'Heatpump only',
+            3:  'Heatpump + boiler',
+            4:  'Boiler only',
+            96: 'Boiler on',
+            97: 'Boiler pre-pump',
+            98: 'Water circulation',
+            99: 'Fault',
+        };
+        return map[code] ?? 'Unknown';
+    }
+
+    _parseBool(value) {
+        if (typeof value === "boolean") return value;
+        if (typeof value === "string") {
+            const v = value.trim().toLowerCase();
+            if (["true", "on", "yes"].includes(v)) return true;
+            if (["false", "off", "no"].includes(v)) return false;
+        }
+        return undefined;
+    }
+
+    _isTrue(value) {
+        return this._parseBool(value) === true;
+    }
+
+    _isFalse(value) {
+        return this._parseBool(value) === false;
+    }
+
+    jsonValueUsingPath(obj, path) {
+        return path.reduce((acc, key) => (acc == null ? undefined : acc[key]), obj);
+    }
+
+    /**
+     * Get HA state (or a direct attribute) by config path.
+     * Default: returns the full state object
+     * If options.attribute is set (string key), returns that attribute (or number-formatted when options.number===true).
+     *
+     * @param {string} path - dot path into this.config (e.g. 'boiler.boiler_water_pressure')
+     * @param {object}  [options]
+     * @param {string}  [options.attribute]     - direct attribute key
+     * @param {boolean} [options.number=false]  - when true: format value as number
+     * @param {number}  [options.decimals=2]    - fraction digits
+     * @param {number}  [options.scale=1]       - multiply value by this factor (e.g. 1/1000 for W→kW)
+     * @param {string}  [options.locale=navigator.language||'en-US'] - for toLocaleString
+     * @param {boolean} [options.asString=true] - when number=true: return string; if false returns Number
+     * @param {*}       [options.fallback]      - used when missing/non-numeric (string if asString, number if !asString)
+     */
+    getSensorState(path, options = {}) {
+        const entityId = this.jsonValueUsingPath(this.config, path.split('.'));
+        const stateObject = this.hass?.states?.[entityId];
+        const hasAttr = typeof options.attribute === 'string' && options.attribute.length > 0;
+
+        // If no numeric formatting requested, return the full state object or the requested attribute
+        if (!options.number) {
+            if (hasAttr) {
+                return stateObject ? stateObject.attributes?.[options.attribute] : options.fallback;
+            }
+            return stateObject;
+        }
+
+        // If not found, return fallback
+        if (!stateObject) {
+            return options.asString !== false
+                ? (typeof options.fallback === 'string' ? options.fallback : '0.00')
+                : (typeof options.fallback === 'number' ? options.fallback : 0);
+        }
+
+        // Numeric formatting
+        const rawValue = hasAttr ? stateObject.attributes?.[options.attribute] : stateObject.state;
+        const num = typeof rawValue === 'number' ? rawValue : Number(rawValue);
+        const decimals = Number.isInteger(options.decimals) ? options.decimals : 2;
+        const scale = (typeof options.scale === 'number') ? options.scale : 1;
+        const locale = options.locale || (typeof navigator !== 'undefined' && navigator.language) || 'en-US';
+        const asString = options.asString !== false;
+
+        if (Number.isFinite(num)) {
+            const numScaled = num * scale;
+            if (asString) {
+                return numScaled.toLocaleString(locale, {
+                    minimumFractionDigits: decimals,
+                    maximumFractionDigits: decimals,
+                });
+            }
+            // Numeric result rounded to requested decimals
+            return Number(numScaled.toFixed(decimals));
+        }
+
+
+        // Fallbacks when value is missing or non-numeric
+        if (asString) {
+            if (typeof options.fallback === 'string')
+                return options.fallback;
+            return (0).toLocaleString(locale, {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals,
+            });
+        }
+        return (typeof options.fallback === 'number') ? options.fallback : 0;
+    }
+
+    isReady() {
+        return !!(this.hass && this.config &&this.getSensorState("system_setup.system"));
+    }
+
+    isHybrid() {
+        return this._isFalse(this.getSensorState('system_setup.system', {attribute: 'All electric system'}));
+    }
+
+    isAllElectric() {
+        return this._isTrue(this.getSensorState('system_setup.system', {attribute: 'All electric system'}));
+    }
+
+    hasAirco() {
+        return !!this.getSensorState('other.thermostat_airco')?.state
+    }
+
+    hasSolarPanels() {
+        return !!this.getSensorState('other.solar_power')?.state
+    }
+
+    hasSolarCollector() {
+        return !!(this.config?.[`other`]?.[`has_solar_collector`] ?? false)
+    }
+
+    hasBattery() {
+        return !!this.getSensorState('other.home_battery_soc')?.state
+    }
+
+    hasHotWaterCylinder() {
+        return !!this.getSensorState('other.hot_water_cylinder_temperature')?.state
+    }
+
+    isMonoHeatpump() {
+        return this._isFalse(this.getSensorState('system_setup.system', {attribute: 'Duo heatpump system'}));
+    }
+
+    isDuoHeatpump() {
+        return this._isTrue(this.getSensorState('system_setup.system', {attribute: 'Duo heatpump system'}));
+    }
+
+    isBoilerOpentherm() {
+        return this._isTrue(this.getSensorState('system_setup.system', {attribute: 'Opentherm system'}));
+    }
+
+    getSystemVersion() {
+        switch (this.getSensorState('hp1.hp1_odu_type')?.state) {
+            case 'AMM4-V2.0':
+                return 'V2';
+            default:
+                return 'V1';
+        }
+    }
+
+    getHeatpumpMetric() {
+        const metric = String(this.config?.other?.heatpump_metric ?? 'delta').toLowerCase();
+        return ['delta','cop','power','powerinput'].includes(metric) ? metric : 'delta';
+    }
+
+    getHeatpumpMetricLabel(hp = 'HP1') {
+        switch (this.getHeatpumpMetric()) {
+            case 'cop':        return `${hp} COP`;
+            case 'power':      return `${hp} Power`;
+            case 'powerinput': return `${hp} Power input`;
+            default:           return `${hp} ΔT`;
+        }
+    }
+
+    getHeatpumpMetricValue(heatpumpID) {
+        const workingMode = this.getSensorState(`${heatpumpID}.${heatpumpID}_workingmode`)?.state;
+        if (!(workingMode >= 1))
+            return this.supervisoryControlModeDescription(workingMode);
+
+        const metric = this.getHeatpumpMetric();
+        if (metric === 'cop') {
+            return this.getSensorState(`${heatpumpID}.${heatpumpID}_cop`, { number: true, decimals: 2 });
+        }
+        if (metric === 'power') {
+            return this.getSensorState(`${heatpumpID}.${heatpumpID}_power`, { number: true, decimals: 2, scale: 1 / 1000 }) + ' kW';
+        }
+        if (metric === 'powerinput') {
+            return this.getSensorState(`${heatpumpID}.${heatpumpID}_powerinput`, { number: true, decimals: 2, scale: 1 / 1000 }) + ' kW';
+        }
+        return this.getSensorState(`${heatpumpID}.${heatpumpID}_waterdelta`, { number: true, decimals: 1 }) + ' °C';
+    }
+
+    getOutsideTemperature() {
+        return this.config?.other?.outside_temperature
+            ? this.getSensorState('other.outside_temperature', { number: true, decimals: 1 })
+            : this.getSensorState('hp1.hp1_temperatureoutside', { number: true, decimals: 1 });
+    }
+
+    _onPressStart(e) {
+        const target = e.currentTarget;
+        if (!target || !target.id) return;
+
+        // Ignore non-left mouse buttons (but allow touch where e.button is undefined)
+        if (e.button !== undefined && e.button !== 0) return;
+
+        e.preventDefault();
+
+        this._pressStartId = target.id;
+        this._pressHandledAsHold = false;
+
+        if (this._pressTimer) {
+            clearTimeout(this._pressTimer);
+        }
+
+        this._pressTimer = window.setTimeout(() => {
+            this._pressHandledAsHold = true;
+            this._handleAction("hold", this._pressStartId);
+        }, 500);
+    }
+
+    _onPressEnd(e) {
+        const target = e.currentTarget;
+        if (!target || !target.id) return;
+
+        if (this._pressTimer) {
+            clearTimeout(this._pressTimer);
+            this._pressTimer = null;
+        }
+
+        if (!this._pressHandledAsHold) {
+            this._handleAction("tap", target.id);
+        }
+
+        this._pressStartId = null;
+        this._pressHandledAsHold = false;
+    }
+
+    _onPressCancel() {
+        if (this._pressTimer) {
+            clearTimeout(this._pressTimer);
+            this._pressTimer = null;
+        }
+        this._pressStartId = null;
+        this._pressHandledAsHold = false;
+    }
+
+    _showTooltip(id) {
+        // Close previously open tooltip if it's a different one
+        if (this._openTooltipId && this._openTooltipId !== id) {
+            this._hideTooltip(this._openTooltipId);
+        }
+
+        const element = this.shadowRoot && this.shadowRoot.getElementById(id);
+        if (element) {
+            element.classList.add("tooltip-show");
+            this._openTooltipId = id;
+        }
+    }
+
+    _hideTooltip(id) {
+        const element = this.shadowRoot && this.shadowRoot.getElementById(id);
+        if (element) {
+            element.classList.remove("tooltip-show");
+        }
+        if (this._openTooltipId === id) {
+            this._openTooltipId = null;
+        }
+    }
+
+    _toggleTooltip(id) {
+        if (this._openTooltipId === id) {
+            this._hideTooltip(id);
+        } else {
+            this._showTooltip(id);
+        }
+    }
+
+    _onGlobalPointerDown(e) {
+        // Only do this on touch devices
+        if (!this._isTouch) return;
+
+        // Check that we have an open tooltip
+        if (!this._openTooltipId) return;
+
+        // Close whatever tooltip is open, no matter where we tapped
+        this._hideTooltip(this._openTooltipId);
+    }
+
+    _openMoreInfo(entityId) {
+        const event = new Event('hass-more-info', {
+            bubbles: true,
+            composed: true,
+        });
+        event.detail = { entityId };
+        this.dispatchEvent(event);
+    }
+
+    _handleAction(action, targetId) {
+        let entityId = null;
+        let tooltipId = null;
+
+        switch (targetId) {
+            case "legendHeatInfo":
+                entityId = this.config?.cic?.total_power;
+                break;
+            case "legendElectricityInfo":
+                entityId = this.config?.cic?.total_powerinput;
+                break;
+            case "legendBoilerInfo":
+                entityId = this.config?.boiler?.boiler_heating;
+                break;
+
+            case "tankInfo":
+                entityId = this.isAllElectric()
+                    ? this.config?.heat_battery?.heat_battery_percentage
+                    : this.config?.other?.hot_water_cylinder_temperature;
+                if (this.isAllElectric())
+                    tooltipId = "tooltipTankInfo";
+                break;
+
+            case "roomTemperature":
+                entityId = this.config?.other?.thermostat_room;
+                tooltipId = "tooltipRoomTemperature";
+                break;
+
+            case "aircoTemperature":
+                entityId = this.config?.other?.thermostat_airco;
+                tooltipId = "tooltipAircoTemperature";
+                break;
+
+            case "waterPipeTemperature":
+                entityId = this.config?.flowmeter?.flowmeter_temperature;
+                tooltipId = "tooltipWaterPipeTemperature";
+                break;
+
+            case "hp1Metric": {
+                const metric = this.getHeatpumpMetric();
+                entityId =
+                    metric === "cop"        ? this.config?.hp1?.hp1_cop :
+                    metric === "power"      ? this.config?.hp1?.hp1_power :
+                    metric === "powerinput" ? this.config?.hp1?.hp1_powerinput :
+                                            this.config?.hp1?.hp1_waterdelta;
+                tooltipId = "tooltipHp1Metric";
+                break;
+            }
+            case "hp2Metric": {
+                const metric = this.getHeatpumpMetric();
+                entityId =
+                    metric === "cop"        ? this.config?.hp2?.hp2_cop :
+                    metric === "power"      ? this.config?.hp2?.hp2_power :
+                    metric === "powerinput" ? this.config?.hp2?.hp2_powerinput :
+                                            this.config?.hp2?.hp2_waterdelta;
+                tooltipId = "tooltipHp2Metric";
+                break;
+            }
+
+            case "solarPower":
+                entityId = this.config?.other?.solar_power;
+                break;
+            case "homeBatterySOC":
+                entityId = this.config?.other?.home_battery_soc;
+                break;
+            case "outsideTemperature":
+                entityId =
+                    this.config?.other?.outside_temperature ||
+                    this.config?.hp1?.hp1_temperatureoutside;
+                break;
+
+            default:
+                break;
+        }
+
+        if (action === "tap") {
+            if (entityId)
+                this._openMoreInfo(entityId);
+            return;
+        }
+
+        if (action === "hold" && tooltipId) {
+            this._toggleTooltip(tooltipId);
+            return;
+        }
+    }
+
+    firstUpdated() {
+        // Hi-DPI fallback (and live updates on zoom/DPR changes)
+        this._updatePpiScale();
+        window.addEventListener('resize', this._updatePpiScale, { passive: true });
+        window.addEventListener('orientationchange', this._updatePpiScale, { passive: true });
+
+        // Update debug metrics every second when enabled
+        if (DEBUG) {
+            this._updateDebugMetrics();
+            this._debugInterval = setInterval(() => this._debugOn && this._updateDebugMetrics(), 1000);
+            window.addEventListener('resize', () => this._debugOn && this._updateDebugMetrics());
+        }
+
+
+        // Bind elements
+        const tank       = this.shadowRoot.querySelector('#tankInfo');
+        const room       = this.shadowRoot.querySelector('#roomTemperature');
+        const ac         = this.shadowRoot.querySelector('#aircoTemperature');
+        const waterPipe  = this.shadowRoot.querySelector('#waterPipeTemperature');
+        const hp1Metric  = this.shadowRoot.querySelector('#hp1Metric');
+        const hp2Metric  = this.shadowRoot.querySelector('#hp2Metric');
+
+        const isTouch = this._isTouch;
+
+        const bindHover = (el, tooltipId, condition = true) => {
+            if (!el || !tooltipId || !condition || isTouch) return;
+
+            el.addEventListener('mouseenter', () => this._showTooltip(tooltipId));
+            el.addEventListener('mouseleave', () => this._hideTooltip(tooltipId));
+        };
+
+        const bindPress = (el) => {
+            if (!el) return;
+
+            el.style.cursor = 'pointer';
+            el.addEventListener('pointerdown', this._onPressStart);
+            el.addEventListener('pointerup', this._onPressEnd);
+            el.addEventListener('pointerleave', this._onPressCancel);
+            el.addEventListener('pointercancel', this._onPressCancel);
+        };
+
+        // Hover tooltips (desktop)
+        if (this.isAllElectric()) {
+            bindHover(tank, 'tooltipTankInfo', true);
+        }
+        bindHover(room, 'tooltipRoomTemperature', true);
+        bindHover(ac, 'tooltipAircoTemperature', this.hasAirco());
+        bindHover(waterPipe, 'tooltipWaterPipeTemperature', true);
+        bindHover(hp1Metric, 'tooltipHp1Metric', true);
+        bindHover(hp2Metric, 'tooltipHp2Metric', this.isDuoHeatpump());
+
+        // Tap / hold
+        [
+            tank,
+            room,
+            ac,
+            waterPipe,
+            hp1Metric,
+            hp2Metric,
+            this.shadowRoot.getElementById('legendHeatInfo'),
+            this.shadowRoot.getElementById('legendElectricityInfo'),
+            this.shadowRoot.getElementById('legendBoilerInfo'),
+            this.shadowRoot.getElementById('solarPower'),
+            this.shadowRoot.getElementById('homeBatterySOC'),
+            this.shadowRoot.getElementById('outsideTemperature'),
+        ].forEach(bindPress);
+
+        // Close tooltip on tap/click outside
+        window.addEventListener('pointerdown', this._onGlobalPointerDown, true);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback?.();
+        window.removeEventListener('pointerdown', this._onGlobalPointerDown, true);
+        window.removeEventListener('resize', this._updatePpiScale);
+        window.removeEventListener('orientationchange', this._updatePpiScale);
+        // Remove debug interval
+        if (this._debugInterval) clearInterval(this._debugInterval);
+    }
+
+    _renderAssetImage(name) {
+        return svg`
+            <image href="${this._BASE_URL}/src_assets_images_${name}.png?v=${this._VERSION}"
+                x="0" y="0" width="1920" height="1920" preserveAspectRatio="xMidYMid meet"/>
+        `;
+    }
+
+    _renderPlaceholder() {
+        return html`
+            <ha-card>
+                <svg viewBox="0 0 1920 1920" preserveAspectRatio="xMidYMid meet">
+                    ${this._renderAssetImage("houseallev2")}
+                    ${this._renderAssetImage("houseairco")}
+                    ${this._renderAssetImage("housesolarpanels")}
+                    ${this._renderAssetImage("housesolarcollector")}
+                    ${this._renderAssetImage("housebattery")}
+                </svg>
+            </ha-card>
+        `;
+    }
+
+    _renderBaseHouse() {
+        const isAllElectric = this.isAllElectric();
+        const isMono = this.isMonoHeatpump();
+        const version = this.getSystemVersion();
+
+        // Determine base house image name
+        let baseImageName;
+        if (isAllElectric) {
+            if (isMono) {
+                baseImageName = (version === "V2") ? "houseallev2" : "houseallev1";
+            } else {
+                baseImageName = (version === "V2") ? "houseallev2duo" : "houseallev1duo";
+            }
+        } else {
+            if (isMono) {
+                baseImageName = (version === "V2") ? "househybridv2" : "househybridv1";
+            } else {
+                baseImageName = (version === "V2") ? "househybridv2duo" : "househybridv1duo";
+            }
+        }
+
+        // Collect overlays
+        const overlays = [];
+
+        if (this.hasAirco()) overlays.push("houseairco");
+        if (this.hasSolarPanels()) overlays.push("housesolarpanels");
+        if (this.hasSolarCollector()) overlays.push("housesolarcollector");
+        if (this.hasBattery()) overlays.push("housebattery");
+        if (this.hasHotWaterCylinder()) overlays.push("houseboilercylinder");
+
+        return svg`
+            ${!isAllElectric ? this._renderAssetImage("housechimney") : svg``}
+            ${this._renderAssetImage(baseImageName)}
+            ${overlays.map((name) => this._renderAssetImage(name))}
+        `;
+    }
+
+    _renderDefs() {
+        const hp1Mode = this.getSensorState('hp1.hp1_workingmode', { number:true, asString:false, decimals:0, fallback: 0 });
+        const qcMode  = this.getSensorState('cic.qc_supervisory_control_mode_code', { number:true, asString:false, decimals:0, fallback: 0 });
+        const hp1Circulation = (hp1Mode >= 1) || (qcMode === 98);
+
+        return svg`
+            <defs>
+                <linearGradient id="waterGradientToLeft"
+                    x1="0%" y1="0%" x2="100%" y2="0%"
+                    spreadMethod="repeat">
+                    <stop offset="0%"   stop-color="#FF8C00" stop-opacity="1" />
+                    <stop offset="25%"  stop-color="#FF6B35" stop-opacity="1" />
+                    <stop offset="50%"  stop-color="#FF4500" stop-opacity="1" />
+                    <stop offset="75%"  stop-color="#FF6B35" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#FF8C00" stop-opacity="1" />
+                    <animateTransform
+                        attributeName="gradientTransform"
+                        type="translate"
+                        from="0 0"
+                        to="-1 0"
+                        dur="2s"
+                        repeatCount="indefinite" />
+                </linearGradient>
+
+                <linearGradient id="waterGradientToRight"
+                    x1="0%" y1="0%" x2="100%" y2="0%"
+                    spreadMethod="repeat">
+                    <stop offset="0%"   stop-color="#FF8C00" stop-opacity="1" />
+                    <stop offset="25%"  stop-color="#FF6B35" stop-opacity="1" />
+                    <stop offset="50%"  stop-color="#FF4500" stop-opacity="1" />
+                    <stop offset="75%"  stop-color="#FF6B35" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#FF8C00" stop-opacity="1" />
+                    <animateTransform
+                        attributeName="gradientTransform"
+                        type="translate"
+                        from="0 0"
+                        to="1 0"
+                        dur="2s"
+                        repeatCount="indefinite" />
+                </linearGradient>
+
+                <linearGradient id="waterGradientUp"
+                    x1="0%" y1="100%" x2="0%" y2="0%"
+                    spreadMethod="repeat">
+                    <stop offset="0%"   stop-color="#FF8C00" stop-opacity="1" />
+                    <stop offset="25%"  stop-color="#FF6B35" stop-opacity="1" />
+                    <stop offset="50%"  stop-color="#FF4500" stop-opacity="1" />
+                    <stop offset="75%"  stop-color="#FF6B35" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#FF8C00" stop-opacity="1" />
+                    <animateTransform
+                        attributeName="gradientTransform"
+                        type="translate"
+                        from="0 0"
+                        to="0 -1"
+                        dur="2s"
+                        repeatCount="indefinite" />
+                </linearGradient>
+
+                <linearGradient id="waterGradientDown"
+                    x1="0%" y1="100%" x2="0%" y2="0%"
+                    spreadMethod="repeat">
+                    <stop offset="0%"   stop-color="#FF8C00" stop-opacity="1" />
+                    <stop offset="25%"  stop-color="#FF6B35" stop-opacity="1" />
+                    <stop offset="50%"  stop-color="#FF4500" stop-opacity="1" />
+                    <stop offset="75%"  stop-color="#FF6B35" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#FF8C00" stop-opacity="1" />
+                    <animateTransform
+                        attributeName="gradientTransform"
+                        type="translate"
+                        from="0 0"
+                        to="0 1"
+                        dur="2s"
+                        repeatCount="indefinite" />
+                </linearGradient>
+
+                <!-- Cool (anti-freeze / water circulation) gradients -->
+                <linearGradient id="waterGradientCoolToLeft"
+                    x1="0%" y1="0%" x2="100%" y2="0%"
+                    spreadMethod="repeat">
+                    <stop offset="0%"   stop-color="#64B5F6" stop-opacity="1" />
+                    <stop offset="25%"  stop-color="#42A5F5" stop-opacity="1" />
+                    <stop offset="50%"  stop-color="#1E88E5" stop-opacity="1" />
+                    <stop offset="75%"  stop-color="#42A5F5" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#64B5F6" stop-opacity="1" />
+                    <animateTransform
+                        attributeName="gradientTransform"
+                        type="translate"
+                        from="0 0"
+                        to="-1 0"
+                        dur="2s"
+                        repeatCount="indefinite" />
+                </linearGradient>
+
+                <linearGradient id="waterGradientCoolToRight"
+                    x1="0%" y1="0%" x2="100%" y2="0%"
+                    spreadMethod="repeat">
+                    <stop offset="0%"   stop-color="#64B5F6" stop-opacity="1" />
+                    <stop offset="25%"  stop-color="#42A5F5" stop-opacity="1" />
+                    <stop offset="50%"  stop-color="#1E88E5" stop-opacity="1" />
+                    <stop offset="75%"  stop-color="#42A5F5" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#64B5F6" stop-opacity="1" />
+                    <animateTransform
+                        attributeName="gradientTransform"
+                        type="translate"
+                        from="0 0"
+                        to="1 0"
+                        dur="2s"
+                        repeatCount="indefinite" />
+                </linearGradient>
+
+                <linearGradient id="waterGradientCoolUp"
+                    x1="0%" y1="100%" x2="0%" y2="0%"
+                    spreadMethod="repeat">
+                    <stop offset="0%"   stop-color="#64B5F6" stop-opacity="1" />
+                    <stop offset="25%"  stop-color="#42A5F5" stop-opacity="1" />
+                    <stop offset="50%"  stop-color="#1E88E5" stop-opacity="1" />
+                    <stop offset="75%"  stop-color="#42A5F5" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#64B5F6" stop-opacity="1" />
+                    <animateTransform
+                        attributeName="gradientTransform"
+                        type="translate"
+                        from="0 0"
+                        to="0 -1"
+                        dur="2s"
+                        repeatCount="indefinite" />
+                </linearGradient>
+
+                <linearGradient id="waterGradientCoolDown"
+                    x1="0%" y1="100%" x2="0%" y2="0%"
+                    spreadMethod="repeat">
+                    <stop offset="0%"   stop-color="#64B5F6" stop-opacity="1" />
+                    <stop offset="25%"  stop-color="#42A5F5" stop-opacity="1" />
+                    <stop offset="50%"  stop-color="#1E88E5" stop-opacity="1" />
+                    <stop offset="75%"  stop-color="#42A5F5" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#64B5F6" stop-opacity="1" />
+                    <animateTransform
+                        attributeName="gradientTransform"
+                        type="translate"
+                        from="0 0"
+                        to="0 1"
+                        dur="2s"
+                        repeatCount="indefinite" />
+                </linearGradient>
+
+                <clipPath id="outsidePipe">
+                    <rect x="250" y="1245" width="181" height="100"></rect>
+                    ${hp1Circulation
+                        ? svg`<rect x="555" y="1387" width="12" height="20"></rect>`
+                        : svg``
+                    }
+
+                    ${this.isMonoHeatpump()
+                        ? svg`<rect id="quatt.mono" x="431" y="1300" width="124" height="100"></rect>` : svg``
+                    }
+                </clipPath>
+                <clipPath id="bottomPipe">
+                    ${this.isHybrid()
+                        ? svg`<rect id="quatt.hybrid" x="250" y="1175" width="181" height="100"></rect>`
+                        : svg`<rect id="quatt.alle1" x="250" y="1175" width="51" height="100"></rect>
+                            <rect id="quatt.alle2" x="378" y="1100" width="151" height="125"></rect>`
+                    }
+                </clipPath>
+
+                <filter id="softGlow" x="-200%" y="-200%" width="400%" height="400%">
+                    <feGaussianBlur stdDeviation="8" result="b"/>
+                    <feMerge>
+                        <feMergeNode in="b"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+                <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0" />
+                    <stop offset="45%" stop-color="#ffffff" stop-opacity="0.9" />
+                    <stop offset="55%" stop-color="#ffffff" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                </linearGradient>
+                <clipPath id="solarGlare">
+                    ${this.hasSolarCollector()
+                    && this.getSensorState('other.sun')?.state == 'above_horizon'
+                        ? svg`<polygon points="684 1001,744 1093,945 990,887 902" style=" fill: blue; stroke:black;"/>`
+                        : svg``
+                    }
+
+                    ${this.hasSolarPanels()
+                    && this.getSensorState('other.solar_power')?.state >= 0.001
+                        ? svg`<polygon points="1002 610,1110 762,1212 712,1103 560" style=" fill: blue; stroke:black;"/>
+                            <polygon points="1117 553,1224 705,1315 657,1207 508" style=" fill: blue; stroke:black;"/>
+                            <polygon points="1220 502,1327 650,1425 602,1317 453" style=" fill: blue; stroke:black;"/>
+                            <polygon points="1331 446,1437 595,1528 547,1423 401" style=" fill: blue; stroke:black;"/>`
+                        : svg``
+                    }
+                </clipPath>
+
+                <filter id="smokeBlur">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="8"/>
+                </filter>
+            </defs>
+        `;
+    }
+
+    _renderSunshine() {
+        // Only render sunshine if solar panels or a solar collector are present
+        if (!this.hasSolarPanels() && !this.hasSolarCollector()) {
+            return svg``;
+        }
+
+        return svg`
+            <!-- Sunshine -->
+            <g clip-path="url(#solarGlare)" filter="url(#softGlow)">
+                <rect x="500" y="220" width="1200" height="900" fill="#7ad6ff" opacity="0.15">
+                    <animate attributeName="opacity" values="0.08;0.18;0.10;0.18;0.08" dur="6s" repeatCount="indefinite"></animate>
+                </rect>
+                <rect id="sweepBar" x="100" y="0" width="300" height="1400" fill="url(#sweep)" opacity="0.6">
+                    <animateTransform attributeName="transform" type="translate" from="100 0" to="1500 0" dur="5.5s" repeatCount="indefinite"></animateTransform>
+                </rect>
+            </g>
+        `;
+    }
+
+    _renderDefrostOverlay({ x, y, scale = 1 }) {
+        return svg`
+            <g class="defrost-overlay" transform="translate(${x}, ${y}) scale(${scale})">
+
+            <!-- Steam puffs -->
+            <g filter="url(#smokeBlur)">
+                <ellipse cx="0" cy="0" rx="10" ry="7" fill="#E8F4F8" opacity="0">
+                    <animate attributeName="cy" values="0;-25;-55" dur="2.6s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0;0.55;0" dur="2.6s" repeatCount="indefinite"/>
+                    <animate attributeName="rx" values="8;14;22" dur="2.6s" repeatCount="indefinite"/>
+                    <animate attributeName="ry" values="6;10;16" dur="2.6s" repeatCount="indefinite"/>
+                </ellipse>
+                <ellipse cx="14" cy="6" rx="9" ry="6" fill="#D4E8F0" opacity="0">
+                    <animate attributeName="cy" values="6;-20;-50" dur="2.6s" begin="0.6s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0;0.50;0" dur="2.6s" begin="0.6s" repeatCount="indefinite"/>
+                    <animate attributeName="rx" values="7;13;20" dur="2.6s" begin="0.6s" repeatCount="indefinite"/>
+                    <animate attributeName="ry" values="5;9;14" dur="2.6s" begin="0.6s" repeatCount="indefinite"/>
+                </ellipse>
+                <ellipse cx="-16" cy="8" rx="9" ry="6" fill="#E0EDF5" opacity="0">
+                    <animate attributeName="cy" values="8;-18;-48" dur="2.6s" begin="1.2s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0;0.45;0" dur="2.6s" begin="1.2s" repeatCount="indefinite"/>
+                    <animate attributeName="rx" values="7;12;19" dur="2.6s" begin="1.2s" repeatCount="indefinite"/>
+                    <animate attributeName="ry" values="5;9;14" dur="2.6s" begin="1.2s" repeatCount="indefinite"/>
+                </ellipse>
+            </g>
+
+            <!-- Pulsing snowflake -->
+            <g transform="translate(0, -28)">
+                <animate attributeName="opacity" values="0.45;1;0.45" dur="1.2s" repeatCount="indefinite"/>
+                <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    values="-10 0 0; 10 0 0; -10 0 0"
+                    dur="2.2s"
+                    repeatCount="indefinite"
+                    calcMode="spline"
+                    keyTimes="0;0.5;1"
+                    keySplines="0.42 0 0.58 1; 0.42 0 0.58 1" />
+
+                <g stroke="#B3E5FC" stroke-width="4" stroke-linecap="round">
+                    <line x1="-18" y1="0" x2="18" y2="0"/>
+                    <line x1="0" y1="-18" x2="0" y2="18"/>
+                    <line x1="-13" y1="-13" x2="13" y2="13"/>
+                    <line x1="13" y1="-13" x2="-13" y2="13"/>
+
+                    <!-- small branches -->
+                    <line x1="-18" y1="0" x2="-24" y2="-6"/>
+                    <line x1="-18" y1="0" x2="-24" y2="6"/>
+                    <line x1="18" y1="0" x2="24" y2="-6"/>
+                    <line x1="18" y1="0" x2="24" y2="6"/>
+
+                    <line x1="0" y1="-18" x2="-6" y2="-24"/>
+                    <line x1="0" y1="-18" x2="6" y2="-24"/>
+                    <line x1="0" y1="18" x2="-6" y2="24"/>
+                    <line x1="0" y1="18" x2="6" y2="24"/>
+                </g>
+            </g>
+
+            <!-- Melt drips -->
+            <g transform="translate(0, 18)">
+                <ellipse class="water-droplet" cx="-10" cy="0" rx="2.5" ry="5" fill="#6EC9FF" opacity="0.7"
+                    style="animation-duration:0.9s; animation-delay:0.0s;"/>
+                <ellipse class="water-droplet" cx="0" cy="0" rx="2.2" ry="4.5" fill="#4DB8FF" opacity="0.7"
+                    style="animation-duration:1.0s; animation-delay:0.25s;"/>
+                <ellipse class="water-droplet" cx="10" cy="0" rx="2.5" ry="5" fill="#6EC9FF" opacity="0.7"
+                    style="animation-duration:0.95s; animation-delay:0.5s;"/>
+            </g>
+            </g>
+        `;
+    }
+
+    _renderHeatingCircuit() {
+        const hp1Mode = this.getSensorState('hp1.hp1_workingmode', { number: true, asString: false, decimals: 0, fallback: 0 });
+        const hp2Mode = this.getSensorState('hp2.hp2_workingmode', { number: true, asString: false, decimals: 0, fallback: 0 });
+        const qcMode = this.getSensorState('cic.qc_supervisory_control_mode_code', { number: true, asString: false, decimals: 0, fallback: NaN });
+        const centralHeatingOn = this.getSensorState('cic.cic_central_heating_on', { fallback: { state: 'off' } })?.state === 'on';
+
+        const hp1On = hp1Mode >= 1;
+        const hp2On = hp2Mode >= 1;
+        const anyHpOn = hp1On || hp2On;
+
+        // Defrosting
+        const hp1Defrost = this.getSensorState('hp1.hp1_defrosting', { fallback: { state: 'off' } })?.state === 'on';
+        const hp2Defrost = this.isDuoHeatpump() && (this.getSensorState('hp2.hp2_defrosting', { fallback: { state: 'off' } })?.state === 'on');
+        const anyDefrost = hp1Defrost || hp2Defrost;
+
+        // Anti-freeze mode
+        const antiFreezeMode = (qcMode === 98);
+        const anyCirculation = anyHpOn || antiFreezeMode;
+
+        // Reverse flow when antifreeze or defrosting (house -> heatpump)
+        const reverseFlow = antiFreezeMode || anyDefrost;
+
+        // Color: antifreeze cool, otherwise warm (defrost stays warm)
+        const prefix = antiFreezeMode ? "Cool" : "";
+
+        // Direction mapping:
+        // normal:  outside ToLeft,  bottom ToRight  (heatpump -> house)
+        // reverse: outside ToRight, bottom ToLeft   (house -> heatpump)
+        const outsideStroke = `url(#waterGradient${prefix}${reverseFlow ? "ToRight" : "ToLeft"})`;
+        const bottomStroke  = `url(#waterGradient${prefix}${reverseFlow ? "ToLeft"  : "ToRight"})`;
+
+        // No fog-lines when in anti-freeze mode or defrosting
+        const hp1ShowFog = hp1On && !antiFreezeMode && !hp1Defrost;
+        const hp2ShowFog = hp2On && !antiFreezeMode && !hp2Defrost;
+
+        return svg`
+            <!-- Outside & bottom pipes -->
+            <g clip-path="url(#outsidePipe)">
+                ${anyCirculation
+                    ? svg`<path id="quatt.outsidePipe" d="M 274 1253 L 567 1400" stroke="${outsideStroke}" stroke-width="8" fill="none" stroke-linecap="round"/>`
+                    : svg``}
+            </g>
+
+            <g clip-path="url(#bottomPipe)">
+                ${anyCirculation
+                    ? svg`<path id="quatt.bottomPipe" d="M 275 1250 L 404 1185" stroke="${bottomStroke}" stroke-width="8" fill="none" stroke-linecap="round"/>`
+                    : svg``}
+
+                ${this.isAllElectric() && anyCirculation && !antiFreezeMode
+                    ? svg`<path id="quatt.alle.bottomPipe" d="M 405 1185 L 406 1117" stroke="url(#waterGradientUp)" stroke-width="8" fill="none" stroke-linecap="round"/>`
+                    : svg``}
+
+                ${this.isAllElectric() && centralHeatingOn && !antiFreezeMode
+                    ? svg`
+                        <path id="quatt.alle.radiatorPipe1" d="M 434 1121 L 435 1167" stroke="url(#waterGradientUp)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                        <path id="quatt.alle.radiatorPipe2" d="M 435 1167 L 495 1139" stroke="url(#waterGradientDown)" stroke-width="8" fill="none" stroke-linecap="round"/>`
+                    : svg``}
+            </g>
+
+            <!-- Defrost overlays -->
+            ${hp1Defrost ? this._renderDefrostOverlay({ x: 560, y: 1410, scale: 1.0 }) : svg``}
+            ${hp2Defrost ? this._renderDefrostOverlay({ x: 405, y: 1345, scale: 0.95 }) : svg``}
+
+            <!-- HP1 flow -->
+            ${hp1ShowFog
+                ? svg`<g id="quatt.hp1Flow">
+                        <path class="fog-line" pathLength="100" style="animation-duration: 4.2s; animation-delay: 0s; stroke: #E8F4F8; stroke-width: 3;"
+                            d="M 425 1415 Q 435 1408, 445 1415 Q 455 1422, 465 1415 Q 475 1408, 485 1415 Q 495 1422, 505 1415 Q 515 1408, 525 1415 Q 535 1422, 545 1415 Q 555 1408, 565 1415 Q 575 1422, 585 1415 Q 595 1408, 605 1415 Q 615 1422, 625 1415 Q 635 1408, 645 1415 Q 655 1422, 665 1415"/>
+                        <path class="fog-line" pathLength="100" style="animation-duration: 3.8s; animation-delay: -1.2s; stroke: #D4E8F0; stroke-width: 4;"
+                            d="M 435 1430 Q 445 1423, 455 1430 Q 465 1437, 475 1430 Q 485 1423, 495 1430 Q 505 1437, 515 1430 Q 525 1423, 535 1430 Q 545 1437, 555 1430 Q 565 1423, 575 1430 Q 585 1437, 595 1430 Q 605 1423, 615 1430 Q 625 1437, 635 1430 Q 645 1423, 655 1430 Q 665 1437, 675 1430"/>
+                        <path class="fog-line" pathLength="100" style="animation-duration: 4.5s; animation-delay: -2.5s; stroke: #E0EDF5; stroke-width: 2.5;"
+                            d="M 430 1445 Q 440 1438, 450 1445 Q 460 1452, 470 1445 Q 480 1438, 490 1445 Q 500 1452, 510 1445 Q 520 1438, 530 1445 Q 540 1452, 550 1445 Q 560 1438, 570 1445 Q 580 1452, 590 1445 Q 600 1438, 610 1445 Q 620 1452, 630 1445 Q 640 1438, 650 1445 Q 660 1452, 670 1445"/>
+                        <path class="fog-line" pathLength="100" style="animation-duration: 4.0s; animation-delay: -3.7s; stroke: #DCE9F2; stroke-width: 3;"
+                            d="M 440 1460 Q 450 1453, 460 1460 Q 470 1467, 480 1460 Q 490 1453, 500 1460 Q 510 1467, 520 1460 Q 530 1453, 540 1460 Q 550 1467, 560 1460 Q 570 1453, 580 1460 Q 590 1467, 600 1460 Q 610 1453, 620 1460 Q 630 1467, 640 1460 Q 650 1453, 660 1460 Q 670 1467, 680 1460"/>
+                    </g>`
+                : svg``}
+
+            <!-- HP2 flow -->
+            ${hp2ShowFog
+                ? svg`<g id="quatt.hp2Flow">
+                        <path class="fog-line" pathLength="100" style="animation-duration: 4.3s; animation-delay: -0.5s; stroke: #E8F4F8; stroke-width: 3;"
+                            d="M 295 1350 Q 305 1343, 315 1350 Q 325 1357, 335 1350 Q 345 1343, 355 1350 Q 365 1357, 375 1350 Q 385 1343, 395 1350 Q 405 1357, 415 1350 Q 425 1343, 435 1350 Q 445 1357, 455 1350 Q 465 1343, 475 1350 Q 485 1357, 495 1350 Q 505 1343, 515 1350 Q 525 1357, 535 1350"/>
+                        <path class="fog-line" pathLength="100" style="animation-duration: 3.9s; animation-delay: -1.8s; stroke: #D4E8F0; stroke-width: 4;"
+                            d="M 305 1365 Q 315 1358, 325 1365 Q 335 1372, 345 1365 Q 355 1358, 365 1365 Q 375 1372, 385 1365 Q 395 1358, 405 1365 Q 415 1372, 425 1365 Q 435 1358, 445 1365 Q 455 1372, 465 1365 Q 475 1358, 485 1365 Q 495 1372, 505 1365 Q 515 1358, 525 1365 Q 535 1372, 545 1365"/>
+                        <path class="fog-line" pathLength="100" style="animation-duration: 4.6s; animation-delay: -3.1s; stroke: #E0EDF5; stroke-width: 2.5;"
+                            d="M 300 1380 Q 310 1373, 320 1380 Q 330 1387, 340 1380 Q 350 1373, 360 1380 Q 370 1387, 380 1380 Q 390 1373, 400 1380 Q 410 1387, 420 1380 Q 430 1373, 440 1380 Q 450 1387, 460 1380 Q 470 1373, 480 1380 Q 490 1387, 500 1380 Q 510 1373, 520 1380 Q 530 1387, 540 1380"/>
+                        <path class="fog-line" pathLength="100" style="animation-duration: 4.1s; animation-delay: -2.2s; stroke: #DCE9F2; stroke-width: 3;"
+                            d="M 310 1395 Q 320 1388, 330 1395 Q 340 1402, 350 1395 Q 360 1388, 370 1395 Q 380 1402, 390 1395 Q 400 1388, 410 1395 Q 420 1402, 430 1395 Q 440 1388, 450 1395 Q 460 1402, 470 1395 Q 480 1388, 490 1395 Q 500 1402, 510 1395 Q 520 1388, 530 1395 Q 540 1402, 550 1395"/>
+                    </g>`
+                : svg``}
+
+            <!-- Radiator heat -->
+            ${!antiFreezeMode && ((this.isAllElectric() && centralHeatingOn) || (this.isHybrid() && anyHpOn))
+                ? svg`<g id="quatt.radiatorHeat" transform="${this.isAllElectric() ? 'translate(100,-40)' : ''}">
+                        <path class="radiator-heat-line" pathLength="100" transform="translate(0,-12)"
+                            style="animation-duration:6.77s; animation-delay:-2.13s"
+                            d="M415 1186.1 C427 1176.1,403 1168.1,415 1158.1 C427 1148.1,403 1140.1,415 1130.1 C427 1120.1,403 1112.1,415 1102.1 C427 1092.1,403 1084.1,415 1074.1 C427 1064.1,403 1056.1,415 1046.1 C427 1036.1,403 1030.1,415 1025.1"/>
+                        <path class="radiator-heat-line" pathLength="100" transform="translate(0,-28)"
+                            style="animation-duration:7.09s; animation-delay:-5.04s"
+                            d="M425 1181.3 C437 1171.3,413 1163.3,425 1153.3 C437 1143.3,413 1135.3,425 1125.3 C437 1115.3,413 1107.3,425 1097.3 C437 1087.3,413 1079.3,425 1069.3 C437 1059.3,413 1051.3,425 1041.3 C437 1031.3,413 1025.3,425 1020.3"/>
+                        <path class="radiator-heat-line" pathLength="100" transform="translate(0,-40)"
+                            style="animation-duration:6.61s; animation-delay:-0.41s"
+                            d="M435 1176.4 C447 1166.4,423 1158.4,435 1148.4 C447 1138.4,423 1130.4,435 1120.4 C447 1110.4,423 1102.4,435 1092.4 C447 1082.4,423 1074.4,435 1064.4 C447 1054.4,423 1046.4,435 1036.4 C447 1026.4,423 1020.4,435 1015.4"/>
+                        <path class="radiator-heat-line" pathLength="100" transform="translate(0,-16)"
+                            style="animation-duration:7.21s; animation-delay:-3.57s"
+                            d="M445 1171.5 C457 1161.5,433 1153.5,445 1143.5 C457 1133.5,433 1125.5,445 1115.5 C457 1105.5,433 1097.5,445 1087.5 C457 1077.5,433 1069.5,445 1059.5 C457 1049.5,433 1041.5,445 1031.5 C457 1021.5,433 1015.5,445 1010.5"/>
+                        <path class="radiator-heat-line" pathLength="100" transform="translate(0,-32)"
+                            style="animation-duration:6.47s; animation-delay:-1.89s"
+                            d="M455 1161.8 C477 1151.8,453 1143.8,465 1133.8 C477 1123.8,453 1115.8,465 1105.8 C477 1095.8,453 1087.8,465 1077.8 C477 1067.8,453 1059.8,465 1049.8 C477 1039.8,453 1031.8,465 1021.8 C477 1011.8,453 1005.8,465 1000.8"/>
+                        <path class="radiator-heat-line" pathLength="100" transform="translate(0,-10)"
+                            style="animation-duration:6.93s; animation-delay:-6.28s"
+                            d="M465 1166.6 C467 1156.6,443 1148.6,455 1138.6 C467 1128.6,443 1120.6,455 1110.6 C467 1100.6,443 1092.6,455 1082.6 C467 1072.6,443 1064.6,455 1054.6 C467 1044.6,443 1036.6,455 1026.6 C467 1016.6,443 1010.6,455 1005.6"/>
+                        <path class="radiator-heat-line" pathLength="100" transform="translate(0,-24)"
+                            style="animation-duration:7.37s; animation-delay:-4.46s"
+                            d="M474 1157.4 C486 1147.4,462 1139.4,474 1129.4 C486 1119.4,462 1111.4,474 1101.4 C486 1091.4,462 1083.4,474 1073.4 C486 1035.4,462 1027.4,474 1017.4 C486 1007.4,462 1002.4,474  997.4"/>
+                    </g>`
+                : svg``}
+        `;
+    }
+
+    _renderAircoFlow() {
+        const mode = this.getSensorState('other.thermostat_airco')?.state;
+        if (!this.hasAirco() || mode === 'off') {
+            return svg``;
+        }
+
+        const coldColor = '#DCE9F2';
+        const hotColor  = '#ff8a00';
+        const outsideFlowColor = (mode === 'heat') ? coldColor : hotColor;
+        const insideFlowColor = (mode === 'heat') ? hotColor  : coldColor;
+
+        return svg`
+            <g id="quatt.acOutsideUnit" transform="translate(380, 15)">
+                <path class="fog-line-reverse" pathLength="100"
+                    stroke="${outsideFlowColor}" stroke-width="3" style="animation-duration: 4.2s; animation-delay: 0s;"
+                    d="M 425 1415 Q 435 1408, 445 1415 Q 455 1422, 465 1415 Q 475 1408, 485 1415 Q 495 1422, 505 1415 Q 515 1408, 525 1415 Q 535 1422, 545 1415 Q 555 1408, 565 1415 Q 575 1422, 585 1415 Q 595 1408, 605 1415 Q 615 1422, 625 1415 Q 635 1408, 645 1415 Q 655 1422, 665 1415"/>
+                <path class="fog-line-reverse" pathLength="100"
+                    stroke="${outsideFlowColor}" stroke-width="4" style="animation-duration: 3.8s; animation-delay: -1.2s;"
+                    d="M 435 1430 Q 445 1423, 455 1430 Q 465 1437, 475 1430 Q 485 1423, 495 1430 Q 505 1437, 515 1430 Q 525 1423, 535 1430 Q 545 1437, 555 1430 Q 565 1423, 575 1430 Q 585 1437, 595 1430 Q 605 1423, 615 1430 Q 625 1437, 635 1430 Q 645 1423, 655 1430 Q 665 1437, 675 1430"/>
+                <path class="fog-line-reverse" pathLength="100"
+                    stroke="${outsideFlowColor}" stroke-width="2.5" style="animation-duration: 4.5s; animation-delay: -2.5s;"
+                    d="M 430 1445 Q 440 1438, 450 1445 Q 460 1452, 470 1445 Q 480 1438, 490 1445 Q 500 1452, 510 1445 Q 520 1438, 530 1445 Q 540 1452, 550 1445 Q 560 1438, 570 1445 Q 580 1452, 590 1445 Q 600 1438, 610 1445 Q 620 1452, 630 1445 Q 640 1438, 650 1445 Q 660 1452, 670 1445"/>
+                <path class="fog-line-reverse" pathLength="100"
+                    stroke="${outsideFlowColor}" stroke-width="3" style="animation-duration: 4.0s; animation-delay: -3.7s;"
+                    d="M 440 1460 Q 450 1453, 460 1460 Q 470 1467, 480 1460 Q 490 1453, 500 1460 Q 510 1467, 520 1460 Q 530 1453, 540 1460 Q 550 1467, 560 1460 Q 570 1453, 580 1460 Q 590 1467, 600 1460 Q 610 1453, 620 1460 Q 630 1467, 640 1460 Q 650 1453, 660 1460 Q 670 1467, 680 1460"/>
+            </g>
+            <g id="quatt.acInsideUnit" class="quatt-show" transform="translate(420, -70) rotate(67.5, 545, 945)">
+                <path class="fog-line-reverse" pathLength="100"
+                    stroke="${insideFlowColor}" stroke-width="3" style="animation-duration: 4.2s; animation-delay: 0s;"
+                    d="M 425 1415 Q 435 1408, 445 1415 Q 455 1422, 465 1415 Q 475 1408, 485 1415 Q 495 1422, 505 1415 Q 515 1408, 525 1415 Q 535 1422, 545 1415 Q 555 1408, 565 1415 Q 575 1422, 585 1415 Q 595 1408, 605 1415 Q 615 1422, 625 1415 Q 635 1408, 645 1415 Q 655 1422, 665 1415"/>
+                <path class="fog-line-reverse" pathLength="100"
+                    stroke="${insideFlowColor}" stroke-width="4" style="animation-duration: 3.8s; animation-delay: -1.2s;"
+                    d="M 435 1430 Q 445 1423, 455 1430 Q 465 1437, 475 1430 Q 485 1423, 495 1430 Q 505 1437, 515 1430 Q 525 1423, 535 1430 Q 545 1437, 555 1430 Q 565 1423, 575 1430 Q 585 1437, 595 1430 Q 605 1423, 615 1430 Q 625 1437, 635 1430 Q 645 1423, 655 1430 Q 665 1437, 675 1430"/>
+                <path class="fog-line-reverse" pathLength="100"
+                    stroke="${insideFlowColor}" stroke-width="2.5" style="animation-duration: 4.5s; animation-delay: -2.5s;"
+                    d="M 430 1445 Q 440 1438, 450 1445 Q 460 1452, 470 1445 Q 480 1438, 490 1445 Q 500 1452, 510 1445 Q 520 1438, 530 1445 Q 540 1452, 550 1445 Q 560 1438, 570 1445 Q 580 1452, 590 1445 Q 600 1438, 610 1445 Q 620 1452, 630 1445 Q 640 1438, 650 1445 Q 660 1452, 670 1445"/>
+                <path class="fog-line-reverse" pathLength="100"
+                    stroke="${insideFlowColor}" stroke-width="3" style="animation-duration: 4.0s; animation-delay: -3.7s;"
+                    d="M 440 1460 Q 450 1453, 460 1460 Q 470 1467, 480 1460 Q 490 1453, 500 1460 Q 510 1467, 520 1460 Q 530 1453, 540 1460 Q 550 1467, 560 1460 Q 570 1453, 580 1460 Q 590 1467, 600 1460 Q 610 1453, 620 1460 Q 630 1467, 640 1460 Q 650 1453, 660 1460 Q 670 1467, 680 1460"/>
+            </g>
+        `;
+    }
+
+    _renderChimneySmoke() {
+        if (!(this.isHybrid() && this.getSensorState('boiler.boiler_heating')?.state == 'on')) {
+            return svg``;
+        }
+
+        return svg`
+            <g id="quatt.chimneyPipe">
+                <path d="M 317 1123 L 318 1225" stroke="url(#waterGradientUp)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <path d="M 347 1125 L 348 1210" stroke="url(#waterGradientDown)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            </g>
+            <!-- Chimney smoke (steam-puff style, but rising higher) -->
+            <g id="quatt.chimneySmoke" filter="url(#smokeBlur)" transform="translate(400, 675)">
+                <ellipse cx="0" cy="0" rx="10" ry="7" fill="#6B6B6B" opacity="0">
+                    <animate attributeName="cy" values="0;-80;-190" dur="3.4s" repeatCount="indefinite"/>
+                    <animate attributeName="cx" values="0;6;14" dur="3.4s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0;0.55;0" dur="3.4s" repeatCount="indefinite"/>
+                    <animate attributeName="rx" values="9;16;26" dur="3.4s" repeatCount="indefinite"/>
+                    <animate attributeName="ry" values="6;12;20" dur="3.4s" repeatCount="indefinite"/>
+                </ellipse>
+
+                <ellipse cx="6" cy="6" rx="9" ry="6" fill="#7A7A7A" opacity="0">
+                    <animate attributeName="cy" values="6;-68;-176" dur="3.4s" begin="0.6s" repeatCount="indefinite"/>
+                    <animate attributeName="cx" values="6;10;18" dur="3.4s" begin="0.6s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0;0.50;0" dur="3.4s" begin="0.6s" repeatCount="indefinite"/>
+                    <animate attributeName="rx" values="8;15;24" dur="3.4s" begin="0.6s" repeatCount="indefinite"/>
+                    <animate attributeName="ry" values="5;11;18" dur="3.4s" begin="0.6s" repeatCount="indefinite"/>
+                </ellipse>
+
+                <ellipse cx="-8" cy="8" rx="9" ry="6" fill="#656565" opacity="0">
+                    <animate attributeName="cy" values="8;-60;-168" dur="3.4s" begin="1.2s" repeatCount="indefinite"/>
+                    <animate attributeName="cx" values="-8;-2;8" dur="3.4s" begin="1.2s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0;0.45;0" dur="3.4s" begin="1.2s" repeatCount="indefinite"/>
+                    <animate attributeName="rx" values="8;14;22" dur="3.4s" begin="1.2s" repeatCount="indefinite"/>
+                    <animate attributeName="ry" values="5;10;17" dur="3.4s" begin="1.2s" repeatCount="indefinite"/>
+                </ellipse>
+
+                <ellipse cx="2" cy="4" rx="11" ry="7" fill="#707070" opacity="0">
+                    <animate attributeName="cy" values="4;-76;-184" dur="3.4s" begin="1.8s" repeatCount="indefinite"/>
+                    <animate attributeName="cx" values="2;8;16" dur="3.4s" begin="1.8s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0;0.50;0" dur="3.4s" begin="1.8s" repeatCount="indefinite"/>
+                    <animate attributeName="rx" values="10;18;28" dur="3.4s" begin="1.8s" repeatCount="indefinite"/>
+                    <animate attributeName="ry" values="6;13;21" dur="3.4s" begin="1.8s" repeatCount="indefinite"/>
+                </ellipse>
+
+                <ellipse cx="-4" cy="10" rx="8" ry="6" fill="#6F6F6F" opacity="0">
+                    <animate attributeName="cy" values="10;-56;-164" dur="3.4s" begin="2.4s" repeatCount="indefinite"/>
+                    <animate attributeName="cx" values="-4;2;12" dur="3.4s" begin="2.4s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0;0.45;0" dur="3.4s" begin="2.4s" repeatCount="indefinite"/>
+                    <animate attributeName="rx" values="7;13;21" dur="3.4s" begin="2.4s" repeatCount="indefinite"/>
+                    <animate attributeName="ry" values="5;10;16" dur="3.4s" begin="2.4s" repeatCount="indefinite"/>
+                </ellipse>
+            </g>
+        `;
+    }
+
+    _renderHeatBatteryDomesticHotWater() {
+        if (!this.isAllElectric() || this.getSensorState('heat_battery.heat_battery_domestic_hot_water_on')?.state !== 'on') {
+            return svg``;
+        }
+
+        return svg`
+            <g id="quatt.waterPipe">
+                <path d="M 421 1119 L 422 1186" stroke="url(#waterGradientDown)" stroke-width="5" fill="none" stroke-linecap="round"/>
+            </g>
+            <g id="quatt.shower">
+                <g id="showerWater" transform="translate(620, 880)">
+                    <ellipse class="water-droplet" cx="20" cy="0" rx="3" ry="6" fill="#4DB8FF" opacity="0.7"/>
+                    <ellipse class="water-droplet" cx="35" cy="0" rx="2.5" ry="5" fill="#6EC9FF" opacity="0.7"/>
+                    <ellipse class="water-droplet" cx="50" cy="0" rx="3" ry="6" fill="#4DB8FF" opacity="0.7"/>
+                    <ellipse class="water-droplet" cx="65" cy="0" rx="2.5" ry="5" fill="#6EC9FF" opacity="0.7"/>
+                    <ellipse class="water-droplet" cx="80" cy="0" rx="3" ry="6" fill="#4DB8FF" opacity="0.7"/>
+                </g>
+            </g>
+        `;
+    }
+
+    _renderHeatBatterySteam() {
+        if (!this.isAllElectric() || this.getSensorState('heat_battery.heat_battery_charging')?.state !== 'on') {
+            return svg``;
+        }
+
+        return svg`
+            <g id="quatt.boilerSteam">
+                <circle class="steam-ring" cx="400" cy="993" r="8" fill="none" stroke="#E8F4F8" stroke-width="2" opacity="0"/>
+                <circle class="steam-ring" cx="400" cy="993" r="8" fill="none" stroke="#D4E8F0" stroke-width="2" opacity="0"/>
+                <circle class="steam-ring" cx="400" cy="993" r="8" fill="none" stroke="#E8F4F8" stroke-width="2" opacity="0"/>
+                <circle class="steam-ring" cx="400" cy="993" r="8" fill="none" stroke="#D4E8F0" stroke-width="2" opacity="0"/>
+                <circle class="steam-ring" cx="400" cy="993" r="8" fill="none" stroke="#E8F4F8" stroke-width="2" opacity="0"/>
+            </g>
+        `;
+    }
+
+    _renderLegend() {
+        return svg`
+            <g id="quatt.legend">
+                <rect x="50" y="300" width="300" height="330" fill="#1a1a1a" opacity="0.85" rx="20"/>
+
+                <!-- Title -->
+                <text x="70" y="345" font-size="1.6em" font-weight="bold" fill="#ffffff">
+                    ${this.config?.system_setup?.house_label}
+                </text>
+
+                <!-- Heat -->
+                <style>
+                    #legendHeatInfo { cursor: pointer; }
+                </style>
+                <text x="70" y="400" font-size="1.1em" fill="#999999">Heat</text>
+                <text id="legendHeatInfo" x="70" y="435" font-size="1.4em" font-weight="bold" fill="#ffffff">
+                    ${this.getSensorState('cic.total_power', { number: true, decimals: 2, scale: 1 / 1000 })} kW
+                </text>
+
+                <!-- Electricity -->
+                <style>
+                    #legendElectricityInfo { cursor: pointer; }
+                </style>
+                <text x="70" y="480" font-size="1.1em" fill="#999999">Electricity</text>
+                <text id="legendElectricityInfo" x="70" y="515" font-size="1.4em" font-weight="bold" fill="#ffffff">
+                    ${this.getSensorState('cic.total_powerinput', { number: true, decimals: 2, scale: 1 / 1000 })} kW
+                </text>
+
+                <!-- Boiler -->
+                ${this.isHybrid()
+                    ? svg`<text x="70" y="560" font-size="1.1em" fill="#999999">Boiler</text>
+                        ${(() => {
+                            if (this.getSensorState('boiler.boiler_heating')?.state == 'on') {
+                                return svg`<g id="quatt.cic.boilerIcon.flame">
+                                                <path d="M 80 595 Q 77 590, 77 585 Q 77 580, 80 577 Q 81 574, 80 571 Q 79 569, 80 567 Q 82 565, 83 567 Q 84 569, 83 571 Q 82 574, 83 577 Q 86 580, 86 585 Q 86 590, 83 595 Q 81.5 597, 80 595 Z" fill="#FF6B35" stroke="#FF4500" stroke-width="0.5"/>
+                                                    <ellipse cx="81.5" cy="587" rx="2" ry="3" fill="#FFD700"/>
+                                            </g>
+                                            <style>
+                                                #legendBoilerInfo { cursor: pointer; }
+                                            </style>
+                                            <text id="legendBoilerInfo" x="100" y="595" font-size="1.4em" font-weight="bold" fill="#ffffff">
+                                                ${this.getSensorState('boiler.boiler_heating')?.state || 'Off'}
+                                            </text>`;
+                            }
+                            return svg`<g id="quatt.cic.boilerIcon.euro" class="quatt-show">
+                                            <circle cx="80" cy="585" r="11" fill="none" stroke="#FFA500" stroke-width="2"/>
+                                            <path d="M 86 579 Q 82 577, 78 579 Q 74 581, 74 585 Q 74 589, 78 591 Q 82 593, 86 591" fill="none" stroke="#FFA500" stroke-width="2" stroke-linecap="round"/>
+                                            <line x1="72" y1="583" x2="84" y2="583" stroke="#FFA500" stroke-width="2" stroke-linecap="round"/>
+                                            <line x1="72" y1="587" x2="84" y2="587" stroke="#FFA500" stroke-width="2" stroke-linecap="round"/>
+                                        </g>
+                                        <style>
+                                            #legendBoilerInfo { cursor: pointer; }
+                                        </style>
+                                        <text id="legendBoilerInfo" x="100" y="595" font-size="1.4em" font-weight="bold" fill="#ffffff">
+                                            ${this.getSensorState('boiler.boiler_heating')?.state || 'Off'}
+                                        </text>`;
+                        })()}`
+                    : svg``
+                }
+
+                <!-- Shower -->
+                ${this.isAllElectric()
+                    ? svg`<text x="70" y="560" font-size="1.1em" fill="#999999">Shower time</text>
+                        ${(() => {
+                            if (this.getSensorState('heat_battery.heat_battery_domestic_hot_water_on')?.state == 'on') {
+                                return svg`<g id="quatt.cic.showerIcon.down">
+                                                <path d="M 80 577 L 80 593 M 80 593 L 74 587 M 80 593 L 86 587" fill="none" stroke="#FF4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </g>
+                                            <text x="100" y="595" font-size="1.4em" font-weight="bold" fill="#ffffff">
+                                                ${this.getSensorState('heat_battery.heat_battery_shower_minutes_remaining', { number: true, decimals: 0 })} min
+                                            </text>`;
+                            }
+                            if (this.getSensorState('heat_battery.heat_battery_charging')?.state == 'on') {
+                                return svg`<g id="quatt.cic.showerIcon.up">
+                                                <path d="M 80 593 L 80 577 M 80 577 L 74 583 M 80 577 L 86 583" fill="none" stroke="#44FF44" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </g>
+                                            <text x="100" y="595" font-size="1.4em" font-weight="bold" fill="#ffffff">
+                                                ${this.getSensorState('heat_battery.heat_battery_shower_minutes_remaining', { number: true, decimals: 0 })} min
+                                            </text>`;
+                            }
+
+                            return svg`<text x="70" y="595" font-size="1.4em" font-weight="bold" fill="#ffffff">
+                                            ${this.getSensorState('heat_battery.heat_battery_shower_minutes_remaining', { number: true, decimals: 0 })} min
+                                        </text>`;
+                        })()}`
+                    : svg``
+                }
+            </g>
+        `;
+    }
+
+    _renderWaterTankIndicator() {
+        const showTank = this.isAllElectric() || this.hasHotWaterCylinder();
+        if (!showTank) return svg``;
+
+        const isAllElectric = this.isAllElectric();
+
+        const layout = isAllElectric
+            ? {
+                main:   { x: 305, y: 1070, w: 70, h: 195, rx: 28 },
+                gloss:  { x: 310, y: 1075, w: 25, h: 180, rx: 20 },
+                outline:{ x: 305, y: 1070, w: 70, h: 195, rx: 28 },
+                text:   { x: 340, y: 1172 },
+            }
+            : {
+                main:   { x: 508, y: 990,  w: 79, h: 165, rx: 28 },
+                gloss:  { x: 513, y: 995,  w: 28, h: 150, rx: 20 },
+                outline:{ x: 508, y: 990,  w: 79, h: 165, rx: 28 },
+                text:   { x: 547, y: 1080 },
+            };
+
+        let tankSpecificDefs = svg``;
+        let mainFill;
+        let textValue;
+
+        if (isAllElectric) {
+            const percentage = this.getSensorState("heat_battery.heat_battery_percentage", { number: true, asString: false, decimals: 1, fallback: 0 });
+            tankSpecificDefs = svg`
+                <linearGradient id="tankWaterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#FF4444;stop-opacity:0.5"/>
+                    <stop offset="${Math.max(0, percentage - 12.5)}%" style="stop-color:#FF4444;stop-opacity:0.5"/>
+                    <stop offset="${Math.min(100, percentage + 12.5)}%" style="stop-color:#0066FF;stop-opacity:0.5"/>
+                    <stop offset="100%" style="stop-color:#0066FF;stop-opacity:0.5"/>
+                </linearGradient>
+            `;
+            mainFill = "url(#tankWaterGradient)";
+            textValue = this.getSensorState("heat_battery.heat_battery_percentage", { number: true, decimals: 0, }) + " %";
+        } else {
+            const temperature = this.getSensorState("other.hot_water_cylinder_temperature", { number: true, asString: false, fallback: 0 });
+            mainFill =
+                temperature <= 15 ? "#0066FF" :
+                temperature <= 22 ? "#2461E4" :
+                temperature <= 30 ? "#495CCA" :
+                temperature <= 37 ? "#6D57AF" :
+                temperature <= 45 ? "#925394" :
+                temperature <= 52 ? "#B64E79" :
+                temperature <= 60 ? "#DB495F" :
+                        "#FF4444";
+
+            textValue = this.getSensorState("other.hot_water_cylinder_temperature", { number: true, decimals: 0, }) + " °C";
+        }
+
+        return svg`
+            <g id="quatt.waterTankIndicator">
+                <defs>
+                    ${tankSpecificDefs}
+
+                    <filter id="waterDepth" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+                        <feOffset dx="0" dy="2" result="offsetblur"/>
+                        <feComponentTransfer>
+                            <feFuncA type="linear" slope="0.3"/>
+                        </feComponentTransfer>
+                        <feMerge>
+                            <feMergeNode/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+
+                    <linearGradient id="waterGloss" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%"  style="stop-color:#ffffff;stop-opacity:0"/>
+                        <stop offset="30%" style="stop-color:#ffffff;stop-opacity:0.15"/>
+                        <stop offset="70%" style="stop-color:#ffffff;stop-opacity:0.15"/>
+                        <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+                    </linearGradient>
+                </defs>
+
+                <rect x="${layout.main.x}" y="${layout.main.y}" width="${layout.main.w}" height="${layout.main.h}" rx="${layout.main.rx}" fill="${mainFill}" filter="url(#waterDepth)"/>
+                <rect x="${layout.gloss.x}" y="${layout.gloss.y}" width="${layout.gloss.w}" height="${layout.gloss.h}" rx="${layout.gloss.rx}" fill="url(#waterGloss)" opacity="0.6"/>
+                <rect x="${layout.outline.x}" y="${layout.outline.y}" width="${layout.outline.w}" height="${layout.outline.h}" rx="${layout.outline.rx}" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+                <style>
+                    #tankInfo { cursor: pointer; }
+                </style>
+                <text
+                    id="tankInfo"
+                    x="${layout.text.x}"
+                    y="${layout.text.y}"
+                    text-anchor="middle"
+                    font-size="1.2em"
+                    font-weight="bold"
+                    fill="#ffffff">
+                    ${textValue}
+                </text>
+            </g>
+        `;
+    }
+
+    _renderBadges() {
+        return svg`
+            <g id="quatt.info" class="quatt-show">
+                <!-- Solar power -->
+                ${this.hasSolarPanels()
+                    ? svg`<g id="solarPower" style="cursor: pointer;" transform="translate(350, 230) rotate(-26.5, 545, 945)">
+                            <rect x="1100" y="675" width="150" height="52" fill="#1a1a1a" opacity="0.8" rx="5"/>
+                            <text x="1105" y="695" font-size="0.9em" fill="#999999">Solar</text>
+                            <text id="temp.solarPower" x="1175" y="718" text-anchor="middle" font-size="1.1em" font-weight="bold" fill="#ffffff">
+                                ${this.getSensorState('other.solar_power', { number: true, decimals: this.getSensorState('other.solar_power', { attribute: 'unit_of_measurement' }) == 'kW' ? 3 : 0 })}
+                                ${this.getSensorState('other.solar_power', { attribute: 'unit_of_measurement' })}
+                            </text>
+                        </g>`
+                    : svg``
+                }
+
+                <!-- Pipe temperature -->
+                <g id="waterPipeTemperature" style="cursor: pointer;">
+                    <rect x="300" y="1275" width="150" height="52" fill="#1a1a1a" opacity="0.8" rx="5"/>
+                    <text x="305" y="1295" font-size="0.9em" fill="#999999">Pipe</text>
+                    <text id="temp.waterPipe" x="375" y="1318"
+                        text-anchor="middle"
+                        font-size="1.1em"
+                        font-weight="bold"
+                        fill="#ffffff">
+                        ${this.getSensorState('flowmeter.flowmeter_temperature', { number: true, decimals: 1 })} °C
+                    </text>
+                </g>
+
+                <!-- Room temperature -->
+                <g id="roomTemperature" style="cursor: pointer;">
+                    <rect x="550" y="1200" width="150" height="52" fill="#1a1a1a" opacity="0.8" rx="5"/>
+                    <text x="555" y="1220" font-size="0.9em" fill="#999999">Room</text>
+                    <text id="temp.room" x="625" y="1243"
+                        text-anchor="middle"
+                        font-size="1.1em"
+                        font-weight="bold"
+                        fill="#ffffff">
+                        ${this.getSensorState('thermostat.thermostat_room_temperature', { number: true, decimals: 1 })} °C
+                    </text>
+                </g>
+
+                <!-- Airco -->
+                ${this.hasAirco()
+                    ? svg`<g id="aircoTemperature" style="cursor: pointer;">
+                            <rect x="350" y="875" width="150" height="52" fill="#1a1a1a" opacity="0.8" rx="5"/>
+                            <text x="355" y="895" font-size="0.9em" fill="#999999">Airco</text>
+                            <text id="temp.airco" x="425" y="918"
+                                text-anchor="middle"
+                                font-size="1.1em"
+                                font-weight="bold"
+                                fill="#ffffff">
+                                ${this.getSensorState('other.thermostat_airco', { number: true, decimals: 1, attribute: 'current_temperature' })} °C
+                            </text>
+                        </g>`
+                    : svg``
+                }
+
+                <!-- Home battery -->
+                ${this.hasBattery()
+                    ? svg`<g id="homeBatterySOC" style="cursor: pointer;">
+                        <rect x="930" y="740" width="150" height="52" fill="#1a1a1a" opacity="0.8" rx="5"/>
+                        <text x="935" y="760" font-size="0.9em" fill="#999999">Battery</text>
+                        <text id="temp.homebatterysoc" x="1005" y="783"
+                                text-anchor="middle"
+                                font-size="1.1em"
+                                font-weight="bold"
+                                fill="#ffffff">
+                            ${this.getSensorState('other.home_battery_soc', { number: true, decimals: 0 })} %
+                        </text>
+                    </g>`
+                    : svg``
+                }
+
+                <!-- Outside -->
+                <g id="outsideTemperature" style="cursor: pointer;">
+                    <rect x="560" y="1557" width="150" height="52" fill="#1a1a1a" opacity="0.8" rx="5"/>
+                    <text x="565" y="1577" font-size="0.9em" fill="#999999">Outside</text>
+                    <text id="temp.outside" x="635" y="1600"
+                        text-anchor="middle"
+                        font-size="1.1em"
+                        font-weight="bold"
+                        fill="#ffffff">
+                        ${this.getOutsideTemperature()} °C
+                    </text>
+                </g>
+
+                <!-- HP1 metric -->
+                <g id="hp1Metric" style="cursor: pointer;">
+                    <rect x="560" y="1500" width="150" height="52" fill="#1a1a1a" opacity="0.8" rx="5"/>
+                    <text x="565" y="1520" font-size="0.9em" fill="#999999">${this.getHeatpumpMetricLabel('HP1')}</text>
+                    <text id="temp.hp1.metric" x="635" y="1543"
+                        text-anchor="middle"
+                        font-size="1.1em"
+                        font-weight="bold"
+                        fill="#ffffff">
+                        ${this.getHeatpumpMetricValue('hp1')}
+                    </text>
+                </g>
+
+                <!-- HP2 metric -->
+                ${this.isDuoHeatpump()
+                    ? svg`<g id="hp2Metric" style="cursor: pointer;">
+                            <rect x="420" y="1435" width="150" height="52" fill="#1a1a1a" opacity="0.8" rx="5"/>
+                            <text x="425" y="1455" font-size="0.9em" fill="#999999">${this.getHeatpumpMetricLabel('HP2')}</text>
+                            <text id="temp.hp2.metric" x="495" y="1478"
+                                text-anchor="middle"
+                                font-size="1.1em"
+                                font-weight="bold"
+                                fill="#ffffff">
+                                ${this.getHeatpumpMetricValue('hp2')}
+                            </text>
+                        </g>`
+                    : svg``
+                }
+            </g>
+        `;
+    }
+
+    _renderTooltips() {
+        return svg`
+            ${this.isAllElectric() ? svg`
+            <g id="tooltipTankInfo" transform="translate(80, -108)">
+                <rect x="290" y="1155" width="385" height="200" fill="#2d2d2d" opacity="0.95" rx="8" stroke="#4a4a4a" stroke-width="2"/>
+                <text x="305" y="1190" font-size="1.0em" fill="#999999">Charging</text>
+                <text x="660" y="1190" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('heat_battery.heat_battery_charging')?.state}</text>
+                <text x="305" y="1225" font-size="1.0em" fill="#999999">Top temperature</text>
+                <text x="660" y="1225" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('heat_battery.heat_battery_top_temperature', { number: true, decimals: 0 })} °C</text>
+                <text x="305" y="1260" font-size="1.0em" fill="#999999">Middle temperature</text>
+                <text x="660" y="1260" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('heat_battery.heat_battery_middle_temperature', { number: true, decimals: 0 })} °C</text>
+                <text x="305" y="1295" font-size="1.0em" fill="#999999">Bottom temperature</text>
+                <text x="660" y="1295" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('heat_battery.heat_battery_bottom_temperature', { number: true, decimals: 0 })} °C</text>
+                <text x="305" y="1330" font-size="1.0em" fill="#999999">Shower minutes remaining</text>
+                <text x="660" y="1330" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('heat_battery.heat_battery_shower_minutes_remaining', { number: true, decimals: 0 })}</text>
+            </g>
+            `
+            : svg``
+            }
+            <g id="tooltipWaterPipeTemperature" transform="translate(55, -68)">
+                <rect x="370" y="1295" width="385" height="95" fill="#2d2d2d" opacity="0.95" rx="8" stroke="#4a4a4a" stroke-width="2"/>
+                <text x="385" y="1330" font-size="1.0em" fill="#999999">Flowrate</text>
+                <text x="740" y="1330" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('flowmeter.flowmeter_flowrate', { number: true, decimals: 1 })} L/h</text>
+                ${this.isAllElectric() ? svg`
+                    <text x="385" y="1365" font-size="1.0em" fill="#999999">System pressure</text>
+                    <text x="740" y="1365" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">
+                        ${this.getSensorState('heat_charger.heat_charger_heating_system_pressure', { number: true, decimals: 2 })} bar
+                    </text>
+                    `
+                : (this.isBoilerOpentherm()
+                    ? svg`
+                        <text x="385" y="1365" font-size="1.0em" fill="#999999">Water pressure</text>
+                        <text x="740" y="1365" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">
+                            ${this.getSensorState('boiler.boiler_water_pressure', { number: true, decimals: 2 })} bar
+                        </text>
+                        `
+                    : svg``)
+                }
+            </g>
+            <g id="tooltipRoomTemperature" transform="translate(120, -108)">
+                <rect x="550" y="1200" width="385" height="165" fill="#2d2d2d" opacity="0.95" rx="8" stroke="#4a4a4a" stroke-width="2"/>
+                <text x="565" y="1235" font-size="1.0em" fill="#999999">Room temperature</text>
+                <text x="920" y="1235" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('thermostat.thermostat_room_temperature', { number: true, decimals: 1 })} °C</text>
+                <text x="565" y="1270" font-size="1.0em" fill="#999999">Room setpoint</text>
+                <text x="920" y="1270" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('thermostat.thermostat_room_setpoint', { number: true, decimals: 1 })} °C</text>
+                <text x="565" y="1305" font-size="1.0em" fill="#999999">Control setpoint</text>
+                <text x="920" y="1305" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('thermostat.thermostat_control_setpoint', { number: true, decimals: 1 })} °C</text>
+                <text x="565" y="1340" font-size="1.0em" fill="#999999">Heating</text>
+                <text x="920" y="1340" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('thermostat.thermostat_heating')?.state}</text>
+            </g>
+            ${this.hasAirco()
+            ? svg`<g id="tooltipAircoTemperature" transform="translate(120, -108)">
+                        <rect x="350" y="875" width="385" height="130" fill="#2d2d2d" opacity="0.95" rx="8" stroke="#4a4a4a" stroke-width="2"/>
+                        <text x="365" y="910" font-size="1.0em" fill="#999999">Room temperature</text>
+                        <text x="720" y="910" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('other.thermostat_airco', { number: true, decimals: 1, attribute: 'current_temperature' })} °C</text>
+                        <text x="365" y="945" font-size="1.0em" fill="#999999">Room setpoint</text>
+                        <text x="720" y="945" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('other.thermostat_airco', { number: true, decimals: 1, attribute: 'temperature' })} °C</text>
+                        <text x="365" y="980" font-size="1.0em" fill="#999999">Mode</text>
+                        <text x="720" y="980" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('other.thermostat_airco')?.state}</text>
+                    </g>`
+            : svg``
+            }
+            <g id="tooltipHp1Metric" transform="translate(120, -108)">
+                <rect x="560" y="1500" width="385" height="270" fill="#2d2d2d" opacity="0.95" rx="8" stroke="#4a4a4a" stroke-width="2"/>
+                <text x="575" y="1535" font-size="1.0em" fill="#999999">Working mode</text>
+                <text x="930" y="1535" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.supervisoryControlModeDescription(this.getSensorState('hp1.hp1_workingmode')?.state)}</text>
+                <text x="575" y="1570" font-size="1.0em" fill="#999999">Temperature water in</text>
+                <text x="930" y="1570" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp1.hp1_temperaturewaterin', { number: true, decimals: 1 })} °C</text>
+                <text x="575" y="1605" font-size="1.0em" fill="#999999">Temperature water out</text>
+                <text x="930" y="1605" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp1.hp1_temperaturewaterout', { number: true, decimals: 1 })} °C</text>
+                <text x="575" y="1640" font-size="1.0em" fill="#999999">ΔT</text>
+                <text x="930" y="1640" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp1.hp1_waterdelta', { number: true, decimals: 1 })} °C</text>
+                <text x="575" y="1675" font-size="1.0em" fill="#999999">COP</text>
+                <text x="930" y="1675" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp1.hp1_cop')?.state}</text>
+                <text x="575" y="1710" font-size="1.0em" fill="#999999">Power</text>
+                <text x="930" y="1710" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end"> ${this.getSensorState('hp1.hp1_power', { number: true, decimals: 0 })} W</text>
+                <text x="575" y="1745" font-size="1.0em" fill="#999999">Power input</text>
+                <text x="930" y="1745" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp1.hp1_powerinput', { number: true, decimals: 0 })} W</text>
+            </g>
+
+            ${this.isDuoHeatpump()
+                ? svg`<g id="tooltipHp2Metric" transform="translate(120, -108)">
+                        <rect x="420" y="1435" width="385" height="270" fill="#2d2d2d" opacity="0.95" rx="8" stroke="#4a4a4a" stroke-width="2"/>
+                        <text x="435" y="1470" font-size="1.0em" fill="#999999">Working mode</text>
+                        <text x="790" y="1470" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.supervisoryControlModeDescription(this.getSensorState('hp2.hp2_workingmode')?.state)}</text>
+                        <text x="435" y="1505" font-size="1.0em" fill="#999999">Temperature water in</text>
+                        <text x="790" y="1505" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp2.hp2_temperaturewaterin', { number: true, decimals: 1 })} °C</text>
+                        <text x="435" y="1540" font-size="1.0em" fill="#999999">Temperature water out</text>
+                        <text x="790" y="1540" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp2.hp2_temperaturewaterout', { number: true, decimals: 1 })} °C</text>
+                        <text x="435" y="1575" font-size="1.0em" fill="#999999">ΔT</text>
+                        <text x="790" y="1575" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp2.hp2_waterdelta', { number: true, decimals: 1 })} °C</text>
+                        <text x="435" y="1610" font-size="1.0em" fill="#999999">COP</text>
+                        <text x="790" y="1610" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp2.hp2_cop')?.state}</text>
+                        <text x="435" y="1645" font-size="1.0em" fill="#999999">Power</text>
+                        <text x="790" y="1645" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp2.hp2_power', { number: true, decimals: 0 })} W</text>
+                        <text x="435" y="1680" font-size="1.0em" fill="#999999">Power input</text>
+                        <text x="790" y="1680" font-size="1.0em" font-weight="bold" fill="#ffffff" text-anchor="end">${this.getSensorState('hp2.hp2_powerinput', { number: true, decimals: 0 })} W</text>
+                    </g>`
+                : svg``
+            }
+        `;
+    }
+
+    _renderDebug() {
+        if (!DEBUG) return svg``;
+
+        // Small toggle “i” chip (always visible)
+        const chip = svg`
+            <g id="qdc.debug.toggle" style="cursor:pointer" @click=${() => this._toggleDebug()}>
+                <rect x="30" y="30" width="36" height="36" rx="9" fill="#1a1a1a" opacity="0.85"/>
+                <text x="48" y="55" text-anchor="middle" font-size="1.0em" fill="#fff" font-weight="bold">i</text>
+            </g>
+        `;
+
+        if (!this._debugOn) return chip;
+
+        // Popup with live values
+        const t = (x, y, label, val) => svg`
+            <text x="${x}" y="${y}" font-size="0.95em" fill="#bbb">${label}</text>
+            <text x="${x+260}" y="${y}" font-size="0.95em" fill="#fff" text-anchor="end">${val}</text>
+        `;
+
+        return svg`
+            ${chip}
+            <g id="qdc.debug.panel">
+                <rect x="30" y="80" width="300" height="170" rx="12" fill="#2d2d2d" opacity="0.95" stroke="#4a4a4a" stroke-width="2"/>
+                ${t(45, 110, 'DPR', this._dbg.dpr)}
+                ${t(45, 135, '--qdc-ppi-scale', this._dbg.ppiScale)}
+                ${t(45, 160, 'SVG font-size (px)', Math.round(this._dbg.svgFontPx))}
+                ${t(45, 185, 'Viewport', `${this._dbg.vw}×${this._dbg.vh}`)}
+                ${t(45, 210, 'pointer:coarse', this._dbg.coarse ? 'true' : 'false')}
+            </g>
+        `;
+    }
+
+    render() {
+        // Check if the card is ready to render otherwise show placeholder
+        if (!this.isReady()) {
+            return this._renderPlaceholder();
+        }
+
+        return html`
+            <ha-card>
+                <svg viewBox="0 0 1920 1920" preserveAspectRatio="xMidYMid meet">
+                    ${this._renderBaseHouse()}
+                    ${this._renderDefs()}
+                    ${this._renderSunshine()}
+                    ${this._renderLegend()}
+                    ${this._renderChimneySmoke()}
+                    ${this._renderHeatingCircuit()}
+                    ${this._renderAircoFlow()}
+                    ${this._renderHeatBatteryDomesticHotWater()}
+                    ${this._renderHeatBatterySteam()}
+                    ${this._renderWaterTankIndicator()}
+                    ${this._renderBadges()}
+                    ${this._renderTooltips()}
+                    ${this._renderDebug()}
+                </svg>
+            </ha-card>
+        `;
+    }
+
+    setConfig(config) {
+        this.config = config;
+    }
+
+    // Provide default config with auto-detected entities
+    static getStubConfig() {
+        return {
+            type: "custom:quatt-dashboard-card",
+            system_setup: {
+                house_label: "My house",
+            },
+        };
+    }
+
+    // Return the editor element for the card
+    static async getConfigElement() {
+        const { base, version } = QuattDashboardCard._getBaseUrlAndVersion();
+        // Lazy load the editor and include version for cache busting
+        await import(`${base}/js/quatt-dashboard-card-editor.js?v=${version}`);
+        return document.createElement("quatt-dashboard-card-editor");
+    }
+
+    _toggle(state) {
+        this.hass.callService("homeassistant", "toggle", {
+            entity_id: state.entity_id,
+        });
+    }
+
+    static get styles() {
+        return css`
+            [id*="tooltip"].tooltip-show{
+                opacity: 1;
+                pointer-events: auto;
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            [id*="tooltip"]{
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            @keyframes fogFlow {
+                0%   { stroke-dasharray: 0 200;  stroke-dashoffset: -64;  opacity: 0.60; }
+                40%  { stroke-dasharray: 45 200; stroke-dashoffset: -20;  opacity: 0.50; }
+                100% { stroke-dasharray: 45 200; stroke-dashoffset: 64; opacity: 0.10; }
+            }
+
+            @keyframes fogFlowReverse {
+                0%   { stroke-dasharray: 0 200;  stroke-dashoffset: 64;  opacity: 0.60; }
+                40%  { stroke-dasharray: 45 200; stroke-dashoffset: 20;  opacity: 0.50; }
+                100% { stroke-dasharray: 45 200; stroke-dashoffset: -64; opacity: 0.10; }
+            }
+
+            .fog-line {
+                animation-name: fogFlow;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+                filter: blur(2px);
+                stroke-width: 3;
+                fill: none;
+                stroke-linecap: round;
+                stroke-dasharray: 0 200;
+                stroke-dashoffset: 0;
+            }
+
+            .fog-line-reverse {
+                animation-name: fogFlowReverse;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+                filter: blur(2px);
+                stroke-width: 3;
+                fill: none;
+                stroke-linecap: round;
+                stroke-dasharray: 0 200;
+                stroke-dashoffset: 0;
+            }
+
+            @keyframes waterDrop {
+                0% {
+                    opacity: 0.7;
+                    transform: translateY(0);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+            }
+
+            .water-droplet {
+                animation: waterDrop 0.5s ease-in infinite;
+            }
+            .water-droplet:nth-child(2) { animation-delay: 0.2s; }
+            .water-droplet:nth-child(3) { animation-delay: 0.4s; }
+            .water-droplet:nth-child(4) { animation-delay: 0.6s; }
+            .water-droplet:nth-child(5) { animation-delay: 0.8s; }
+
+            @keyframes steamFlow {
+                0% {
+                    opacity: 0;
+                    transform: translate(0, 0);
+                }
+                10% {
+                    opacity: 0.6;
+                }
+                90% {
+                    opacity: 0.6;
+                }
+                100% {
+                    opacity: 0;
+                    transform: translate(-80px, 40px);
+                }
+            }
+
+            .steam-ring {
+                animation: steamFlow 2s ease-in-out infinite;
+            }
+            .steam-ring:nth-child(1) { animation-delay: 0s; }
+            .steam-ring:nth-child(2) { animation-delay: 0.4s; }
+            .steam-ring:nth-child(3) { animation-delay: 0.8s; }
+            .steam-ring:nth-child(4) { animation-delay: 1.2s; }
+            .steam-ring:nth-child(5) { animation-delay: 1.6s; }
+
+            @keyframes smokeRise {
+                0% {
+                    opacity: 0.8;
+                    transform: translate(0, 0) scale(1);
+                }
+                50% {
+                    opacity: 0.5;
+                    transform: translate(8px, -60px) scale(1.4);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translate(15px, -120px) scale(1.8);
+                }
+            }
+
+            .smoke-puff {
+                animation: smokeRise 4s ease-out infinite;
+                filter: blur(8px);
+            }
+            .smoke-puff:nth-child(1) { animation-delay: 0s; }
+            .smoke-puff:nth-child(2) { animation-delay: 0.8s; }
+            .smoke-puff:nth-child(3) { animation-delay: 1.6s; }
+            .smoke-puff:nth-child(4) { animation-delay: 2.4s; }
+            .smoke-puff:nth-child(5) { animation-delay: 3.2s; }
+
+            @keyframes heatRise {
+                0%   { stroke-dasharray: 0 200;  stroke-dashoffset: 0;   opacity: 0.70; }
+                40%  { stroke-dasharray: 45 200; stroke-dashoffset: -5;  opacity: 0.60; }
+                100% { stroke-dasharray: 45 200; stroke-dashoffset: -64; opacity: 0.06; }
+            }
+
+            .radiator-heat-line {
+                animation-name: heatRise;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+                filter: blur(2px);
+                stroke: #ff8a00;
+                stroke-width: 2;
+                fill: none;
+                stroke-linecap: round;
+                stroke-dasharray: 0 200;
+                stroke-dashoffset: 0;
+            }
+
+            /* Default */
+            :host { --qdc-ppi-scale: 1; }
+            /* Hi-DPI tiers (works inside shadow DOM) */
+            @media (min-resolution: 2dppx) { :host { --qdc-ppi-scale: 1.15; } }
+            @media (min-resolution: 2.75dppx) { :host { --qdc-ppi-scale: 1.25; } }
+            @media (min-resolution: 3dppx) { :host { --qdc-ppi-scale: 1.35; } }
+            /* iOS/Safari fallback */
+            @media (-webkit-min-device-pixel-ratio: 2) { :host { --qdc-ppi-scale: 1.15; } }
+            @media (-webkit-min-device-pixel-ratio: 2.75) { :host { --qdc-ppi-scale: 1.25; } }
+            @media (-webkit-min-device-pixel-ratio: 3) { :host { --qdc-ppi-scale: 1.35; } }
+
+            /* Pointer-specific min/max caps */
+            :host { --qdc-font-min: 14px; --qdc-font-max: 20px; }                               /* desktop-ish */
+            @media (pointer:coarse) { :host { --qdc-font-min: 18px; --qdc-font-max: 24px; } }   /* phones/tablets */
+
+            :host {
+                --qdc-font: clamp(var(--qdc-font-min), calc(2.6vmax * var(--qdc-ppi-scale, 1)), var(--qdc-font-max));
+                --qdc-font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", sans-serif;
+            }
+
+            svg {
+                /* Let SVG text elements inherit em-units from this base */
+                font-size: var(--qdc-font);
+                font-family: var(--qdc-font-family);
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                /* Mobile friendly scaling */
+                width: 100%;
+                height: auto;
+                display: block;
+                aspect-ratio: 1 / 1;
+                touch-action: manipulation;
+            }
+
+        `;
+    }
+}
+
+if (!customElements.get("quatt-dashboard-card")) {
+    customElements.define("quatt-dashboard-card", QuattDashboardCard);
+}
+
+// Register for the card picker (run once at module load)
+window.customCards = window.customCards || [];
+if (!window.customCards.some((c) => c.type === "quatt-dashboard-card")) {
+    window.customCards.push({
+        type: "quatt-dashboard-card",
+        name: "Quatt Dashboard Card",
+        description: "Quatt heat pump dashboard card",
+        preview: true,
+    });
+}

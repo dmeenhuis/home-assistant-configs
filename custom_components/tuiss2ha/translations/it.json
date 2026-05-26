@@ -1,0 +1,171 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Aggiungi la tua tenda intelligente Tuiss.",
+                "description": "Assicurati di esserti collegato all'app Tuiss prima dell'uso per impostare correttamente i valori superiore e inferiore. L'indirizzo MAC si trova sull'etichetta allegata alla tua tenda o su un'etichetta stampata nella parte superiore della tenda, vicino a dove è collegata la batteria.",
+                "data": {
+                    "host": "XX:XX:XX:XX:XX:XX",
+                    "name": "Nome amichevole per la tua tenda."
+                }
+            },
+            "confirm": {
+                "title": "Dai un nome alla tua tenda intelligente Tuiss.",
+                "description": "Aggiungi un nome amichevole per la tua tenda.",
+                "data": {
+                    "name": "Nome amichevole per la tua tenda."
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Connessione fallita. Riprova.",
+            "invalid_auth": "Autenticazione fallita. Questo errore non dovrebbe essere possibile, se lo ottieni, segnala un problema.",
+            "unknown": "Errore sconosciuto. Riprova. Se ottieni costantemente questo errore, segnala un problema.",
+            "device_not_found": "Impossibile trovare il dispositivo. Assicurarsi che sia acceso e nel raggio d'azione.",
+            "connection_timeout": "La connessione è scaduta dopo diversi tentativi. Riprova più tardi.",
+            "no_connectable_bluetooth": "No connectable Bluetooth adapter. Shelly and similar devices only discover devices; they cannot connect. You need an ESPHome Bluetooth proxy (e.g. ESP32) or a USB Bluetooth adapter on your Home Assistant host to control Tuiss blinds.",
+            "invalid_host": "Il tuo indirizzo MAC deve essere nel formato XX:XX:XX:XX:XX:XX",
+            "invalid_name": "Il tuo nome deve contenere più di 0 caratteri"
+        },
+        "abort": {
+            "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
+            "already_configured_by_discovery": "Questo dispositivo è già stato scoperto. Si prega di configurarlo tramite l'elenco dei dispositivi scoperti."
+        }
+    },
+    "options":{
+        "step":{
+            "init": {
+                "title": "Opzioni aggiuntive.",
+                "data": {
+                    "blind_restart_position": "Controlla la posizione della tenda al riavvio",
+                    "blind_restart_attempts": "Tentativi di riconnessione",
+                    "blind_speed": "A che velocità la tenda dovrebbe spostarsi in posizione",
+                    "blind_favorite_position": "Posizione Preferita",
+                    "blind_battery_check_days": "Intervallo controllo batteria (giorni)",
+                    "force_unlock": "Sblocco forzato",
+                    "configure_limits": "Configura Limiti"
+                },
+                "data_description": {
+                    "blind_restart_position": "Recupera la posizione corrente delle tende dopo un riavvio di Home Assistant. Utile se usi l'app Smartview o un telecomando.",
+                    "blind_restart_attempts": "Numero di tentativi di connessione che verranno effettuati prima del timeout. Aumenta questo valore se noti che le richieste vengono interrotte. Nota: la distanza tra le tende e i proxy/dongle Bluetooth è la causa principale delle interruzioni di connessione.",
+                    "blind_favorite_position": "La posizione (in percentuale, 0=chiuso, 100=aperto) in cui si sposterà la tenda quando viene premuto il pulsante 'Vai alla Posizione Preferita'.",
+                    "blind_battery_check_days": "Numero di giorni tra i controlli automatici della batteria quando la tenda si sposta. Impostare 0 per disabilitare i controlli automatici.",
+                    "force_unlock": "Forza lo sblocco della tenda se è bloccata nello stato 'bloccato'.",
+                    "configure_limits": "SPERIMENTALE (uso a proprio rischio): Apre una finestra di dialogo per impostare i limiti superiore e inferiore della tenda spostandola nelle posizioni desiderate."
+                }
+            },
+            "set_lower_limit": {
+                "title": "Imposta limite inferiore",
+                "description": "Usa le opzioni del menu qui sotto per muovere la tenda tramite movimento continuo o a passi (movimento incrementale) fino alla posizione del limite inferiore desiderata. Seleziona 'Salva limite inferiore' quando hai finito.\n\n**ATTENZIONE: Non chiudere questa finestra prima di aver terminato di impostare i limiti; le tende potrebbero non funzionare correttamente. Usa le opzioni Salva per assicurarti che i limiti vengano salvati correttamente.**",
+                "menu_options": {
+                    "limit_move_up_lower": "Sposta su (Premi 'Stop' alla posizione desiderata)",
+                    "limit_move_down_lower": "Sposta giù (Premi 'Stop' alla posizione desiderata)",
+                    "limit_stop_lower": "Stop",
+                    "limit_spacer_1_lower": "--------------------------------------------------",
+                    "limit_step_up_lower": "Passo su",
+                    "limit_step_down_lower": "Passo giù",
+                    "limit_spacer_2_lower": "--------------------------------------------------",
+                    "save_lower_limit": "Salva limite inferiore"
+                }
+            },
+            "set_upper_limit": {
+                "title": "Imposta limite superiore",
+                "description": "Usa le opzioni del menu qui sotto per muovere la tenda tramite movimento continuo o a passi (movimento incrementale) fino alla posizione del limite superiore desiderata. Seleziona 'Salva limite superiore' quando hai finito.\n\n**ATTENZIONE: Non chiudere questa finestra prima di aver terminato di impostare i limiti; le tende potrebbero non funzionare correttamente. Usa le opzioni Salva per assicurarti che i limiti vengano salvati correttamente.**",
+                "menu_options": {
+                    "limit_move_up_upper": "Sposta su (Premi 'Stop' alla posizione desiderata)",
+                    "limit_move_down_upper": "Sposta giù (Premi 'Stop' alla posizione desiderata)",
+                    "limit_stop_upper": "Stop",
+                    "limit_spacer_1_upper": "--------------------------------------------------",
+                    "limit_step_up_upper": "Passo su",
+                    "limit_step_down_upper": "Passo giù",
+                    "limit_spacer_2_upper": "--------------------------------------------------",
+                    "save_upper_limit": "Salva limite superiore"
+                }
+            }
+        },
+        "error": {
+            "blind_is_moving": "La tenda è attualmente in movimento. Attendere che si fermi prima di modificare la velocità.",
+            "position_unknown": "Impossibile impostare il limite - posizione della tenda sconosciuta. Spostare prima la tenda.",
+            "limits_not_set": "Both lower and upper limits must be set before closing this dialog."
+        }
+    }
+,
+    "services": {
+        "get_battery_status": {
+            "name": "Ottieni stato batteria",
+            "description": "Ottiene lo stato della batteria per le tende Tuiss selezionate"
+        },
+        "get_blind_position": {
+            "name": "Ottieni posizione tenda",
+            "description": "Ottiene la posizione corrente della tenda per le tende Tuiss selezionate"
+        },
+        "set_blind_position": {
+            "name": "Imposta posizione tenda",
+            "description": "Imposta la posizione della tenda con una precisione di un singolo punto decimale (0,0-100,0)",
+            "fields": {
+                "position": {
+                    "name": "Posizione",
+                    "description": "Posizione di destinazione tra 0,0 (chiuso) e 100,0 (aperto) con una precisione di 1 punto decimale)"
+                }
+            }
+        },
+        "set_blind_speed": {
+            "name": "Imposta velocità tenda",
+            "description": "Imposta la velocità del motore della tenda",
+            "fields": {
+                "speed": {
+                    "name": "Velocità",
+                    "description": "Velocità di destinazione per il motore della tenda"
+                }
+            }
+        },
+    "simultaneous_blind_positioning": {
+            "name": "Posizionamento simultaneo delle tende",
+            "description": "Imposta la posizione di più tende contemporaneamente. Per questa azione è necessario selezionare più entità. Questa azione dovrebbe essere utilizzata solo se si desidera che le tende si muovano contemporaneamente e si dispone di un numero sufficiente di dispositivi BT per gestire il numero di connessioni che si desidera effettuare (ad esempio, 3 connessioni per proxy esphome).",
+            "fields": {
+                "position": {
+                    "name": "Posizione",
+                    "description": "Posizione di destinazione tra 0,0 (chiuso) e 100,0 (aperto) con una precisione di 1 punto decimale)"
+                },
+                "entity_ids": {
+                    "name": "Tende",
+                    "description": "Le tende da controllare."
+                }
+                ,
+                "favourite": {
+                    "name": "Posizione preferita",
+                    "description": "Sposta la tenda nella sua posizione preferita impostata nelle opzioni. Se impostato, ignorerà il campo 'position'."
+                }
+            }
+        },
+        "force_unlock": {
+            "name": "Sblocco forzato",
+            "description": "Forza lo sblocco di una tenda bloccata nello stato bloccato",
+            "fields": {
+                "entity_id": {
+                    "name": "Entità",
+                    "description": "La tenda da sbloccare"
+                }
+            }
+        }
+    }
+
+    ,
+    "exceptions": {
+        "failed_to_open": {
+            "message": "{name} non è riuscito ad aprirsi: {error}"
+        },
+        "failed_to_close": {
+            "message": "{name} non è riuscito a chiudersi: {error}"
+        },
+        "failed_set_position": {
+            "message": "{name} non è riuscito a impostare la posizione: {error}"
+        },
+        "failed_to_stop": {
+            "message": "{name} non è riuscito a fermarsi: {error}"
+        },
+        "device_locked": {
+            "message": "{name} è occupato (bloccato). Attendere il completamento dell'operazione corrente."
+        }
+    }
+}

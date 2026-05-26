@@ -18,7 +18,7 @@
     input:
       remote_devices:
       - d4e87b059dbdc7a9f5e2cec51644fc75
-      light: light.ikea_of_sweden_tradfri_driver_10w_2
+      light: light.voeding_kast_dennis
       helper_brightness: 100
       helper_force_brightness: true
 - id: '1753003661996'
@@ -29,17 +29,224 @@
     input:
       remote_devices:
       - 3f8997016857b26e3d5651b14add0a6d
-      light: light.ikea_of_sweden_tradfri_driver_10w_3
+      light: light.voeding_kast_antsje
       helper_force_brightness: true
       helper_brightness: 100
 - id: '1753003716203'
-  alias: "Ikea's Rodret, Somrig or Tradfri \U0001F4A1 Light control"
+  alias: Verlichting kast Jesper
   description: ''
   use_blueprint:
     path: damru/ikea_E1743-E2201-E2213_ZHA-Z2M_control-light.yaml
     input:
       remote_devices:
       - 755034a3af4395d4ecf51675e637a134
-      light: light.ikea_of_sweden_tradfri_driver_10w
+      light: light.voeding_kast_jesper
       helper_force_brightness: true
       helper_brightness: 100
+- id: '1773601480416'
+  alias: CCA - Keuken 1
+  description: ''
+  use_blueprint:
+    path: hvorragend/cover_control_automation.yaml
+    input:
+      auto_options:
+      - auto_sun_enabled
+      - auto_up_enabled
+      - auto_down_enabled
+      sun_elevation_down: 6
+      cover_status_options: cover_helper_enabled
+      shading_conditions_start_and:
+      - cond_azimuth
+      - cond_elevation
+      blind: cover.keuken_1
+      cover_status_helper: input_text.cca_helper_1
+      time_control: time_control_input
+      check_config: true
+      sun_elevation_mode: dynamic
+      sun_elevation_up_sensor: sensor.sun_elevation_up_dynamic
+      sun_elevation_down_sensor: sensor.sun_elevation_down_dynamic
+      time_up_early: 05:00:00
+      time_up_early_non_workday: 05:00:00
+      time_up_late: 09:00:00
+      time_up_late_non_workday: 09:00:00
+      time_down_early: '16:00:00'
+      time_down_early_non_workday: '16:00:00'
+      time_down_late: '23:00:00'
+      time_down_late_non_workday: '23:00:00'
+- id: '1773601515138'
+  alias: CCA - Keuken 2
+  description: ''
+  use_blueprint:
+    path: hvorragend/cover_control_automation.yaml
+    input:
+      auto_options:
+      - auto_sun_enabled
+      - auto_down_enabled
+      - auto_up_enabled
+      sun_elevation_down: 6
+      cover_status_options: cover_helper_enabled
+      shading_conditions_start_and:
+      - cond_elevation
+      - cond_azimuth
+      blind: cover.keuken_2
+      cover_status_helper: input_text.cca_helper_2
+      time_control: time_control_input
+      check_config: true
+      sun_elevation_mode: dynamic
+      sun_elevation_up_sensor: sensor.sun_elevation_up_dynamic
+      sun_elevation_down_sensor: sensor.sun_elevation_down_dynamic
+      time_up_early: 05:00:00
+      time_up_early_non_workday: 05:00:00
+      time_up_late: 09:00:00
+      time_up_late_non_workday: 09:00:00
+      time_down_late: '23:00:00'
+      time_down_late_non_workday: '23:00:00'
+      shading_azimuth_start: 248
+      shading_azimuth_end: 260
+      shading_elevation_min: 6
+      shading_elevation_max: 15
+      shading_conditions_end_or: []
+      shading_conditions_start_or: []
+      shading_conditions_end_and:
+      - cond_elevation
+      - cond_azimuth
+- id: '1773601535952'
+  alias: CCA - Keuken 3
+  description: ''
+  use_blueprint:
+    path: hvorragend/cover_control_automation.yaml
+    input:
+      auto_options:
+      - auto_sun_enabled
+      - auto_up_enabled
+      - auto_down_enabled
+      sun_elevation_down: 6
+      cover_status_options: cover_helper_enabled
+      shading_conditions_start_and:
+      - cond_azimuth
+      - cond_elevation
+      blind: cover.keuken_3
+      cover_status_helper: input_text.cca_helper_3
+      time_control: time_control_input
+      check_config: true
+      sun_elevation_mode: dynamic
+      sun_elevation_up_sensor: sensor.sun_elevation_up_dynamic
+      sun_elevation_down_sensor: sensor.sun_elevation_down_dynamic
+      time_up_early_non_workday: 05:00:00
+      time_up_late: 09:00:00
+      time_up_late_non_workday: 09:00:00
+      time_down_late: '23:00:00'
+      time_down_late_non_workday: '23:00:00'
+      time_up_early: 05:00:00
+- id: '1773601552560'
+  alias: CCA - Woonkamer 1
+  description: ''
+  use_blueprint:
+    path: hvorragend/cover_control_automation.yaml
+    input:
+      auto_options:
+      - auto_sun_enabled
+      - auto_up_enabled
+      - auto_down_enabled
+      sun_elevation_down: 6
+      cover_status_options: cover_helper_enabled
+      shading_conditions_start_and:
+      - cond_azimuth
+      - cond_elevation
+      blind: cover.woonkamer_1
+      cover_status_helper: input_text.cca_helper_4
+      time_control: time_control_input
+      check_config: true
+      sun_elevation_mode: dynamic
+      sun_elevation_up_sensor: sensor.sun_elevation_up_dynamic
+      sun_elevation_down_sensor: sensor.sun_elevation_down_dynamic
+      time_up_early_non_workday: 05:00:00
+      time_up_late: 09:00:00
+      time_up_late_non_workday: 09:00:00
+      time_down_late: '23:00:00'
+      time_down_late_non_workday: '23:00:00'
+      time_up_early: 05:00:00
+- id: '1773601569698'
+  alias: CCA - Woonkamer 2
+  description: ''
+  use_blueprint:
+    path: hvorragend/cover_control_automation.yaml
+    input:
+      auto_options:
+      - auto_sun_enabled
+      - auto_up_enabled
+      - auto_down_enabled
+      sun_elevation_down: 6
+      cover_status_options: cover_helper_enabled
+      shading_conditions_start_and:
+      - cond_azimuth
+      - cond_elevation
+      blind: cover.woonkamer_2
+      cover_status_helper: input_text.cca_helper_5
+      time_control: time_control_input
+      check_config: true
+      sun_elevation_mode: dynamic
+      sun_elevation_up_sensor: sensor.sun_elevation_up_dynamic
+      sun_elevation_down_sensor: sensor.sun_elevation_down_dynamic
+      time_up_early_non_workday: 05:00:00
+      time_up_late: 09:00:00
+      time_up_late_non_workday: 09:00:00
+      time_down_late: '23:00:00'
+      time_down_late_non_workday: '23:00:00'
+      time_up_early: 05:00:00
+- id: '1773601586116'
+  alias: CCA - Woonkamer 3
+  description: ''
+  use_blueprint:
+    path: hvorragend/cover_control_automation.yaml
+    input:
+      auto_options:
+      - auto_sun_enabled
+      - auto_up_enabled
+      - auto_down_enabled
+      sun_elevation_down: 6
+      cover_status_options: cover_helper_enabled
+      shading_conditions_start_and:
+      - cond_azimuth
+      - cond_elevation
+      blind: cover.woonkamer_3
+      cover_status_helper: input_text.cca_helper_6
+      time_control: time_control_input
+      check_config: true
+      sun_elevation_mode: dynamic
+      sun_elevation_up_sensor: sensor.sun_elevation_up_dynamic
+      sun_elevation_down_sensor: sensor.sun_elevation_down_dynamic
+      time_up_early_non_workday: 05:00:00
+      time_up_late: 09:00:00
+      time_up_late_non_workday: 09:00:00
+      time_down_late: '23:00:00'
+      time_down_late_non_workday: '23:00:00'
+      time_up_early: 05:00:00
+- id: '1773601599403'
+  alias: CCA - Woonkamer 4
+  description: ''
+  use_blueprint:
+    path: hvorragend/cover_control_automation.yaml
+    input:
+      auto_options:
+      - auto_sun_enabled
+      - auto_up_enabled
+      - auto_down_enabled
+      sun_elevation_down: 6
+      cover_status_options: cover_helper_enabled
+      shading_conditions_start_and:
+      - cond_azimuth
+      - cond_elevation
+      blind: cover.woonkamer_4
+      cover_status_helper: input_text.cca_helper_7
+      time_control: time_control_input
+      check_config: true
+      sun_elevation_up_sensor: sensor.sun_elevation_up_dynamic
+      sun_elevation_down_sensor: sensor.sun_elevation_down_dynamic
+      sun_elevation_mode: dynamic
+      time_up_early_non_workday: 05:00:00
+      time_up_late: 09:00:00
+      time_up_late_non_workday: 09:00:00
+      time_down_late: '23:00:00'
+      time_down_late_non_workday: '23:00:00'
+      time_up_early: 05:00:00

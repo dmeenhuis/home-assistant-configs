@@ -1,0 +1,171 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Ajouter votre store Tuiss.",
+                "description": "L'adresse MAC peut-être trouvée sur le tag qui est attaché à votre store ou imprimé sur le dessus du store, près de la batterie.",
+                "data": {
+                    "host": "Adresse MAC de la forme XX:XX:XX:XX:XX:XX",
+                    "name": "Nom de votre store"
+                }
+            },
+            "confirm": {
+                "title": "Nom de votre store Tuiss.",
+                "description": "Veuillez ajouter un nom convivial pour votre store.",
+                "data": {
+                    "name": "Nom"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Échec de la connexion. Veuillez réessayer.",
+            "invalid_auth": "Échec de l'authentification. Cette erreur ne devrait pas être possible, si vous l'obtenez, veuillez signaler un problème.",
+            "unknown": "Erreur inconnue. Veuillez réessayer. Si vous obtenez constamment cette erreur, veuillez signaler un problème.",
+            "device_not_found": "L'appareil est introuvable. Veuillez vous assurer qu'il est sous tension et à portée.",
+            "connection_timeout": "La connexion a expiré après plusieurs tentatives. Veuillez réessayer plus tard.",
+            "no_connectable_bluetooth": "No connectable Bluetooth adapter. Shelly and similar devices only discover devices; they cannot connect. You need an ESPHome Bluetooth proxy (e.g. ESP32) or a USB Bluetooth adapter on your Home Assistant host to control Tuiss blinds.",
+            "invalid_host": "Votre adresse MAC doit être au format XX:XX:XX:XX:XX:XX",
+            "invalid_name": "Votre nom doit comporter plus de 0 caractères"
+        },
+        "abort": {
+            "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
+            "already_configured_by_discovery": "Cet appareil a déjà été découvert. Veuillez le configurer via la liste des appareils découverts."
+        }
+    },
+    "options":{
+        "step":{
+            "init": {
+                "title": "Options supplémentaires.",
+                "data": {
+                    "blind_restart_position": "Vérifier la position du store au redémarrage",
+                    "blind_restart_attempts": "Tentatives de reconnexion",
+                    "blind_speed": "À quelle vitesse le store doit-il se déplacer en position",
+                    "blind_favorite_position": "Position Favorite",
+                    "blind_battery_check_days": "Intervalle de vérification de la batterie (jours)",
+                    "force_unlock": "Déverrouillage forcé",
+                    "configure_limits": "Configurer les Limites"
+                },
+                "data_description": {
+                    "blind_restart_position": "Récupérer la position actuelle des stores après un redémarrage de Home Assistant. Utile si vous utilisez l'application Smartview ou une télécommande.",
+                    "blind_restart_attempts": "Nombre de tentatives de connexion qui seront effectuées avant l'expiration du délai. Augmentez cette valeur si vous constatez que vous recevez des demandes abandonnées. Remarque : la distance entre les stores et les proxys/dongles Bluetooth est la principale cause des pertes de connexion.",
+                    "blind_favorite_position": "La position (en pourcentage, 0=fermé, 100=ouvert) à laquelle le store se déplacera lorsque le bouton 'Aller à la Position Favorite' sera enfoncé.",
+                    "blind_battery_check_days": "Nombre de jours entre les vérifications automatiques de la batterie lorsque le store se déplace. Réglez sur 0 pour désactiver les vérifications automatiques.",
+                    "force_unlock": "Force le déverrouillage du store s'il est coincé dans l'état 'verrouillé'.",
+                    "configure_limits": "EXPÉRIMENTAL (utilisation à vos risques et périls) : Ouvre une boîte de dialogue pour définir les limites supérieure et inférieure du store en le déplaçant vers les positions souhaitées."
+                }
+            },
+            "set_lower_limit": {
+                "title": "Définir la limite inférieure",
+                "description": "Utilisez les options du menu ci-dessous pour déplacer le store par mouvement continu ou par pas (mouvement incrémentiel) jusqu'à la position de limite inférieure souhaitée. Sélectionnez 'Enregistrer la limite inférieure' lorsque vous avez terminé.\n\n**ATTENTION : Ne fermez pas cette fenêtre avant d'avoir terminé la définition des limites — les stores risquent de ne pas fonctionner correctement. Utilisez les options d'enregistrement pour vous assurer que les limites sont enregistrées correctement.**",
+                "menu_options": {
+                    "limit_move_up_lower": "Monter (Appuyez sur 'Arrêt' à la position désirée)",
+                    "limit_move_down_lower": "Descendre (Appuyez sur 'Arrêt' à la position désirée)",
+                    "limit_stop_lower": "Arrêt",
+                    "limit_spacer_1_lower": "--------------------------------------------------",
+                    "limit_step_up_lower": "Pas vers le haut",
+                    "limit_step_down_lower": "Pas vers le bas",
+                    "limit_spacer_2_lower": "--------------------------------------------------",
+                    "save_lower_limit": "Enregistrer la limite inférieure"
+                }
+            },
+            "set_upper_limit": {
+                "title": "Définir la limite supérieure",
+                "description": "Utilisez les options du menu ci-dessous pour déplacer le store par mouvement continu ou par pas (mouvement incrémentiel) jusqu'à la position de limite supérieure souhaitée. Sélectionnez 'Enregistrer la limite supérieure' lorsque vous avez terminé.\n\n**ATTENTION : Ne fermez pas cette fenêtre avant d'avoir terminé la définition des limites — les stores risquent de ne pas fonctionner correctement. Utilisez les options d'enregistrement pour vous assurer que les limites sont enregistrées correctement.**",
+                "menu_options": {
+                    "limit_move_up_upper": "Monter (Appuyez sur 'Arrêt' à la position désirée)",
+                    "limit_move_down_upper": "Descendre (Appuyez sur 'Arrêt' à la position désirée)",
+                    "limit_stop_upper": "Arrêt",
+                    "limit_spacer_1_upper": "--------------------------------------------------",
+                    "limit_step_up_upper": "Pas vers le haut",
+                    "limit_step_down_upper": "Pas vers le bas",
+                    "limit_spacer_2_upper": "--------------------------------------------------",
+                    "save_upper_limit": "Enregistrer la limite supérieure"
+                }
+            }
+        },
+        "error": {
+            "blind_is_moving": "Le store est en mouvement. Veuillez attendre qu'il s'arrête avant de changer la vitesse.",
+            "position_unknown": "Impossible de définir la limite - position du store inconnue. Déplacez d'abord le store.",
+            "limits_not_set": "Both lower and upper limits must be set before closing this dialog."
+        }
+    }
+,
+    "services": {
+        "get_battery_status": {
+            "name": "Obtenir l'état de la batterie",
+            "description": "Obtient l'état de la batterie pour les stores Tuiss sélectionnés"
+        },
+        "get_blind_position": {
+            "name": "Obtenir la position du store",
+            "description": "Obtient la position actuelle du store pour les stores Tuiss sélectionnés"
+        },
+        "set_blind_position": {
+            "name": "Définir la position du store",
+            "description": "Définit la position du store avec une précision d'une seule décimale (0,0-100,0)",
+            "fields": {
+                "position": {
+                    "name": "Position",
+                    "description": "Position cible entre 0,0 (fermé) et 100,0 (ouvert) avec une précision de 1 décimale)"
+                }
+            }
+        },
+        "set_blind_speed": {
+            "name": "Définir la vitesse du store",
+            "description": "Définit la vitesse du moteur du store",
+            "fields": {
+                "speed": {
+                    "name": "Vitesse",
+                    "description": "Vitesse cible pour le moteur du store"
+                }
+            }
+        },
+    "simultaneous_blind_positioning": {
+            "name": "Positionnement simultané des stores",
+            "description": "Définissez la position de plusieurs stores simultanément. Plusieurs entités doivent être sélectionnées pour que cette action fonctionne. Cette action ne doit être utilisée que si vous souhaitez que les stores se déplacent en même temps et que vous disposez de suffisamment de périphériques BT pour gérer le nombre de connexions que vous souhaitez établir (par exemple, 3 connexions par proxy esphome).",
+            "fields": {
+                "position": {
+                    "name": "Position",
+                    "description": "Position cible entre 0,0 (fermé) et 100,0 (ouvert) avec une précision de 1 décimale)"
+                },
+                "entity_ids": {
+                    "name": "Stores",
+                    "description": "Les stores à contrôler."
+                }
+                ,
+                "favourite": {
+                    "name": "Position favorite",
+                    "description": "Déplace le store à sa position favorite définie dans les options. Si défini, ignorera le champ 'position'."
+                }
+            }
+        },
+        "force_unlock": {
+            "name": "Déverrouillage forcé",
+            "description": "Force le déverrouillage d'un store qui est coincé dans un état verrouillé",
+            "fields": {
+                "entity_id": {
+                    "name": "Entité",
+                    "description": "Le store à déverrouiller"
+                }
+            }
+        }
+    }
+
+    ,
+    "exceptions": {
+        "failed_to_open": {
+            "message": "{name} n'a pas pu être ouvert : {error}"
+        },
+        "failed_to_close": {
+            "message": "{name} n'a pas pu être fermé : {error}"
+        },
+        "failed_set_position": {
+            "message": "{name} n'a pas pu définir la position : {error}"
+        },
+        "failed_to_stop": {
+            "message": "{name} n'a pas pu être arrêté : {error}"
+        },
+        "device_locked": {
+            "message": "{name} est occupé (verrouillé). Veuillez attendre la fin de l'opération en cours."
+        }
+    }
+}

@@ -1,0 +1,76 @@
+get_battery_status:
+  # Gets the status of the battery for the target device. Because the blind has a
+  # specific call for battery and because this does not advertise, nor give an actual %,
+  # use this service instead to return true/false when battery is low
+  target:
+    entity:
+      integration: tuiss2ha
+      domain: binary_sensor
+
+get_blind_position:
+  # Gets the position of the blind for the target device. Useful as the blind does not
+  # advertise its position, so if using the app or a remote the position will be different
+  # to that shown in home assistant
+  target:
+    entity:
+      integration: tuiss2ha
+      domain: cover
+
+set_blind_position:
+  # Sets the position of the blind with decimal precision, bypassing the standard
+  # cover position setting mechanism
+  target:
+    entity:
+      integration: tuiss2ha
+      domain: cover
+  fields:
+    position:
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 0.1
+          mode: box
+
+simultaneous_blind_positioning:
+  # Sets the position of multiple blind at the same time.
+  # requires connection to two blinds simulataneoudly
+  fields:
+    entity_ids:
+      required: true
+      selector:
+        entity:
+          integration: tuiss2ha
+          domain: cover
+          multiple: true
+    favourite:
+      selector:
+        boolean:
+    position:
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 0.1
+          mode: box
+
+set_blind_speed:
+  target:
+    entity:
+      integration: tuiss2ha
+      domain: cover
+  fields:
+    speed:
+      required: true
+      selector:
+        select:
+          options:
+            - "Standard"
+            - "Comfort"
+            - "Slow"
+
+force_unlock:
+  target:
+    entity:
+      domain: cover

@@ -1,0 +1,49 @@
+{
+  "config": {
+    "error": {
+      "unexpected_error": "An unexpected error occurred. Please check the log for details.",
+      "cannot_connect": "Could not connect with the Airco: {reason}",
+      "name_invalid": "Name is already taken or is shorter than 3 characters",
+      "host_already_configured": "Airco IP already configured as [{error_name}]",
+      "too_many_devices_registered": "There are too many devices registered for this airco. Please delete a device (in the app) or do a factory reset of the module."
+    },
+    "abort": {
+      "existing_instance_updated": "Updated existing configuration.",
+      "already_configured": "Airco is already configured"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "name": "Airco Name",
+          "host": "Host (IP) address",
+          "port": "Port",
+          "force_update": "Ignore Duplicate IP (can/will cause Errors so check error log)",
+          "create_swing_mode_select": "Whether to create an additional swing mode selectors."
+        },
+        "description": "Please fill in the correct information to add the Airco Manually",
+        "title": "WF-RAC AC connection info"
+      },
+      "discovery_confirm": {
+        "description": "The airco with id: {id}, IP: {host} and port: {port} was discovered. Please give it a name.",
+        "title": "Discovered WF-RAC airco",
+        "data": {
+          "name": "Airco Name"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Below are the options you can change for this airco.",
+        "data": {
+          "host": "Host (IP) address",
+          "availability_check": "Check availability",
+          "availability_retry_limit": "Retry limit",
+          "create_swing_mode_select": "Whether to create an additional swing mode selectors."
+        },
+        "title": "WF-RAC AC connection info"
+      }
+    }
+  }
+}
