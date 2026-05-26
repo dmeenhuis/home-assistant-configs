@@ -1,0 +1,27 @@
+- alias: Close blinds when TV is turned on
+  trigger:
+    platform: state
+    entity_id: media_player.lg_oled65gx6la
+    to: "on"
+  condition:
+    - condition: state
+      entity_id: cover.woonkamer_2
+      state: "open"
+  action:
+    service: cover.close_cover
+    entity_id: cover.woonkamer_2
+- alias: Open blinds when TV is turned off
+  condition:
+    - condition: state
+      entity_id: cover.woonkamer_2
+      state: "closed"
+    - condition: sun
+      after: sunset
+      after_offset: "-00:30:00"
+  trigger:
+    platform: state
+    entity_id: media_player.lg_oled65gx6la
+    to: "off"
+  action:
+    service: cover.open_cover
+    entity_id: cover.woonkamer_2
