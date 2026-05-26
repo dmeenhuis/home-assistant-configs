@@ -16,8 +16,8 @@
       entity_id: cover.woonkamer_2
       state: "closed"
     - condition: sun
-      after: sunset
-      after_offset: "-00:30:00"
+      before: sunset
+      before_offset: "-00:30:00"
   trigger:
     platform: state
     entity_id: media_player.lg_oled65gx6la
