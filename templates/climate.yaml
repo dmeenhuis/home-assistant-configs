@@ -1,0 +1,10 @@
+- sensor:
+    - name: Buitentemperatuur
+      default_entity_id: sensor.outdoor_temperature
+      unit_of_measurement: "°C"
+      state: "{{ state_attr('climate.heating', 'outdoor_temperature') }}"
+
+    - name: Jaarverbruik gas
+      default_entity_id: sensor.gas_year_total
+      unit_of_measurement: m3
+      state: "{{ state_attr('climate.heating', 'year_total') }}"

@@ -1,0 +1,31 @@
+- sensor:
+    - name: solaredge (Lifetime energy kWh)
+      default_entity_id: sensor.solaredge_lifetime_energy_kwh
+      unit_of_measurement: kWh
+      state: "{{ (states('sensor.solaredge_lifetime_energy') | float(0) / 1000) | round(2) }}"
+      device_class: energy
+
+    - name: solaredge (Energy today kWh)
+      default_entity_id: sensor.solaredge_energy_today_kwh
+      unit_of_measurement: kWh
+      state: "{{ (states('sensor.solaredge_energy_today') | float(0) / 1000) | round(2) }}"
+      device_class: energy
+
+    - name: solaredge (Energy this year kWh)
+      default_entity_id: sensor.solaredge_energy_this_year_kwh
+      unit_of_measurement: kWh
+      state: "{{ (states('sensor.solaredge_energy_this_year') | float(0) / 1000) | round(2) }}"
+      device_class: energy
+
+    - name: solaredge (Energy this month kWh)
+      default_entity_id: sensor.solaredge_energy_this_month_kwh
+      unit_of_measurement: kWh
+      state: "{{ (states('sensor.solaredge_energy_this_month') | float(0) / 1000) | round(2) }}"
+      device_class: energy
+
+    # device_class must match the unit: kW is power, not energy
+    - name: solaredge (Current power kWh)
+      default_entity_id: sensor.solaredge_current_power_kw
+      unit_of_measurement: kW
+      state: "{{ (states('sensor.solaredge_current_power') | float(0) / 1000) | round(2) }}"
+      device_class: power

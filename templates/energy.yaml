@@ -1,0 +1,42 @@
+- sensor:
+    - name: Daily Energy
+      default_entity_id: sensor.daily_energy
+      unit_of_measurement: kWh
+      state: "{{ states('sensor.daily_energy_offpeak') | float(0) + states('sensor.daily_energy_peak') | float(0) }}"
+      device_class: energy
+
+    - name: Daily Energy Returned
+      default_entity_id: sensor.daily_energy_returned
+      unit_of_measurement: kWh
+      state: "{{ states('sensor.daily_energy_returned_offpeak') | float(0) + states('sensor.daily_energy_returned_peak') | float(0) }}"
+      device_class: energy
+
+    - name: Daily Energy Produced
+      default_entity_id: sensor.daily_energy_produced
+      unit_of_measurement: kWh
+      state: "{{ states('sensor.solaredge_energy_today_kwh') | float(0) + states('sensor.d_a_total_energy_today') | float(0) }}"
+      device_class: energy
+
+    - name: Monthly Energy
+      default_entity_id: sensor.monthly_energy
+      unit_of_measurement: kWh
+      state: "{{ states('sensor.monthly_energy_offpeak') | float(0) + states('sensor.monthly_energy_peak') | float(0) }}"
+      device_class: energy
+
+    - name: Monthly Energy Returned
+      default_entity_id: sensor.monthly_energy_returned
+      unit_of_measurement: kWh
+      state: "{{ states('sensor.monthly_energy_returned_offpeak') | float(0) + states('sensor.monthly_energy_returned_peak') | float(0) }}"
+      device_class: energy
+
+    - name: Total Energy
+      default_entity_id: sensor.total_energy
+      unit_of_measurement: kWh
+      state: "{{ states('sensor.dsmr_reading_electricity_delivered_1') | float(0) + states('sensor.dsmr_reading_electricity_delivered_2') | float(0) }}"
+      device_class: energy
+
+    - name: Total Energy Returned
+      default_entity_id: sensor.total_energy_returned
+      unit_of_measurement: kWh
+      state: "{{ states('sensor.dsmr_reading_electricity_returned_1') | float(0) + states('sensor.dsmr_reading_electricity_returned_2') | float(0) }}"
+      device_class: energy

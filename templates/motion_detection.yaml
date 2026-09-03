@@ -1,0 +1,83 @@
+- binary_sensor:
+    - name: motion_detected
+      default_entity_id: binary_sensor.motion_detected
+      state: >-
+        {{ is_state("binary_sensor.bewegingssensor_garage", "on")
+        or is_state("binary_sensor.bewegingssensor_overloop", "on")
+        or is_state("binary_sensor.bewegingssensor_badkamer_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_keuken", "on")
+        or is_state("binary_sensor.bewegingssensor_salonkast_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_toilet_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_gang_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
+
+    - name: motion_detected_anywhere_except_overloop
+      default_entity_id: binary_sensor.motion_detected_anywhere_except_overloop
+      state: >-
+        {{ is_state("binary_sensor.bewegingssensor_garage", "on")
+        or is_state("binary_sensor.bewegingssensor_badkamer_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_keuken", "on")
+        or is_state("binary_sensor.bewegingssensor_salonkast_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_toilet_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_gang_motion", "on")
+        or is_state("binary_sensor.bewegingssensor_woonkamer", "on") }}
+      delay_off: "00:05:00"
+
+    - name: Geen beweging in huis
+      default_entity_id: binary_sensor.house_idle
+      state: >
+        {{ is_state("binary_sensor.motion_detected", "off") }}
+      delay_on: "00:15:00"
+
+    - name: Beweging gedetecteerd in het afgelopen uur
+      default_entity_id: binary_sensor.motion_detected_in_last_hour
+      state: >
+        {{ is_state("binary_sensor.motion_detected", "on") }}
+      delay_off: "01:00:00"
+
+    - name: Iemand thuis in het afgelopen uur
+      default_entity_id: binary_sensor.someone_in_the_house_in_last_hour
+      state: >
+        {{ is_state("binary_sensor.motion_detected_in_last_hour", "on")
+           or is_state("group.persons", "home") }}
+
+    - name: Activiteit in de badkamer
+      default_entity_id: binary_sensor.activity_in_bathroom
+      state: >
+        {{ is_state("binary_sensor.bewegingssensor_badkamer_motion", "on") or is_state("binary_sensor.presence_bathroom", "on") }}
+
+    - name: Activiteit in badkamer 2
+      default_entity_id: binary_sensor.activity_in_bathroom_2
+      state: >
+        {{ is_state("binary_sensor.bewegingssensor_badkamer_2", "on") }}
+
+    - name: Activiteit in de gang
+      default_entity_id: binary_sensor.activity_in_hall_downstairs
+      state: >
+        {{ is_state("binary_sensor.bewegingssensor_gang_motion", "on") }}
+
+    - name: Activiteit in de keuken
+      default_entity_id: binary_sensor.activity_in_kitchen
+      state: >
+        {{ is_state("binary_sensor.bewegingssensor_keuken", "on") }}
+
+    - name: Activiteit in de bijkeuken
+      default_entity_id: binary_sensor.activity_in_bijkeuken
+      state: >
+        {{ is_state("binary_sensor.bewegingssensor_bijkeuken", "on") }}
+
+    - name: Activiteit op de overloop
+      default_entity_id: binary_sensor.activity_overloop
+      state: >
+        {{ is_state("binary_sensor.bewegingssensor_overloop", "on") }}
+
+    - name: Activiteit in de werkkamer
+      default_entity_id: binary_sensor.activity_in_office
+      state: >
+        {{ is_state("binary_sensor.presence_sensor_office", "on") or is_state("binary_sensor.bewegingssensor_werkkamer", "on") }}
+
+    - name: Aanwezigheid woonkamer
+      default_entity_id: binary_sensor.living_room_presence
+      state: >
+        {{ is_state("device_tracker.dennis_apple_watch_tracker", "home") or is_state("device_tracker.dennis_apple_watch_tracker", "home") }}
+      delay_off: "00:05:00"

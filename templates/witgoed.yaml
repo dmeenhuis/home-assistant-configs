@@ -1,0 +1,42 @@
+- sensor:
+    - name: Status vaatwasser
+      default_entity_id: sensor.status_vaatwasser
+      icon: >
+        {% if (is_state('sensor.status_vaatwasser', 'Running')) %} mdi:run
+        {% elif (is_state('sensor.status_vaatwasser', 'Idle')) %} mdi:toggle-switch
+        {% else %} mdi:toggle-switch-off
+        {% endif %}
+      state: >
+        {% set current_power = (states('sensor.vaatwasser_energy_power') | float(0)) %}
+        {% if (current_power) > 10 %} Running
+        {% elif (current_power > 0) %} Idle
+        {% else %} Off
+        {% endif %}
+
+    - name: Status wasmachine
+      default_entity_id: sensor.status_wasmachine
+      icon: >
+        {% if (is_state('sensor.status_wasmachine', 'Running')) %} mdi:run
+        {% elif (is_state('sensor.status_wasmachine', 'Idle')) %} mdi:toggle-switch
+        {% else %} mdi:toggle-switch-off
+        {% endif %}
+      state: >
+        {% set current_power = (states('sensor.wasmachine_energy_power') | float(0)) %}
+        {% if (current_power) > 10 %} Running
+        {% elif (current_power > 0) %} Idle
+        {% else %} Off
+        {% endif %}
+
+    - name: Status wasdroger
+      default_entity_id: sensor.status_wasdroger
+      icon: >
+        {% if (is_state('sensor.status_wasdroger', 'Running')) %} mdi:run
+        {% elif (is_state('sensor.status_wasdroger', 'Idle')) %} mdi:toggle-switch
+        {% else %} mdi:toggle-switch-off
+        {% endif %}
+      state: >
+        {% set current_power = (states('sensor.wasdroger_energy_power') | float(0)) %}
+        {% if (current_power) > 10 %} Running
+        {% elif (current_power > 0) %} Idle
+        {% else %} Off
+        {% endif %}

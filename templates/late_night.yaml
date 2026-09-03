@@ -1,0 +1,18 @@
+- binary_sensor:
+    - name: late_night
+      default_entity_id: binary_sensor.late_night
+      state: >
+        {% set now = (now().strftime("%H%M") | int) -%}
+        {{
+          (
+            (is_state("binary_sensor.workday_tomorrow", "on")) 
+              and (
+                (2200 <= now or now < 545)
+              )
+          ) or (
+            (is_state("binary_sensor.workday_tomorrow", "off"))
+              and (
+                now >= 0 and now < 700
+              )
+          )
+        }}
