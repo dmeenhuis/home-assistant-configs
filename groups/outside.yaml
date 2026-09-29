@@ -3,3 +3,4 @@ entities:
   - switch.buitenverlichting
   - switch.schakelaar_terrasverlichting
   - switch.schakelaar_buitenverlichting_schuifdeur
+  - switch.buiten_schakelaar_opritverlichting
