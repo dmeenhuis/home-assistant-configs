@@ -97,3 +97,9 @@ sensor.woonkamer_schakelaar_tv_woonkamer_energy:
 sensor.nas_energy:
   device_class: energy
   state_class: total_increasing
+sensor.slaapkamer_jesper_schakelaar_tv_jesper_energy:
+  device_class: energy
+  state_class: total_increasing
+sensor.slaapkamer_jesper_schakelaar_pc_jesper_energy:
+  device_class: energy
+  state_class: total_increasing
