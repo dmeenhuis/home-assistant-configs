@@ -79,3 +79,21 @@ sensor.wasmachine_energy:
 sensor.wasdroger_energy:
   device_class: energy
   state_class: total_increasing
+sensor.keuken_schakelaar_vaatwasser_energy:
+  device_class: energy
+  state_class: total_increasing
+sensor.schakelaar_vriezer_energy:
+  device_class: energy
+  state_class: total_increasing
+sensor.gang_schakelaar_meterkast_energy:
+  device_class: energy
+  state_class: total_increasing
+sensor.gang_schakelaar_vloerverwarmingspomp_energy:
+  device_class: energy
+  state_class: total_increasing
+sensor.woonkamer_schakelaar_tv_woonkamer_energy:
+  device_class: energy
+  state_class: total_increasing
+sensor.nas_energy:
+  device_class: energy
+  state_class: total_increasing
