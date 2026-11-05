@@ -18,7 +18,7 @@
 
         {# Reference values for 50°N #} 
         {% set summer = -3 %}
-        {% set winter = 3 %}
+        {% set winter = 2 %}
 
         {# Sinusoidal interpolation (physically correct) #}
         {# Day 80.75 ≈ March 21 (spring equinox) as reference #}
