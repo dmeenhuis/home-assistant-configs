@@ -18,7 +18,7 @@
 
         {# Reference values for 50°N #} 
         {% set summer = -3 %}
-        {% set winter = 2 %}
+        {% set winter = 0.85 %}
 
         {# Sinusoidal interpolation (physically correct) #}
         {# Day 80.75 ≈ March 21 (spring equinox) as reference #}
@@ -44,7 +44,7 @@
 
         {# Reference values for 50°N #}
         {% set summer = -1.5 %}
-        {% set winter = 2.0 %}
+        {% set winter = 0.7 %}
 
         {# Sinusoidal interpolation (physically correct) #}
         {% set seasonal_factor = sin(2 * pi * (day - 80.75) / 365) %}
